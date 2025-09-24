@@ -4,3 +4,7 @@
 # React Router
 /.react-router/
 /build/
+
+# Copilot instructions
+copilot-instructions.md
+.github/copilot-instructions.md
