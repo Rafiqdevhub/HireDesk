@@ -22,24 +22,24 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black">
       <Navbar />
 
       <div className="pt-24 pb-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md mx-auto">
-          <div className="bg-white rounded-2xl shadow-xl p-8">
+          <div className="bg-gray-800 rounded-2xl shadow-xl p-8 border border-gray-700">
             <div className="text-center mb-8">
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">
+              <h1 className="text-3xl font-bold text-white mb-2">
                 Welcome Back
               </h1>
-              <p className="text-gray-600">Sign in to your HireDesk account</p>
+              <p className="text-gray-300">Sign in to your HireDesk account</p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label
                   htmlFor="email"
-                  className="block text-sm font-medium text-gray-700 mb-2"
+                  className="block text-sm font-medium text-gray-300 mb-2"
                 >
                   Email Address
                 </label>
@@ -48,7 +48,7 @@ const Login = () => {
                   id="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                  className="w-full px-4 py-3 border border-gray-600 bg-gray-700 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors placeholder-gray-400"
                   placeholder="Enter your email"
                   required
                 />
@@ -57,7 +57,7 @@ const Login = () => {
               <div>
                 <label
                   htmlFor="password"
-                  className="block text-sm font-medium text-gray-700 mb-2"
+                  className="block text-sm font-medium text-gray-300 mb-2"
                 >
                   Password
                 </label>
@@ -66,7 +66,7 @@ const Login = () => {
                   id="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                  className="w-full px-4 py-3 border border-gray-600 bg-gray-700 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors placeholder-gray-400"
                   placeholder="Enter your password"
                   required
                 />
@@ -76,15 +76,15 @@ const Login = () => {
                 <label className="flex items-center">
                   <input
                     type="checkbox"
-                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                    className="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-500"
                   />
-                  <span className="ml-2 text-sm text-gray-600">
+                  <span className="ml-2 text-sm text-gray-300">
                     Remember me
                   </span>
                 </label>
                 <Link
                   to="/forgot-password"
-                  className="text-sm text-blue-600 hover:text-blue-700 transition-colors"
+                  className="text-sm text-blue-400 hover:text-blue-300 transition-colors"
                 >
                   Forgot password?
                 </Link>
@@ -100,11 +100,11 @@ const Login = () => {
             </form>
 
             <div className="mt-6 text-center">
-              <p className="text-gray-600">
+              <p className="text-gray-300">
                 Don't have an account?{" "}
                 <Link
                   to="/signup"
-                  className="text-blue-600 hover:text-blue-700 font-medium transition-colors"
+                  className="text-blue-400 hover:text-blue-300 font-medium transition-colors"
                 >
                   Sign up
                 </Link>
@@ -114,17 +114,17 @@ const Login = () => {
             <div className="mt-6">
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-300" />
+                  <div className="w-full border-t border-gray-600" />
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-white text-gray-500">
+                  <span className="px-2 bg-gray-800 text-gray-400">
                     Or continue with
                   </span>
                 </div>
               </div>
 
               <div className="mt-6 grid grid-cols-2 gap-3">
-                <button className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 transition-colors">
+                <button className="w-full inline-flex justify-center py-2 px-4 border border-gray-600 rounded-lg shadow-sm bg-gray-700 text-sm font-medium text-gray-300 hover:bg-gray-600 transition-colors">
                   <svg className="w-5 h-5" viewBox="0 0 24 24">
                     <path
                       fill="#4285F4"
@@ -146,7 +146,7 @@ const Login = () => {
                   <span className="ml-2">Google</span>
                 </button>
 
-                <button className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 transition-colors">
+                <button className="w-full inline-flex justify-center py-2 px-4 border border-gray-600 rounded-lg shadow-sm bg-gray-700 text-sm font-medium text-gray-300 hover:bg-gray-600 transition-colors">
                   <svg
                     className="w-5 h-5"
                     fill="currentColor"
