@@ -1,15 +1,14 @@
 @import "tailwindcss";
 
-@theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+/* Custom animations for coming soon page */
+.animate-delay-1 {
+  animation-delay: 1s;
 }
 
-html,
-body {
-  @apply bg-white dark:bg-gray-950;
+.animate-delay-2 {
+  animation-delay: 2s;
+}
 
-  @media (prefers-color-scheme: dark) {
-    color-scheme: dark;
-  }
+.animate-delay-3 {
+  animation-delay: 3s;
 }
