@@ -1,158 +1,147 @@
+import { Link } from "react-router";
 import type { Route } from "./+types/home";
+import Navbar from "../components/Navbar";
+import Footer from "~/components/Footer";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "HireDesk - Coming Soon" },
+    { title: "HireDesk - Revolutionary Recruitment Platform" },
     {
       name: "description",
       content:
-        "HireDesk - The future of recruitment is coming soon. Get ready to revolutionize your hiring process.",
+        "Transform your hiring process with HireDesk - the AI-powered recruitment platform that connects top talent with leading companies.",
     },
   ];
 }
 
 const Home = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black flex items-center justify-center relative overflow-hidden">
-      {/* Background decorative elements */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-20 left-20 w-72 h-72 bg-blue-600 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 right-20 w-96 h-96 bg-purple-600 rounded-full blur-3xl"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-indigo-600 rounded-full blur-3xl"></div>
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black">
+      <Navbar />
 
-      {/* Main content */}
-      <div className="relative z-10 text-center px-6 max-w-4xl">
-        {/* Logo/Brand */}
-        <div className="mb-12">
-          <h1 className="text-6xl md:text-8xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent mb-4">
-            HireDesk
-          </h1>
-          <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full"></div>
-        </div>
-
-        {/* Coming Soon Text */}
-        <div className="mb-12">
-          <h2 className="text-3xl md:text-5xl font-semibold text-white mb-6">
-            Coming Soon
-          </h2>
-          <p className="text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed">
-            The future of recruitment is being crafted.
-            <br />
-            Get ready to revolutionize your hiring process.
-          </p>
-        </div>
-
-        {/* Features preview */}
-        <div className="grid md:grid-cols-3 gap-8 mb-12">
-          <div className="bg-gray-800/50 backdrop-blur-sm p-6 rounded-2xl border border-gray-700/50">
-            <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center mb-4 mx-auto">
-              <svg
-                className="w-6 h-6 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+      {/* Hero Section */}
+      <section className="pt-24 pb-16 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center">
+            <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
+              Find Your Perfect
+              <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent block">
+                Career Match
+              </span>
+            </h1>
+            <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
+              Connect with top companies and talented professionals through our
+              AI-powered recruitment platform. Make hiring smarter, faster, and
+              more effective.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+              <Link
+                to="/signup"
+                className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-200 font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M13 10V3L4 14h7v7l9-11h-7z"
-                />
-              </svg>
+                Get Started Free
+              </Link>
             </div>
-            <h3 className="text-lg font-semibold text-white mb-2">
-              Lightning Fast
-            </h3>
-            <p className="text-gray-400 text-sm">
-              Streamlined hiring process that saves time and resources
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-800">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+              Why Choose HireDesk?
+            </h2>
+            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+              Our platform combines cutting-edge technology with human insight
+              to revolutionize recruitment.
             </p>
           </div>
 
-          <div className="bg-gray-800/50 backdrop-blur-sm p-6 rounded-2xl border border-gray-700/50">
-            <div className="w-12 h-12 bg-purple-600 rounded-lg flex items-center justify-center mb-4 mx-auto">
-              <svg
-                className="w-6 h-6 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Feature 1 */}
+            <div className="text-center p-6 rounded-2xl hover:shadow-lg transition-shadow duration-300">
+              <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <svg
+                  className="w-8 h-8 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 10V3L4 14h7v7l9-11h-7z"
+                  />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold text-white mb-2">
+                AI-Powered Matching
+              </h3>
+              <p className="text-gray-300">
+                Our advanced algorithms match candidates with perfect job
+                opportunities based on skills, experience, and culture fit.
+              </p>
             </div>
-            <h3 className="text-lg font-semibold text-white mb-2">
-              Smart Matching
-            </h3>
-            <p className="text-gray-400 text-sm">
-              AI-powered candidate matching for perfect fits
-            </p>
-          </div>
 
-          <div className="bg-gray-800/50 backdrop-blur-sm p-6 rounded-2xl border border-gray-700/50">
-            <div className="w-12 h-12 bg-indigo-600 rounded-lg flex items-center justify-center mb-4 mx-auto">
-              <svg
-                className="w-6 h-6 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                />
-              </svg>
+            {/* Feature 2 */}
+            <div className="text-center p-6 rounded-2xl hover:shadow-lg transition-shadow duration-300">
+              <div className="w-16 h-16 bg-gradient-to-r from-green-600 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <svg
+                  className="w-8 h-8 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold text-white mb-2">
+                Faster Hiring
+              </h3>
+              <p className="text-gray-300">
+                Reduce time-to-hire by up to 70% with streamlined processes and
+                automated candidate screening.
+              </p>
             </div>
-            <h3 className="text-lg font-semibold text-white mb-2">
-              Team Collaboration
-            </h3>
-            <p className="text-gray-400 text-sm">
-              Seamless collaboration tools for hiring teams
-            </p>
+
+            {/* Feature 3 */}
+            <div className="text-center p-6 rounded-2xl hover:shadow-lg transition-shadow duration-300">
+              <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <svg
+                  className="w-8 h-8 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold text-white mb-2">
+                Quality Candidates
+              </h3>
+              <p className="text-gray-300">
+                Access a curated pool of pre-screened, high-quality candidates
+                ready to make an impact.
+              </p>
+            </div>
           </div>
         </div>
+      </section>
 
-        {/* Notify me section */}
-        <div className="bg-gray-800/30 backdrop-blur-sm p-8 rounded-2xl border border-gray-700/50 mb-8">
-          <h3 className="text-2xl font-semibold text-white mb-4">
-            Get Notified When We Launch
-          </h3>
-          <p className="text-gray-300 mb-6">
-            Be the first to experience the future of hiring
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-            <input
-              type="email"
-              placeholder="Enter your email address"
-              className="flex-1 px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-            <button className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 transform hover:scale-105">
-              Notify Me
-            </button>
-          </div>
-        </div>
-
-        {/* Footer */}
-        <div className="text-center">
-          <p className="text-gray-400 text-sm">
-            © 2025 HireDesk. Revolutionizing recruitment, one hire at a time.
-          </p>
-        </div>
-      </div>
-
-      {/* Animated particles */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute animate-pulse top-1/4 left-1/4 w-2 h-2 bg-blue-400 rounded-full opacity-60"></div>
-        <div className="absolute animate-pulse animate-delay-1 top-3/4 left-3/4 w-1 h-1 bg-purple-400 rounded-full opacity-40"></div>
-        <div className="absolute animate-pulse animate-delay-2 top-1/2 right-1/4 w-2 h-2 bg-indigo-400 rounded-full opacity-50"></div>
-        <div className="absolute animate-pulse animate-delay-3 bottom-1/4 left-1/2 w-1 h-1 bg-blue-300 rounded-full opacity-70"></div>
-      </div>
+      <Footer />
     </div>
   );
 };
