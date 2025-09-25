@@ -95,13 +95,8 @@ const SignUp = () => {
 
       await register(userData);
       navigate("/");
-    } catch (error: any) {
-      // Error is already handled by AuthContext with toast notification
-      // Don't navigate if registration failed
-      console.error("Registration failed:", error);
-
-      // If the error is about email already existing, we could add specific handling here
-      // but the AuthContext already shows the appropriate toast message
+    } catch (error) {
+      throw error;
     }
   };
 

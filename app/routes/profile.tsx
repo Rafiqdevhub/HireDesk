@@ -120,7 +120,6 @@ const Profile = () => {
       <div className="pt-24 pb-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl mx-auto">
           <div className="bg-gray-800 rounded-2xl shadow-xl border border-gray-700">
-            {/* Header */}
             <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-t-2xl p-6">
               <div className="flex items-center space-x-4">
                 <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
@@ -149,9 +148,7 @@ const Profile = () => {
               </div>
             </div>
 
-            {/* Profile Content */}
             <div className="p-6 space-y-6">
-              {/* Personal Information */}
               <div>
                 <h2 className="text-xl font-semibold text-white mb-4">
                   Personal Information
@@ -194,7 +191,6 @@ const Profile = () => {
                 </div>
               </div>
 
-              {/* Statistics */}
               <div>
                 <h2 className="text-xl font-semibold text-white mb-4">
                   Activity Statistics
@@ -221,7 +217,6 @@ const Profile = () => {
                 </div>
               </div>
 
-              {/* Actions */}
               <div className="border-t border-gray-600 pt-6">
                 <h2 className="text-xl font-semibold text-white mb-4">
                   Account Actions
