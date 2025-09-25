@@ -305,11 +305,6 @@ export const authService = {
     return !!localStorage.getItem("accessToken");
   },
 
-  // Get stored access token
-  getAccessToken(): string | null {
-    return localStorage.getItem("accessToken");
-  },
-
   // Refresh access token using HttpOnly cookie
   async refreshToken(): Promise<{ accessToken: string; user: User }> {
     try {
