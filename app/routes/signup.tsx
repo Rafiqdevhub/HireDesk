@@ -85,15 +85,24 @@ const SignUp = () => {
     );
 
   const onSubmit = async (formData: SignUpFormData) => {
-    const userData = {
-      name: formData.name,
-      email: formData.email,
-      password: formData.password,
-      company_name: formData.company_name,
-    };
+    try {
+      const userData = {
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        company_name: formData.company_name,
+      };
 
-    await register(userData);
-    navigate("/");
+      await register(userData);
+      navigate("/");
+    } catch (error: any) {
+      // Error is already handled by AuthContext with toast notification
+      // Don't navigate if registration failed
+      console.error("Registration failed:", error);
+
+      // If the error is about email already existing, we could add specific handling here
+      // but the AuthContext already shows the appropriate toast message
+    }
   };
 
   return (
