@@ -17,7 +17,6 @@ const api = axios.create({
   withCredentials: true,
 });
 
-// Create a separate axios instance for auth operations (login/register) without interceptors
 const authApi = axios.create({
   baseURL: API_BASE_URL,
   withCredentials: true,
