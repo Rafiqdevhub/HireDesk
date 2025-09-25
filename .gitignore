@@ -5,6 +5,11 @@
 /.react-router/
 /build/
 
+# Environment Variables
+.env
+.env.local
+.env.production
+
 # Copilot instructions
 copilot-instructions.md
 .github/copilot-instructions.md

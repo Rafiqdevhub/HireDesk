@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 import type { Route } from "./+types/home";
-import Navbar from "../components/Navbar";
-import Footer from "~/components/Footer";
+import Navbar from "../components/layout/Navbar";
+import Footer from "~/components/layout/Footer";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -18,8 +18,6 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black">
       <Navbar />
-
-      {/* Hero Section */}
       <section className="pt-24 pb-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center">
@@ -46,7 +44,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Features Section */}
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-800">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
@@ -60,7 +57,6 @@ const Home = () => {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {/* Feature 1 */}
             <div className="text-center p-6 rounded-2xl hover:shadow-lg transition-shadow duration-300">
               <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
                 <svg
@@ -86,7 +82,6 @@ const Home = () => {
               </p>
             </div>
 
-            {/* Feature 2 */}
             <div className="text-center p-6 rounded-2xl hover:shadow-lg transition-shadow duration-300">
               <div className="w-16 h-16 bg-gradient-to-r from-green-600 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
                 <svg
@@ -112,7 +107,6 @@ const Home = () => {
               </p>
             </div>
 
-            {/* Feature 3 */}
             <div className="text-center p-6 rounded-2xl hover:shadow-lg transition-shadow duration-300">
               <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
                 <svg
@@ -140,7 +134,6 @@ const Home = () => {
           </div>
         </div>
       </section>
-
       <Footer />
     </div>
   );
