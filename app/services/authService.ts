@@ -23,16 +23,13 @@ const authApi = axios.create({
 
 // Helper function to extract error messages from various error formats
 const extractErrorMessage = (error: any, defaultMessage: string): string => {
-  // Check if it's an axios error with response
   if (error.response?.data) {
     const data = error.response.data;
 
-    // Backend AuthResponse format
     if (data.message) {
       return data.message;
     }
 
-    // Backend error field
     if (data.error) {
       return data.error;
     }
@@ -48,17 +45,14 @@ const extractErrorMessage = (error: any, defaultMessage: string): string => {
     }
   }
 
-  // Direct error message
   if (error.message && error.message !== "Network Error") {
     return error.message;
   }
 
-  // Network or connection errors
   if (error.code === "NETWORK_ERROR" || error.message === "Network Error") {
     return "Unable to connect to the server. Please check your internet connection.";
   }
 
-  // Default fallback
   return defaultMessage;
 };
 
@@ -109,7 +103,6 @@ api.interceptors.response.use(
         originalRequest.headers.Authorization = `Bearer ${accessToken}`;
         return api.request(originalRequest);
       } catch (refreshError) {
-        // Only redirect if we're not already on the login page
         localStorage.removeItem("accessToken");
         if (!window.location.pathname.includes("/login")) {
           window.location.href = "/login";
@@ -122,7 +115,6 @@ api.interceptors.response.use(
   }
 );
 
-// Backend API Response Types (matching copilot-instructions.md)
 export interface User {
   id: string;
   name: string;
@@ -148,12 +140,11 @@ export interface AuthResponse {
   error?: string;
 }
 
-// Request Types (matching backend validation)
 export interface RegisterRequest {
   name: string;
   email: string;
   password: string;
-  company_name: string; // Required as per backend specification
+  company_name: string;
 }
 
 export interface LoginRequest {
@@ -166,26 +157,19 @@ export interface ResetPasswordRequest {
   newPassword: string;
 }
 
-export const authService = {
-  // Debug method to check current auth state
-  debug(): void {
-    console.log("=== Auth Debug Info ===");
-    console.log("API Base URL:", API_BASE_URL);
-    console.log("Access Token:", localStorage.getItem("accessToken"));
-    console.log("With Credentials:", api.defaults.withCredentials);
-    console.log("Current URL:", window.location.href);
-    console.log("=====================");
-  },
+export interface ChangePasswordRequest {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}
 
-  // Register new user (company_name is required as per backend spec)
+export const authService = {
   async register(
     userData: RegisterRequest
   ): Promise<{ accessToken: string; user: User }> {
     try {
-      // Clear any existing tokens before registration to prevent conflicts
       localStorage.removeItem("accessToken");
 
-      // Use authApi to avoid request interceptors that add Authorization headers
       const response = await authApi.post<AuthResponse>(
         "/auth/register",
         userData
@@ -209,22 +193,12 @@ export const authService = {
     }
   },
 
-  // Login user
   async login(
     credentials: LoginRequest
   ): Promise<{ accessToken: string; user: User }> {
     try {
-      // Clear any existing tokens before login to prevent conflicts
       localStorage.removeItem("accessToken");
 
-      // Debug info
-      console.log("Attempting login to:", `${API_BASE_URL}/auth/login`);
-      console.log("Credentials:", {
-        email: credentials.email,
-        password: "***",
-      });
-
-      // Use authApi to avoid request interceptors that add Authorization headers
       const response = await authApi.post<AuthResponse>(
         "/auth/login",
         credentials
@@ -248,19 +222,16 @@ export const authService = {
     }
   },
 
-  // Logout user (clears HttpOnly cookie and removes token)
   async logout(): Promise<void> {
     try {
       await api.post<AuthResponse>("/auth/logout");
     } catch (error) {
-      // Even if logout request fails, clear local token
       console.warn("Logout request failed, but clearing local token");
     } finally {
       localStorage.removeItem("accessToken");
     }
   },
 
-  // Get current user profile
   async getProfile(): Promise<ProfileResponse> {
     try {
       const response = await api.get<AuthResponse>("/auth/profile");
@@ -279,7 +250,6 @@ export const authService = {
     }
   },
 
-  // Reset user password
   async resetPassword(resetData: ResetPasswordRequest): Promise<void> {
     try {
       const response = await api.post<AuthResponse>(
@@ -299,7 +269,25 @@ export const authService = {
     }
   },
 
-  // Check if user is authenticated
+  async changePassword(changeData: ChangePasswordRequest): Promise<void> {
+    try {
+      const response = await api.post<AuthResponse>(
+        "/auth/change-password",
+        changeData
+      );
+
+      if (!response.data.success) {
+        throw new Error(response.data.message || "Password change failed");
+      }
+    } catch (error: any) {
+      const errorMessage = extractErrorMessage(
+        error,
+        "Password change failed. Please try again."
+      );
+      throw new Error(errorMessage);
+    }
+  },
+
   isAuthenticated(): boolean {
     return !!localStorage.getItem("accessToken");
   },
