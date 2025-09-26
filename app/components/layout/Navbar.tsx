@@ -39,21 +39,14 @@ const Navbar = () => {
             </span>
           </Link>
 
-          <div className="hidden md:flex items-center space-x-8">
-            <Link
-              to="/about"
-              className="text-gray-300 hover:text-blue-400 transition-colors duration-200 font-medium"
-            >
-              About
-            </Link>
-          </div>
+          <div className="hidden md:flex items-center space-x-8"></div>
 
           <div className="hidden md:flex items-center space-x-4">
             {isAuthenticated ? (
               <div className="relative">
                 <button
                   onClick={toggleUserMenu}
-                  className="flex items-center space-x-2 text-gray-300 hover:text-blue-400 transition-colors duration-200 bg-gray-800/50 px-3 py-2 rounded-lg"
+                  className="flex items-center space-x-2 text-gray-300 hover:text-blue-400 transition-colors duration-200 bg-gray-800/50 px-3 py-2 rounded-lg cursor-pointer"
                 >
                   <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center">
                     <span className="text-white text-sm font-medium">
@@ -102,7 +95,7 @@ const Navbar = () => {
                     </Link>
                     <button
                       onClick={handleLogout}
-                      className="block w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-gray-700 transition-colors"
+                      className="block w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-gray-700 transition-colors cursor-pointer"
                     >
                       Sign out
                     </button>
@@ -162,14 +155,6 @@ const Navbar = () => {
         {isMenuOpen && (
           <div className="md:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 bg-gray-800/90 backdrop-blur-md rounded-lg mt-2 shadow-lg">
-              <Link
-                to="/about"
-                className="block px-3 py-2 text-gray-300 hover:text-blue-400 hover:bg-gray-700 rounded-md transition-colors duration-200 font-medium"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                About
-              </Link>
-
               <div className="border-t border-gray-600 pt-4">
                 {isAuthenticated ? (
                   <>
