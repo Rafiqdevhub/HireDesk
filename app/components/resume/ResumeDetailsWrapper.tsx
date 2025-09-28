@@ -1,12 +1,30 @@
 import React from "react";
 
 interface ResumeData {
+  personalInfo?: {
+    name?: string;
+    email?: string;
+    phone?: string;
+    location?: string;
+  };
+  workExperience?: Array<{
+    title?: string;
+    company?: string;
+    duration?: string;
+    description?: string[];
+  }>;
+  education?: Array<{
+    degree?: string;
+    institution?: string;
+    year?: string;
+    details?: string[];
+  }>;
+  skills?: string[];
+  highlights?: string[];
   name?: string;
   email?: string;
   phone?: string;
-  experience?: string;
-  skills?: string[];
-  education?: string;
+  experience?: string | any[] | any;
   summary?: string;
   [key: string]: any;
 }
@@ -39,31 +57,73 @@ const ResumeDetailsWrapper: React.FC<ResumeDetailsWrapperProps> = ({
       </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {resumeData.name && (
+        {(resumeData.personalInfo?.name || resumeData.name) && (
           <div className="bg-slate-700/50 rounded-lg p-4">
             <h3 className="font-medium text-gray-200 mb-2">Name</h3>
-            <p className="text-gray-300">{resumeData.name}</p>
+            <p className="text-gray-300">
+              {resumeData.personalInfo?.name || resumeData.name}
+            </p>
           </div>
         )}
 
-        {resumeData.email && (
+        {(resumeData.personalInfo?.email || resumeData.email) && (
           <div className="bg-slate-700/50 rounded-lg p-4">
             <h3 className="font-medium text-gray-200 mb-2">Email</h3>
-            <p className="text-gray-300">{resumeData.email}</p>
+            <p className="text-gray-300">
+              {resumeData.personalInfo?.email || resumeData.email}
+            </p>
           </div>
         )}
 
-        {resumeData.phone && (
+        {(resumeData.personalInfo?.phone || resumeData.phone) && (
           <div className="bg-slate-700/50 rounded-lg p-4">
             <h3 className="font-medium text-gray-200 mb-2">Phone</h3>
-            <p className="text-gray-300">{resumeData.phone}</p>
+            <p className="text-gray-300">
+              {resumeData.personalInfo?.phone || resumeData.phone}
+            </p>
           </div>
         )}
 
-        {resumeData.experience && (
+        {resumeData.personalInfo?.location && (
           <div className="bg-slate-700/50 rounded-lg p-4">
-            <h3 className="font-medium text-gray-200 mb-2">Experience</h3>
-            <p className="text-gray-300">{resumeData.experience}</p>
+            <h3 className="font-medium text-gray-200 mb-2">Location</h3>
+            <p className="text-gray-300">{resumeData.personalInfo.location}</p>
+          </div>
+        )}
+
+        {resumeData.workExperience && resumeData.workExperience.length > 0 && (
+          <div className="bg-slate-700/50 rounded-lg p-4 md:col-span-2">
+            <h3 className="font-medium text-gray-200 mb-3">Work Experience</h3>
+            <div className="space-y-4">
+              {resumeData.workExperience.map((exp, index) => (
+                <div
+                  key={index}
+                  className="border-l-2 border-indigo-500/50 pl-4 pb-4 last:pb-0"
+                >
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2">
+                    <div>
+                      <p className="text-gray-300 font-medium">{exp.title}</p>
+                      <p className="text-gray-400 text-sm">{exp.company}</p>
+                    </div>
+                    <p className="text-gray-500 text-xs mt-1 sm:mt-0">
+                      {exp.duration}
+                    </p>
+                  </div>
+                  {exp.description &&
+                    Array.isArray(exp.description) &&
+                    exp.description.length > 0 && (
+                      <ul className="text-gray-400 text-sm space-y-1 mt-2">
+                        {exp.description.map((desc, descIndex) => (
+                          <li key={descIndex} className="flex items-start">
+                            <span className="text-indigo-400 mr-2">•</span>
+                            <span>{desc}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                </div>
+              ))}
+            </div>
           </div>
         )}
 
@@ -83,10 +143,106 @@ const ResumeDetailsWrapper: React.FC<ResumeDetailsWrapperProps> = ({
           </div>
         )}
 
-        {resumeData.education && (
+        {resumeData.education &&
+          Array.isArray(resumeData.education) &&
+          resumeData.education.length > 0 && (
+            <div className="bg-slate-700/50 rounded-lg p-4 md:col-span-2">
+              <h3 className="font-medium text-gray-200 mb-3">Education</h3>
+              <div className="space-y-4">
+                {resumeData.education.map((edu, index) => (
+                  <div
+                    key={index}
+                    className="border-l-2 border-indigo-500/50 pl-4 pb-4 last:pb-0"
+                  >
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2">
+                      <div>
+                        <p className="text-gray-300 font-medium">
+                          {edu.degree}
+                        </p>
+                        <p className="text-gray-400 text-sm">
+                          {edu.institution}
+                        </p>
+                      </div>
+                      <p className="text-gray-500 text-xs mt-1 sm:mt-0">
+                        {edu.year}
+                      </p>
+                    </div>
+                    {edu.details &&
+                      Array.isArray(edu.details) &&
+                      edu.details.length > 0 && (
+                        <ul className="text-gray-400 text-sm space-y-1 mt-2">
+                          {edu.details.map((detail, detailIndex) => (
+                            <li key={detailIndex} className="flex items-start">
+                              <span className="text-indigo-400 mr-2">•</span>
+                              <span>{detail}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+        {resumeData.highlights && resumeData.highlights.length > 0 && (
           <div className="bg-slate-700/50 rounded-lg p-4 md:col-span-2">
-            <h3 className="font-medium text-gray-200 mb-2">Education</h3>
-            <p className="text-gray-300">{resumeData.education}</p>
+            <h3 className="font-medium text-gray-200 mb-2">Highlights</h3>
+            <ul className="text-gray-300 space-y-2">
+              {resumeData.highlights.map((highlight, index) => (
+                <li key={index} className="flex items-start">
+                  <span className="text-indigo-400 mr-2 mt-0.5">•</span>
+                  <span>{highlight}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {resumeData.experience && !resumeData.workExperience && (
+          <div className="bg-slate-700/50 rounded-lg p-4">
+            <h3 className="font-medium text-gray-200 mb-2">Experience</h3>
+            {typeof resumeData.experience === "string" ? (
+              <p className="text-gray-300">{resumeData.experience}</p>
+            ) : Array.isArray(resumeData.experience) ? (
+              <div className="space-y-3">
+                {resumeData.experience.map((exp: any, index: number) => (
+                  <div
+                    key={index}
+                    className="border-l-2 border-indigo-500/50 pl-3"
+                  >
+                    <p className="text-gray-300 font-medium">{exp.position}</p>
+                    <p className="text-gray-400 text-sm">{exp.company}</p>
+                    <p className="text-gray-500 text-xs">{exp.duration}</p>
+                    {exp.description && (
+                      <p className="text-gray-400 text-sm mt-1">
+                        {exp.description}
+                      </p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            ) : resumeData.experience &&
+              typeof resumeData.experience === "object" ? (
+              <div className="border-l-2 border-indigo-500/50 pl-3">
+                <p className="text-gray-300 font-medium">
+                  {(resumeData.experience as any).position}
+                </p>
+                <p className="text-gray-400 text-sm">
+                  {(resumeData.experience as any).company}
+                </p>
+                <p className="text-gray-500 text-xs">
+                  {(resumeData.experience as any).duration}
+                </p>
+                {(resumeData.experience as any).description && (
+                  <p className="text-gray-400 text-sm mt-1">
+                    {(resumeData.experience as any).description}
+                  </p>
+                )}
+              </div>
+            ) : (
+              <p className="text-gray-300">{String(resumeData.experience)}</p>
+            )}
           </div>
         )}
 

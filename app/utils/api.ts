@@ -1,4 +1,6 @@
 export const API_ENDPOINTS = {
-  HIREDESK_ANALYZE: "http://localhost:3001/api/analyze-resume",
-  GENERATE_QUESTIONS: "http://localhost:3001/api/generate-questions",
+  // HIREDESK_ANALYZE: "http://localhost:8000/api/hiredesk-analyze",
+  HIREDESK_ANALYZE:
+    "https://hr-resume-analyzer-backend.vercel.app/api/hiredesk-analyze",
+  GENERATE_QUESTIONS: "http://localhost:8000/api/generate-questions",
 };
