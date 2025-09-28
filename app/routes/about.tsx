@@ -516,33 +516,6 @@ const About = () => {
           </div>
         </div>
       </section>
-
-      {/* CTA Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Start Saving Time Today
-          </h2>
-          <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-            Join thousands of recruiters who have transformed their hiring
-            workflow. Stop wasting time on manual processes.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link
-              to="/dashboard"
-              className="bg-blue-600 text-white px-8 py-4 rounded-xl hover:bg-blue-700 transition-all duration-200 font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-            >
-              Try HireDesk
-            </Link>
-            <Link
-              to="/contact"
-              className="text-gray-300 hover:text-blue-400 transition-colors duration-200 font-semibold text-lg border border-gray-600 px-8 py-4 rounded-xl hover:border-blue-400"
-            >
-              Schedule Demo →
-            </Link>
-          </div>
-        </div>
-      </section>
     </div>
   );
 };
