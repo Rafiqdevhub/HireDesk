@@ -51,26 +51,6 @@ services:
     networks:
       - hiredesk-network
 
-  # Mock Backend Service (for development)
-  mock-backend:
-    image: node:20-alpine
-    container_name: hiredesk-mock-backend
-    ports:
-      - "5000:5000"
-    volumes:
-      - ./mock-backend:/app
-    working_dir: /app
-    command: npm start
-    environment:
-      - NODE_ENV=development
-      - PORT=5000
-    profiles:
-      - dev
-    networks:
-      - hiredesk-network
-    depends_on:
-      - hiredesk-dev
-
   # Redis for caching (optional)
   redis:
     image: redis:7-alpine
