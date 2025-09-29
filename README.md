@@ -228,39 +228,287 @@ HireDesk integrates with AI-powered backend services for:
 
 ## 🚀 Deployment
 
-### Docker Deployment
+### 🐳 Docker Hub Image
 
-1. **Build the Docker image**
+HireDesk is available as a pre-built Docker image on Docker Hub, making deployment incredibly simple.
 
-   ```bash
-   docker build -t hiredesk .
-   ```
+#### Pull the Official Image
 
-2. **Run the container**
+```bash
+# Pull the latest version
+docker pull rafiq9323/hiredesk:latest
 
-   ```bash
-   docker run -p 3000:3000 hiredesk
-   ```
+# Or pull a specific version/tag
+docker pull rafiq9323/hiredesk:master
+```
 
-### Vercel Deployment
+#### Run with Docker Hub Image
 
-1. **Connect your repository** to Vercel
-2. **Configure environment variables** in Vercel dashboard
-3. **Deploy automatically** on git push to main branch
+```bash
+# Run the container
+docker run -d \
+  --name hiredesk \
+  -p 3000:3000 \
+  -e NODE_ENV=production \
+  -e VITE_API_URL=https://jobpsych-payment.vercel.app/api \
+  rafiq9323/hiredesk:latest
 
-### Manual Deployment
+# Access at http://localhost:3000
+```
 
-1. **Build for production**
+### 🐙 Docker Compose Setup
 
-   ```bash
-   npm run build
-   ```
+For a complete development or production environment, use Docker Compose with multiple services.
 
-2. **Serve the build**
+#### Quick Start with Docker Compose
 
-   ```bash
-   npm run start
-   ```
+```bash
+# Clone the repository
+git clone https://github.com/Rafiqdevhub/HireDesk.git
+cd hiredesk
+
+# Start all services
+docker compose up -d
+
+# View logs
+docker compose logs -f
+
+# Stop all services
+docker compose down
+```
+
+#### Available Docker Compose Profiles
+
+The `docker-compose.yml` includes multiple profiles for different environments:
+
+##### Production Profile (Default)
+
+```bash
+# Start production environment with Nginx reverse proxy
+docker compose --profile prod up -d
+
+# Includes: hiredesk (app), nginx (reverse proxy)
+```
+
+##### Development Profile
+
+```bash
+# Start development environment with hot reload
+docker compose --profile dev up -d
+
+# Includes: hiredesk-dev (hot reload), mock-backend (API simulation)
+```
+
+##### Full Profile (Complete Stack)
+
+```bash
+# Start complete environment with all services
+docker compose --profile full up -d
+
+# Includes: hiredesk, redis (caching), postgres (database)
+```
+
+#### Docker Compose Services Overview
+
+| Service        | Profile | Purpose                       | Port   |
+| -------------- | ------- | ----------------------------- | ------ |
+| `hiredesk`     | prod    | Production React app with SSR | 3000   |
+| `hiredesk-dev` | dev     | Development with hot reload   | 3001   |
+| `mock-backend` | dev     | Mock API for development      | 5000   |
+| `nginx`        | prod    | Reverse proxy & load balancer | 80/443 |
+| `redis`        | full    | Caching layer                 | 6379   |
+| `postgres`     | full    | Database (future features)    | 5432   |
+
+#### Environment Variables for Docker Compose
+
+Create a `.env` file or set environment variables:
+
+```env
+# Application Configuration
+NODE_ENV=production
+VITE_API_URL=https://jobpsych-payment.vercel.app/api
+VITE_APP_NAME=HireDesk
+VITE_APP_VERSION=1.0.0
+
+# Database (for full profile)
+POSTGRES_DB=hiredesk
+POSTGRES_USER=hiredesk_user
+POSTGRES_PASSWORD=your_secure_password
+
+# Redis (for full profile)
+REDIS_PASSWORD=your_redis_password
+```
+
+#### Docker Compose Commands
+
+```bash
+# Build and start all services
+docker compose up --build
+
+# Start in background
+docker compose up -d
+
+# View service status
+docker compose ps
+
+# View logs for specific service
+docker compose logs hiredesk
+
+# Scale services (if needed)
+docker compose up -d --scale hiredesk=3
+
+# Clean up
+docker compose down --volumes --remove-orphans
+```
+
+### 🔄 CI/CD Pipeline
+
+HireDesk uses GitHub Actions for automated building and deployment.
+
+#### Automated Docker Builds
+
+Every push to `master` or `main` branch automatically:
+
+1. **Builds** the Docker image using multi-stage Dockerfile
+2. **Tags** the image with multiple strategies:
+   - `latest` - Latest stable version
+   - `master` - Branch-specific tag
+   - `master-<commit-sha>` - Unique commit tags
+3. **Pushes** to Docker Hub (`rafiq9323/hiredesk`)
+4. **Caches** layers for faster subsequent builds
+
+#### GitHub Actions Workflow
+
+The CI/CD pipeline is defined in `.github/workflows/docker-push-image.yml`:
+
+```yaml
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+      - name: Set up Docker Buildx
+      - name: Login to Docker Hub
+      - name: Build and push image
+```
+
+#### Required GitHub Secrets
+
+Set these secrets in your repository settings:
+
+- `DOCKER_USERNAME`: `rafiq9323`
+- `DOCKER_PASSWORD`: Your Docker Hub Personal Access Token
+
+#### Pipeline Benefits
+
+- **Automated Deployment**: No manual intervention required
+- **Version Control**: Proper tagging for rollbacks
+- **Security**: Automated security scanning
+- **Performance**: Layer caching for faster builds
+- **Multi-Platform**: Ready for ARM64/x86_64 builds
+
+### 🏭 Build Your Own Docker Image
+
+If you want to build the image locally:
+
+```bash
+# Build from source
+docker build -t hiredesk .
+
+# Build with specific Dockerfile
+docker build -f Dockerfile.dev -t hiredesk-dev .
+
+# Build for multiple platforms
+docker buildx build --platform linux/amd64,linux/arm64 -t hiredesk .
+```
+
+### 🌐 Production Deployment Options
+
+#### Option 1: Docker Hub + Docker Compose (Recommended)
+
+```bash
+# Use pre-built image
+docker compose up -d
+```
+
+#### Option 2: Kubernetes Deployment
+
+```bash
+# Use the Docker Hub image in your K8s manifests
+kubectl apply -f k8s/
+```
+
+#### Option 3: Cloud Platforms
+
+- **Railway**: Connect GitHub repo, auto-deploys
+- **Render**: Use Docker image from Docker Hub
+- **Fly.io**: Deploy from Docker Hub image
+- **AWS ECS**: Use Docker Hub image in task definitions
+
+### 🔍 Monitoring & Troubleshooting
+
+#### Health Checks
+
+```bash
+# Check container health
+docker ps
+
+# View application logs
+docker compose logs hiredesk
+
+# Test application health
+curl http://localhost:3000
+```
+
+#### Common Issues
+
+**Port already in use:**
+
+```bash
+# Find process using port 3000
+netstat -tulpn | grep :3000
+
+# Kill the process or change port mapping
+docker run -p 3001:3000 rafiq9323/hiredesk:latest
+```
+
+**Permission issues:**
+
+```bash
+# Run as non-root user
+docker run --user node rafiq9323/hiredesk:latest
+```
+
+**Memory issues:**
+
+```bash
+# Limit memory usage
+docker run -m 512m rafiq9323/hiredesk:latest
+```
+
+### 📊 Resource Requirements
+
+- **CPU**: 0.5 vCPU minimum, 1 vCPU recommended
+- **Memory**: 512MB minimum, 1GB recommended
+- **Storage**: 200MB for application, plus logs
+- **Network**: Standard HTTP/HTTPS ports (80/443)
+
+### 🔒 Security Best Practices
+
+- Use Docker Hub images from trusted sources
+- Regularly update base images
+- Scan images for vulnerabilities
+- Use secrets management for sensitive data
+- Implement proper network segmentation
+- Enable HTTPS in production
 
 ## 🔐 Authentication
 
