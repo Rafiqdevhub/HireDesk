@@ -188,18 +188,12 @@ const Login = () => {
                       Remember me
                     </span>
                   </label>
-                  <Link
-                    to="/forgot-password"
-                    className="text-sm text-blue-400 hover:text-blue-300 transition-colors"
-                  >
-                    Forgot password?
-                  </Link>
                 </div>
 
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 font-medium disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-[1.02] active:scale-[0.98]"
+                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 font-medium disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
                 >
                   {isLoading ? (
                     <div className="flex items-center justify-center">
