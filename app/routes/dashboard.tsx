@@ -25,7 +25,6 @@ export function meta({}: Route.MetaArgs) {
 
 const Dashboard = () => {
   const { user } = useAuth();
-
   const [currentFile, setCurrentFile] = useState<File | null>(null);
   const [targetRole, setTargetRole] = useState("");
   const [jobDescription, setJobDescription] = useState("");
@@ -33,7 +32,14 @@ const Dashboard = () => {
   const [resumeData, setResumeData] = useState<any>(null);
   const [fitStatus, setFitStatus] = useState("");
   const [reasoning, setReasoning] = useState("");
-  const [roleRecommendations, setRoleRecommendations] = useState<any[]>([]);
+  const [roleRecommendations, setRoleRecommendationsState] = useState<any[]>(
+    []
+  );
+
+  const setRoleRecommendations = (value: any[]) => {
+    setRoleRecommendationsState(value);
+    localStorage.setItem("hiredesk_roleRecommendations", JSON.stringify(value));
+  };
   const [questions, setQuestions] = useState([]);
   const [error, setError] = useState<{
     show: boolean;
@@ -54,7 +60,93 @@ const Dashboard = () => {
     "success" | "error" | "warning" | "info"
   >("success");
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+  const [dataLoadedFromStorage, setDataLoadedFromStorage] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const loadPersistedData = () => {
+      try {
+        const savedTargetRole = localStorage.getItem("hiredesk_targetRole");
+        const savedJobDescription = localStorage.getItem(
+          "hiredesk_jobDescription"
+        );
+
+        if (savedTargetRole) setTargetRole(savedTargetRole);
+        if (savedJobDescription) setJobDescription(savedJobDescription);
+
+        const savedResumeData = localStorage.getItem("hiredesk_resumeData");
+        const savedFitStatus = localStorage.getItem("hiredesk_fitStatus");
+        const savedReasoning = localStorage.getItem("hiredesk_reasoning");
+        const savedRoleRecommendations = localStorage.getItem(
+          "hiredesk_roleRecommendations"
+        );
+        const savedQuestions = localStorage.getItem("hiredesk_questions");
+
+        if (savedResumeData) {
+          setResumeData(JSON.parse(savedResumeData));
+        }
+        if (savedFitStatus) setFitStatus(savedFitStatus);
+        if (savedReasoning) setReasoning(savedReasoning);
+        if (savedRoleRecommendations) {
+          const parsed = JSON.parse(savedRoleRecommendations);
+          setRoleRecommendations(parsed);
+        }
+        if (savedQuestions) {
+          setQuestions(JSON.parse(savedQuestions));
+        }
+
+        if (
+          savedResumeData ||
+          savedFitStatus ||
+          savedReasoning ||
+          savedRoleRecommendations ||
+          savedQuestions
+        ) {
+          setDataLoadedFromStorage(true);
+        }
+      } catch (error) {
+        console.warn("Failed to load persisted data:", error);
+        clearPersistedData();
+      }
+    };
+
+    loadPersistedData();
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("hiredesk_targetRole", targetRole);
+  }, [targetRole]);
+
+  useEffect(() => {
+    localStorage.setItem("hiredesk_jobDescription", jobDescription);
+  }, [jobDescription]);
+
+  useEffect(() => {
+    if (resumeData) {
+      localStorage.setItem("hiredesk_resumeData", JSON.stringify(resumeData));
+    }
+  }, [resumeData]);
+
+  useEffect(() => {
+    localStorage.setItem("hiredesk_fitStatus", fitStatus);
+  }, [fitStatus]);
+
+  useEffect(() => {
+    localStorage.setItem("hiredesk_reasoning", reasoning);
+  }, [reasoning]);
+
+  useEffect(() => {
+    localStorage.setItem("hiredesk_questions", JSON.stringify(questions));
+  }, [questions]);
+
+  const clearPersistedData = () => {
+    localStorage.removeItem("hiredesk_resumeData");
+    localStorage.removeItem("hiredesk_fitStatus");
+    localStorage.removeItem("hiredesk_reasoning");
+    localStorage.removeItem("hiredesk_roleRecommendations");
+    localStorage.removeItem("hiredesk_questions");
+    localStorage.removeItem("hiredesk_expandedCategories");
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -76,6 +168,14 @@ const Dashboard = () => {
   }, [showProfileDropdown]);
 
   const handleFileUpload = async (file: File) => {
+    clearPersistedData();
+    setResumeData(null);
+    setFitStatus("");
+    setReasoning("");
+    setRoleRecommendations([]);
+    setQuestions([]);
+    setDataLoadedFromStorage(false);
+
     setIsLoading(true);
     setError({
       show: false,
@@ -245,9 +345,14 @@ const Dashboard = () => {
   };
 
   const handleReset = () => {
+    clearPersistedData();
     setResumeData(null);
     setQuestions([]);
     setCurrentFile(null);
+    setFitStatus("");
+    setReasoning("");
+    setRoleRecommendations([]);
+    setDataLoadedFromStorage(false);
     setError({
       show: false,
       message: "",
@@ -893,11 +998,33 @@ const Dashboard = () => {
                     <div className="flex-1">
                       <h2 className="text-xl sm:text-2xl font-bold text-white mb-1 flex flex-col sm:flex-row sm:items-center">
                         <span className="mb-2 sm:mb-0">Analysis Complete</span>
-                        <div className="sm:ml-3 flex items-center px-2 sm:px-3 py-1 rounded-full bg-green-500/20 border border-green-400/30 w-fit">
-                          <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
-                          <span className="text-green-400 text-xs font-medium">
-                            SUCCESS
-                          </span>
+                        <div className="sm:ml-3 flex items-center space-x-2">
+                          <div className="flex items-center px-2 sm:px-3 py-1 rounded-full bg-green-500/20 border border-green-400/30 w-fit">
+                            <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
+                            <span className="text-green-400 text-xs font-medium">
+                              SUCCESS
+                            </span>
+                          </div>
+                          {dataLoadedFromStorage && (
+                            <div className="flex items-center px-2 sm:px-3 py-1 rounded-full bg-blue-500/20 border border-blue-400/30 w-fit">
+                              <svg
+                                className="w-3 h-3 text-blue-400 mr-2"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"
+                                />
+                              </svg>
+                              <span className="text-blue-400 text-xs font-medium">
+                                RESTORED
+                              </span>
+                            </div>
+                          )}
                         </div>
                       </h2>
                       <p className="text-slate-300 text-sm sm:text-base">
@@ -936,6 +1063,7 @@ const Dashboard = () => {
                       <div className="font-semibold text-purple-300 mb-3 sm:mb-4 text-lg sm:text-xl">
                         Recommended Roles:
                       </div>
+
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                         {roleRecommendations.map((role, idx) => {
                           if (typeof role === "string") {

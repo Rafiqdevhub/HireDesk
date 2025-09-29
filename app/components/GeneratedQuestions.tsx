@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 interface Question {
   question: string;
@@ -18,6 +18,38 @@ const GeneratedQuestions: React.FC<GeneratedQuestionsProps> = ({
   const [expandedCategories, setExpandedCategories] = useState<{
     [key: string]: boolean;
   }>({});
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("hiredesk_expandedCategories");
+      if (saved) {
+        setExpandedCategories(JSON.parse(saved));
+      }
+    } catch (error) {
+      console.warn("Failed to load expanded categories:", error);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(
+      "hiredesk_expandedCategories",
+      JSON.stringify(expandedCategories)
+    );
+  }, [expandedCategories]);
+
+  useEffect(() => {
+    if (questions && questions.length > 0) {
+      const existingCategories = Object.keys(expandedCategories);
+      const newCategories = [...new Set(questions.map((q) => q.type))];
+
+      const updatedExpanded: { [key: string]: boolean } = {};
+      newCategories.forEach((category) => {
+        updatedExpanded[category] = expandedCategories[category] || false;
+      });
+
+      setExpandedCategories(updatedExpanded);
+    }
+  }, [questions]);
 
   const limitQuestionsByPlan = (
     questions: Question[],
