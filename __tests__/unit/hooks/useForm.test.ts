@@ -77,7 +77,9 @@ describe("useForm Hook", () => {
 
     await act(async () => {
       const submitHandler = result.current.handleSubmit(mockSubmit);
-      await submitHandler({ preventDefault: vi.fn() } as React.FormEvent);
+      await submitHandler({
+        preventDefault: vi.fn(),
+      } as unknown as React.FormEvent);
     });
 
     expect(mockSubmit).not.toHaveBeenCalled();
@@ -119,7 +121,9 @@ describe("useForm Hook", () => {
     await act(async () => {
       try {
         const submitHandler = result.current.handleSubmit(mockSubmit);
-        await submitHandler({ preventDefault: vi.fn() } as React.FormEvent);
+        await submitHandler({
+          preventDefault: vi.fn(),
+        } as unknown as React.FormEvent);
       } catch (error) {
         // Expected to throw
       }
@@ -140,7 +144,9 @@ describe("useForm Hook", () => {
     await act(async () => {
       try {
         const submitHandler = result.current.handleSubmit(mockSubmit);
-        await submitHandler({ preventDefault: vi.fn() } as React.FormEvent);
+        await submitHandler({
+          preventDefault: vi.fn(),
+        } as unknown as React.FormEvent);
       } catch (error) {
         expect(error).toBeInstanceOf(Error);
       }

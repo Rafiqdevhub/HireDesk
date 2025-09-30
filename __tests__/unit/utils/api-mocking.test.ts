@@ -1,45 +1,55 @@
-import { describe, test, expect, vi } from "vitest";
+import { describe, test, expect, vi, beforeEach } from "vitest";
+
+// Create mock functions
+const mockPost = vi.fn();
+const mockGet = vi.fn();
+const mockPut = vi.fn();
+const mockDelete = vi.fn();
 
 // Mock axios for testing
 vi.mock("axios", () => ({
   default: {
-    post: vi.fn(),
-    get: vi.fn(),
-    put: vi.fn(),
-    delete: vi.fn(),
+    post: mockPost,
+    get: mockGet,
+    put: mockPut,
+    delete: mockDelete,
   },
 }));
 
 describe("API Mocking Setup", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   test("axios is properly mocked", async () => {
     const axios = (await import("axios")).default;
 
     // Mock the response
     const mockResponse = { data: { success: true } };
-    axios.post.mockResolvedValueOnce(mockResponse);
+    mockPost.mockResolvedValueOnce(mockResponse);
 
     // Test the mock
     const response = await axios.post("/test-endpoint", { test: "data" });
     expect(response).toEqual(mockResponse);
-    expect(axios.post).toHaveBeenCalledWith("/test-endpoint", { test: "data" });
+    expect(mockPost).toHaveBeenCalledWith("/test-endpoint", { test: "data" });
   });
 
   test("can mock different HTTP methods", async () => {
     const axios = (await import("axios")).default;
 
     // Mock different methods
-    axios.get.mockResolvedValueOnce({ data: "GET response" });
-    axios.put.mockResolvedValueOnce({ data: "PUT response" });
-    axios.delete.mockResolvedValueOnce({ data: "DELETE response" });
+    mockGet.mockResolvedValueOnce({ data: "GET response" });
+    mockPut.mockResolvedValueOnce({ data: "PUT response" });
+    mockDelete.mockResolvedValueOnce({ data: "DELETE response" });
 
     // Test each method
     await axios.get("/test");
     await axios.put("/test", { data: "test" });
     await axios.delete("/test");
 
-    expect(axios.get).toHaveBeenCalledWith("/test");
-    expect(axios.put).toHaveBeenCalledWith("/test", { data: "test" });
-    expect(axios.delete).toHaveBeenCalledWith("/test");
+    expect(mockGet).toHaveBeenCalledWith("/test");
+    expect(mockPut).toHaveBeenCalledWith("/test", { data: "test" });
+    expect(mockDelete).toHaveBeenCalledWith("/test");
   });
 
   test("can mock error responses", async () => {
@@ -52,15 +62,18 @@ describe("API Mocking Setup", () => {
         data: { error: "Internal server error" },
       },
     };
-    axios.post.mockRejectedValueOnce(mockError);
+    mockPost.mockRejectedValueOnce(mockError);
 
     // Test error handling
     try {
       await axios.post("/error-endpoint", {});
       expect(true).toBe(false); // Should not reach here
-    } catch (error) {
-      expect(error.response.status).toBe(500);
-      expect(error.response.data.error).toBe("Internal server error");
+    } catch (error: unknown) {
+      const axiosError = error as {
+        response: { status: number; data: { error: string } };
+      };
+      expect(axiosError.response.status).toBe(500);
+      expect(axiosError.response.data.error).toBe("Internal server error");
     }
   });
 });
