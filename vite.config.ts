@@ -36,9 +36,23 @@ export default defineConfig(({ command, mode }) => {
     },
     test: {
       environment: "jsdom",
-      setupFiles: ["./__tests__/setup/test-setup.ts"],
+      setupFiles: [
+        "./__tests__/setup/test-setup.ts",
+        "./__tests__/setup/jsdom-setup.ts",
+      ],
       globals: true,
       css: true,
+      pool: "forks",
+      poolOptions: {
+        forks: {
+          singleFork: true,
+        },
+      },
+      environmentOptions: {
+        jsdom: {
+          resources: "usable",
+        },
+      },
     },
   };
 });

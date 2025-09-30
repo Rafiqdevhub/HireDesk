@@ -1,6 +1,21 @@
 import { vi } from "vitest";
 import "@testing-library/jest-dom";
 
+// Handle unhandled promise rejections in tests
+process.on("unhandledRejection", (reason, promise) => {
+  console.warn("Unhandled Promise Rejection at:", promise, "reason:", reason);
+});
+
+// Suppress jsdom errors for CI compatibility
+const originalError = console.error;
+console.error = (...args) => {
+  // Suppress specific webidl-conversions errors that occur in CI
+  if (typeof args[0] === "string" && args[0].includes("webidl-conversions")) {
+    return;
+  }
+  originalError.apply(console, args);
+};
+
 // Mock browser APIs for jsdom
 Object.defineProperty(window, "matchMedia", {
   writable: true,

@@ -1,0 +1,88 @@
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Code coverage report for hiredesk/build/client/assets/Navbar-DAOWlBGW.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../../../prettify.css" />
+    <link rel="stylesheet" href="../../../../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../../../../favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+    
+<body>
+<div class='wrapper'>
+    <div class='pad1'>
+        <h1><a href="../../../../index.html">All files</a> / <a href="index.html">hiredesk/build/client/assets</a> Navbar-DAOWlBGW.js</h1>
+        <div class='clearfix'>
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Statements</span>
+                <span class='fraction'>0/1</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>0/1</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Functions</span>
+                <span class='fraction'>0/1</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Lines</span>
+                <span class='fraction'>0/1</span>
+            </div>
+        
+            
+        </div>
+        <p class="quiet">
+            Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
+        </p>
+        <template id="filterTemplate">
+            <div class="quiet">
+                Filter:
+                <input type="search" id="fileSearch">
+            </div>
+        </template>
+    </div>
+    <div class='status-line low'></div>
+    <pre><table class="coverage">
+<tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
+<a name='L2'></a><a href='#L2'>2</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" >import{a as d,x as p,p as e,v as s}from"./chunk-B7RQU5TL-DdzQ_i0i.js";import{a as u}from"./AuthContext-DkIo7rdL.js";const f=()=&gt;{const[a,r]=d.useState(!1),[l,o]=d.useState(!1),{user:t,isAuthenticated:n,logout:c}=u(),x=p(),m=()=&gt;{r(!a)},h=()=&gt;{o(!l)},i=async()=&gt;{await c(),x("/"),o(!1)};return e.jsx("nav",{className:"fixed top-0 left-0 right-0 z-50 bg-gray-900/80 backdrop-blur-md border-b border-gray-700/20 shadow-sm",children:e.jsxs("div",{className:"max-w-7xl mx-auto px-4 sm:px-6 lg:px-8",children:[e.jsxs("div",{className:"flex justify-between items-center h-16",children:[e.jsxs(s,{to:"/",className:"flex items-center space-x-2",children:[e.jsx("div",{className:"w-8 h-8 rounded-lg flex items-center justify-center",children:e.jsx("img",{src:"/logo/logo.png",alt:"HireDesk Logo",className:"w-8 h-8 object-contain"})}),e.jsxs("span",{className:"text-xl font-bold text-white",children:["Hire",e.jsx("span",{className:"text-blue-400",children:"Desk"})]})]}),e.jsx("div",{className:"hidden md:flex items-center space-x-8"}),e.jsx("div",{className:"hidden md:flex items-center space-x-4",children:n?e.jsxs("div",{className:"relative",children:[e.jsxs("button",{onClick:h,className:"flex items-center space-x-2 text-gray-300 hover:text-blue-400 transition-colors duration-200 bg-gray-800/50 px-3 py-2 rounded-lg cursor-pointer",children:[e.jsx("div",{className:"w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center",children:e.jsx("span",{className:"text-white text-sm font-medium",children:t==null?void 0:t.name.charAt(0).toUpperCase()})}),e.jsx("span",{className:"font-medium",children:t==null?void 0:t.name}),e.jsx("svg",{className:`w-4 h-4 transition-transform duration-200 ${l?"rotate-180":""}`,fill:"none",stroke:"currentColor",viewBox:"0 0 24 24",children:e.jsx("path",{strokeLinecap:"round",strokeLinejoin:"round",strokeWidth:2,d:"M19 9l-7 7-7-7"})})]}),l&amp;&amp;e.jsxs("div",{className:"absolute right-0 mt-2 w-48 bg-gray-800 rounded-lg shadow-lg border border-gray-700 py-1 z-50",children:[e.jsxs("div",{className:"px-4 py-2 border-b border-gray-700",children:[e.jsx("p",{className:"text-sm text-gray-300",children:t==null?void 0:t.email}),e.jsxs("p",{className:"text-xs text-gray-500",children:["Files uploaded: ",(t==null?void 0:t.filesUploaded)||0]})]}),e.jsx(s,{to:"/dashboard",className:"block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-blue-400 transition-colors",onClick:()=&gt;o(!1),children:"Dashboard"}),e.jsx(s,{to:"/profile",className:"block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-blue-400 transition-colors",onClick:()=&gt;o(!1),children:"Profile"}),e.jsx("button",{onClick:i,className:"block w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-gray-700 transition-colors cursor-pointer",children:"Sign out"})]})]}):e.jsxs(e.Fragment,{children:[e.jsx(s,{to:"/login",className:"text-gray-300 hover:text-blue-400 transition-colors duration-200 font-medium",children:"Login"}),e.jsx(s,{to:"/signup",className:"bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 font-medium shadow-md hover:shadow-lg",children:"Sign Up"})]})}),e.jsx("div",{className:"md:hidden",children:e.jsx("button",{onClick:m,className:"text-gray-300 hover:text-blue-400 transition-colors duration-200","aria-label":"Toggle menu",children:e.jsx("svg",{className:"w-6 h-6",fill:"none",stroke:"currentColor",viewBox:"0 0 24 24",children:a?e.jsx("path",{strokeLinecap:"round",strokeLinejoin:"round",strokeWidth:2,d:"M6 18L18 6M6 6l12 12"}):e.jsx("path",{strokeLinecap:"round",strokeLinejoin:"round",strokeWidth:2,d:"M4 6h16M4 12h16M4 18h16"})})})})]}),a&amp;&amp;e.jsx("div",{className:"md:hidden",children:e.jsx("div",{className:"px-2 pt-2 pb-3 space-y-1 bg-gray-800/90 backdrop-blur-md rounded-lg mt-2 shadow-lg",children:e.jsx("div",{className:"border-t border-gray-600 pt-4",children:n?e.jsxs(e.Fragment,{children:[e.jsx("div",{className:"px-3 py-2",children:e.jsxs("div",{className:"flex items-center space-x-3",children:[e.jsx("div",{className:"w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center",children:e.jsx("span",{className:"text-white text-sm font-medium",children:t==null?void 0:t.name.charAt(0).toUpperCase()})}),e.jsxs("div",{children:[e.jsx("p",{className:"text-sm font-medium text-white",children:t==null?void 0:t.name}),e.jsx("p",{className:"text-xs text-gray-400",children:t==null?void 0:t.email})]})]})}),e.jsx(s,{to:"/dashboard",className:"block px-3 py-2 text-gray-300 hover:text-blue-400 hover:bg-gray-700 rounded-md transition-colors duration-200 font-medium",onClick:()=&gt;r(!1),children:"Dashboard"}),e.jsx(s,{to:"/profile",className:"block px-3 py-2 text-gray-300 hover:text-blue-400 hover:bg-gray-700 rounded-md transition-colors duration-200 font-medium",onClick:()=&gt;r(!1),children:"Profile"}),e.jsx("button",{onClick:()=&gt;{i(),r(!1)},className:"block w-full text-left px-3 py-2 text-red-400 hover:bg-gray-700 rounded-md transition-colors duration-200 font-medium",children:"Sign out"})]}):e.jsxs(e.Fragment,{children:[e.jsx(s,{to:"/login",className:"block px-3 py-2 text-gray-300 hover:text-blue-400 hover:bg-gray-700 rounded-md transition-colors duration-200 font-medium",onClick:()=&gt;r(!1),children:"Login"}),e.jsx(s,{to:"/signup",className:"block mx-3 mt-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-3 py-2 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 font-medium text-center",onClick:()=&gt;r(!1),children:"Sign Up"})]})})})})]})})};export{f as N};</span></span></span>
+&nbsp;</pre></td></tr></table></pre>
+
+                <div class='push'></div><!-- for sticky footer -->
+            </div><!-- /wrapper -->
+            <div class='footer quiet pad2 space-top1 center small'>
+                Code coverage generated by
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                at 2025-09-30T04:50:37.051Z
+            </div>
+        <script src="../../../../prettify.js"></script>
+        <script>
+            window.onload = function () {
+                prettyPrint();
+            };
+        </script>
+        <script src="../../../../sorter.js"></script>
+        <script src="../../../../block-navigation.js"></script>
+    </body>
+</html>
+    

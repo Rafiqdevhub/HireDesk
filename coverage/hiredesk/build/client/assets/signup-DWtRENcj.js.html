@@ -1,0 +1,88 @@
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Code coverage report for hiredesk/build/client/assets/signup-DWtRENcj.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../../../prettify.css" />
+    <link rel="stylesheet" href="../../../../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../../../../favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+    
+<body>
+<div class='wrapper'>
+    <div class='pad1'>
+        <h1><a href="../../../../index.html">All files</a> / <a href="index.html">hiredesk/build/client/assets</a> signup-DWtRENcj.js</h1>
+        <div class='clearfix'>
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Statements</span>
+                <span class='fraction'>0/1</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>0/1</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Functions</span>
+                <span class='fraction'>0/1</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Lines</span>
+                <span class='fraction'>0/1</span>
+            </div>
+        
+            
+        </div>
+        <p class="quiet">
+            Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
+        </p>
+        <template id="filterTemplate">
+            <div class="quiet">
+                Filter:
+                <input type="search" id="fileSearch">
+            </div>
+        </template>
+    </div>
+    <div class='status-line low'></div>
+    <pre><table class="coverage">
+<tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
+<a name='L2'></a><a href='#L2'>2</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" >import{w as b,x as w,a as x,p as e,v as c}from"./chunk-B7RQU5TL-DdzQ_i0i.js";import{N as f}from"./Navbar-DAOWlBGW.js";import{u as y,R as j}from"./useForm-BxvfapCH.js";import{a as N}from"./AuthContext-DkIo7rdL.js";function S({}){return[{title:"HireDesk - Sign Up"},{name:"description",content:"Create your account on HireDesk and unlock access to our AI-powered recruitment platform to find top talent for your team."}]}const v=s=&gt;{const a={};return(!s.name||!s.name.trim())&amp;&amp;(a.name="Full name is required"),s.email?/\S+@\S+\.\S+/.test(s.email)||(a.email="Email is invalid"):a.email="Email is required",s.password?s.password.length&lt;8?a.password="Password must be at least 8 characters":/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(s.password)||(a.password="Password must contain at least one uppercase letter, one lowercase letter, and one number"):a.password="Password is required",s.confirmPassword?s.password!==s.confirmPassword&amp;&amp;(a.confirmPassword="Passwords do not match"):a.confirmPassword="Please confirm your password",(!s.company_name||!s.company_name.trim())&amp;&amp;(a.company_name="Company name is required"),s.agreeToTerms||(a.agreeToTerms="You must agree to the terms and conditions"),a},k=()=&gt;{const s=w(),{register:a}=N(),[i,p]=x.useState(!1),[l,u]=x.useState(!1),{values:t,errors:r,isLoading:m,handleChange:o,handleSubmit:h}=y({name:"",email:"",password:"",confirmPassword:"",company_name:"",agreeToTerms:!1},v),g=async n=&gt;{try{const d={name:n.name,email:n.email,password:n.password,company_name:n.company_name};await a(d),s("/")}catch(d){throw d}};return e.jsx(j,{children:e.jsxs("div",{className:"min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black",children:[e.jsx(f,{}),e.jsx("div",{className:"pt-24 pb-16 px-4 sm:px-6 lg:px-8",children:e.jsx("div",{className:"max-w-md mx-auto",children:e.jsxs("div",{className:"bg-gray-800 rounded-2xl shadow-xl p-8 border border-gray-700",children:[e.jsxs("div",{className:"text-center mb-8",children:[e.jsx("h1",{className:"text-3xl font-bold text-white mb-2",children:"Join HireDesk"}),e.jsx("p",{className:"text-gray-300",children:"Create your account and start connecting"})]}),e.jsxs("form",{onSubmit:h(g),className:"space-y-6",children:[e.jsxs("div",{children:[e.jsx("label",{htmlFor:"name",className:"block text-sm font-medium text-gray-300 mb-2",children:"Full Name"}),e.jsx("input",{type:"text",id:"name",name:"name",value:t.name,onChange:o,className:`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:border-transparent transition-colors placeholder-gray-400 ${r.name?"border-red-500 bg-red-500/10 text-red-300":"border-gray-600 bg-gray-700 text-white focus:ring-blue-500"}`,placeholder:"John Doe",required:!0}),r.name&amp;&amp;e.jsx("p",{className:"mt-1 text-sm text-red-400",children:r.name})]}),e.jsxs("div",{children:[e.jsx("label",{htmlFor:"company",className:"block text-sm font-medium text-gray-300 mb-2",children:"Company Name"}),e.jsx("input",{type:"text",id:"company_name",name:"company_name",value:t.company_name,onChange:o,className:`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:border-transparent transition-colors placeholder-gray-400 ${r.company_name?"border-red-500 bg-red-500/10 text-red-300":"border-gray-600 bg-gray-700 text-white focus:ring-blue-500"}`,placeholder:"Enter your company name",required:!0}),r.company_name&amp;&amp;e.jsx("p",{className:"mt-1 text-sm text-red-400",children:r.company_name})]}),e.jsxs("div",{children:[e.jsx("label",{htmlFor:"email",className:"block text-sm font-medium text-gray-300 mb-2",children:"Email Address"}),e.jsx("input",{type:"email",id:"email",name:"email",value:t.email,onChange:o,className:`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:border-transparent transition-colors placeholder-gray-400 ${r.email?"border-red-500 bg-red-500/10 text-red-300":"border-gray-600 bg-gray-700 text-white focus:ring-blue-500"}`,placeholder:"john@example.com",required:!0}),r.email&amp;&amp;e.jsx("p",{className:"mt-1 text-sm text-red-400",children:r.email})]}),e.jsxs("div",{children:[e.jsx("label",{htmlFor:"password",className:"block text-sm font-medium text-gray-300 mb-2",children:"Password"}),e.jsxs("div",{className:"relative",children:[e.jsx("input",{type:i?"text":"password",id:"password",name:"password",value:t.password,onChange:o,className:`w-full px-4 py-3 pr-12 border rounded-lg focus:ring-2 focus:border-transparent transition-colors placeholder-gray-400 ${r.password?"border-red-500 bg-red-500/10 text-red-300":"border-gray-600 bg-gray-700 text-white focus:ring-blue-500"}`,placeholder:"Create a strong password",required:!0}),e.jsx("button",{type:"button",onClick:()=&gt;p(!i),className:"absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-300",children:i?e.jsx("svg",{className:"w-5 h-5",fill:"none",stroke:"currentColor",viewBox:"0 0 24 24",children:e.jsx("path",{strokeLinecap:"round",strokeLinejoin:"round",strokeWidth:2,d:"M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"})}):e.jsxs("svg",{className:"w-5 h-5",fill:"none",stroke:"currentColor",viewBox:"0 0 24 24",children:[e.jsx("path",{strokeLinecap:"round",strokeLinejoin:"round",strokeWidth:2,d:"M15 12a3 3 0 11-6 0 3 3 0 016 0z"}),e.jsx("path",{strokeLinecap:"round",strokeLinejoin:"round",strokeWidth:2,d:"M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"})]})})]}),r.password&amp;&amp;e.jsx("p",{className:"mt-1 text-sm text-red-400",children:r.password})]}),e.jsxs("div",{children:[e.jsx("label",{htmlFor:"confirmPassword",className:"block text-sm font-medium text-gray-300 mb-2",children:"Confirm Password"}),e.jsxs("div",{className:"relative",children:[e.jsx("input",{type:l?"text":"password",id:"confirmPassword",name:"confirmPassword",value:t.confirmPassword,onChange:o,className:`w-full px-4 py-3 pr-12 border rounded-lg focus:ring-2 focus:border-transparent transition-colors placeholder-gray-400 ${r.confirmPassword?"border-red-500 bg-red-500/10 text-red-300":"border-gray-600 bg-gray-700 text-white focus:ring-blue-500"}`,placeholder:"Confirm your password",required:!0}),e.jsx("button",{type:"button",onClick:()=&gt;u(!l),className:"absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-300",children:l?e.jsx("svg",{className:"w-5 h-5",fill:"none",stroke:"currentColor",viewBox:"0 0 24 24",children:e.jsx("path",{strokeLinecap:"round",strokeLinejoin:"round",strokeWidth:2,d:"M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"})}):e.jsxs("svg",{className:"w-5 h-5",fill:"none",stroke:"currentColor",viewBox:"0 0 24 24",children:[e.jsx("path",{strokeLinecap:"round",strokeLinejoin:"round",strokeWidth:2,d:"M15 12a3 3 0 11-6 0 3 3 0 016 0z"}),e.jsx("path",{strokeLinecap:"round",strokeLinejoin:"round",strokeWidth:2,d:"M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"})]})})]}),r.confirmPassword&amp;&amp;e.jsx("p",{className:"mt-1 text-sm text-red-400",children:r.confirmPassword})]}),e.jsxs("div",{className:"flex items-start",children:[e.jsx("input",{type:"checkbox",id:"agreeToTerms",name:"agreeToTerms",checked:t.agreeToTerms,onChange:o,className:"w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-500 mt-1",required:!0}),e.jsxs("label",{htmlFor:"agreeToTerms",className:"ml-2 text-sm text-gray-300",children:["I agree to the"," ",e.jsx(c,{to:"/terms",className:"text-blue-400 hover:text-blue-300",children:"Terms of Service"})," ","and"," ",e.jsx(c,{to:"/privacy",className:"text-blue-400 hover:text-blue-300",children:"Privacy Policy"})]}),r.agreeToTerms&amp;&amp;e.jsx("p",{className:"mt-1 text-sm text-red-400",children:r.agreeToTerms})]}),e.jsx("button",{type:"submit",disabled:m||!t.agreeToTerms,className:"w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 font-medium disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer",children:m?e.jsxs("div",{className:"flex items-center justify-center",children:[e.jsxs("svg",{className:"animate-spin -ml-1 mr-3 h-5 w-5 text-white",xmlns:"http://www.w3.org/2000/svg",fill:"none",viewBox:"0 0 24 24",children:[e.jsx("circle",{className:"opacity-25",cx:"12",cy:"12",r:"10",stroke:"currentColor",strokeWidth:"4"}),e.jsx("path",{className:"opacity-75",fill:"currentColor",d:"M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"})]}),"Creating Account..."]}):"Create Account"})]}),e.jsx("div",{className:"mt-6 text-center",children:e.jsxs("p",{className:"text-gray-300",children:["Already have an account?"," ",e.jsx(c,{to:"/login",className:"text-blue-400 hover:text-blue-300 font-medium transition-colors",children:"Sign in"})]})})]})})})]})})},_=b(k);export{_ as default,S as meta};</span></span></span>
+&nbsp;</pre></td></tr></table></pre>
+
+                <div class='push'></div><!-- for sticky footer -->
+            </div><!-- /wrapper -->
+            <div class='footer quiet pad2 space-top1 center small'>
+                Code coverage generated by
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                at 2025-09-30T04:50:37.051Z
+            </div>
+        <script src="../../../../prettify.js"></script>
+        <script>
+            window.onload = function () {
+                prettyPrint();
+            };
+        </script>
+        <script src="../../../../sorter.js"></script>
+        <script src="../../../../block-navigation.js"></script>
+    </body>
+</html>
+    
