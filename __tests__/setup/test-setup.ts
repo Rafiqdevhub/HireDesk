@@ -1,10 +1,10 @@
-import { vi, afterEach } from "vitest";
+import { vi } from "vitest";
 import "@testing-library/jest-dom";
 
-// Mock window.matchMedia
+// Mock browser APIs for jsdom
 Object.defineProperty(window, "matchMedia", {
   writable: true,
-  value: vi.fn().mockImplementation((query: string) => ({
+  value: vi.fn().mockImplementation((query) => ({
     matches: false,
     media: query,
     onchange: null,
@@ -16,43 +16,41 @@ Object.defineProperty(window, "matchMedia", {
   })),
 });
 
-// Mock window.ResizeObserver
-global.ResizeObserver = vi.fn().mockImplementation(() => ({
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-  disconnect: vi.fn(),
-}));
-
-// Mock window.IntersectionObserver
-global.IntersectionObserver = vi.fn().mockImplementation(() => ({
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-  disconnect: vi.fn(),
-}));
-
-// Mock localStorage
-const localStorageMock = {
-  getItem: vi.fn(),
-  setItem: vi.fn(),
-  removeItem: vi.fn(),
-  clear: vi.fn(),
-  length: 0,
-  key: vi.fn(),
-};
-global.localStorage = localStorageMock as any;
-
-// Mock sessionStorage
-const sessionStorageMock = {
-  getItem: vi.fn(),
-  setItem: vi.fn(),
-  removeItem: vi.fn(),
-  clear: vi.fn(),
-  length: 0,
-  key: vi.fn(),
-};
-global.sessionStorage = sessionStorageMock as any;
-
-// Cleanup after each test
-afterEach(() => {
-  vi.clearAllMocks();
+Object.defineProperty(window, "ResizeObserver", {
+  writable: true,
+  value: vi.fn().mockImplementation(() => ({
+    observe: vi.fn(),
+    unobserve: vi.fn(),
+    disconnect: vi.fn(),
+  })),
 });
+
+Object.defineProperty(window, "IntersectionObserver", {
+  writable: true,
+  value: vi.fn().mockImplementation(() => ({
+    observe: vi.fn(),
+    unobserve: vi.fn(),
+    disconnect: vi.fn(),
+  })),
+});
+
+// Mock localStorage with actual storage behavior
+const createStorageMock = () => {
+  const storage = new Map<string, string>();
+  return {
+    getItem: vi.fn((key: string) => storage.get(key) || null),
+    setItem: vi.fn((key: string, value: string) => storage.set(key, value)),
+    removeItem: vi.fn((key: string) => storage.delete(key)),
+    clear: vi.fn(() => storage.clear()),
+    get length() {
+      return storage.size;
+    },
+    key: vi.fn((index: number) => {
+      const keys = Array.from(storage.keys());
+      return keys[index] || null;
+    }),
+  };
+};
+
+global.localStorage = createStorageMock() as any;
+global.sessionStorage = createStorageMock() as any;
