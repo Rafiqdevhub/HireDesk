@@ -1,8 +1,13 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { useAuth } from "../../contexts/AuthContext";
+import TipsModal from "../ui/TipsModal";
 
-const Navbar = () => {
+interface NavbarProps {
+  onOpenTips: () => void;
+}
+
+const Navbar = ({ onOpenTips }: NavbarProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const { user, isAuthenticated, logout } = useAuth();
@@ -79,13 +84,15 @@ const Navbar = () => {
                         Files uploaded: {user?.filesUploaded || 0}
                       </p>
                     </div>
-                    <Link
-                      to="/dashboard"
-                      className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-blue-400 transition-colors"
-                      onClick={() => setIsUserMenuOpen(false)}
+                    <button
+                      onClick={() => {
+                        onOpenTips();
+                        setIsUserMenuOpen(false);
+                      }}
+                      className="block w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-blue-400 transition-colors cursor-pointer"
                     >
-                      Dashboard
-                    </Link>
+                      Hiring Tips
+                    </button>
                     <Link
                       to="/profile"
                       className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-blue-400 transition-colors"
@@ -173,13 +180,15 @@ const Navbar = () => {
                         </div>
                       </div>
                     </div>
-                    <Link
-                      to="/dashboard"
-                      className="block px-3 py-2 text-gray-300 hover:text-blue-400 hover:bg-gray-700 rounded-md transition-colors duration-200 font-medium"
-                      onClick={() => setIsMenuOpen(false)}
+                    <button
+                      onClick={() => {
+                        onOpenTips();
+                        setIsMenuOpen(false);
+                      }}
+                      className="block w-full text-left px-3 py-2 text-gray-300 hover:text-blue-400 hover:bg-gray-700 rounded-md transition-colors duration-200 font-medium"
                     >
-                      Dashboard
-                    </Link>
+                      💡 Hiring Tips
+                    </button>
                     <Link
                       to="/profile"
                       className="block px-3 py-2 text-gray-300 hover:text-blue-400 hover:bg-gray-700 rounded-md transition-colors duration-200 font-medium"
@@ -224,4 +233,18 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+const NavbarWithModal = () => {
+  const [isTipsModalOpen, setIsTipsModalOpen] = useState(false);
+
+  return (
+    <>
+      <Navbar onOpenTips={() => setIsTipsModalOpen(true)} />
+      <TipsModal
+        isOpen={isTipsModalOpen}
+        onClose={() => setIsTipsModalOpen(false)}
+      />
+    </>
+  );
+};
+
+export default NavbarWithModal;
