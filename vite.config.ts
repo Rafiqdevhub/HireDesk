@@ -39,6 +39,7 @@ export default defineConfig(({ command, mode }) => {
       setupFiles: [
         "./__tests__/setup/test-setup.ts",
         "./__tests__/setup/jsdom-setup.ts",
+        "./__tests__/setup/react-testing-library.ts",
       ],
       globals: true,
       css: true,
