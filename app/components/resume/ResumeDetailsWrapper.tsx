@@ -37,8 +37,6 @@ interface ResumeDetailsWrapperProps {
 
 const ResumeDetailsWrapper: React.FC<ResumeDetailsWrapperProps> = ({
   resumeData,
-  onGenerateQuestions,
-  isLoading = false,
 }) => {
   if (!resumeData) {
     return (
@@ -253,20 +251,6 @@ const ResumeDetailsWrapper: React.FC<ResumeDetailsWrapperProps> = ({
           </div>
         )}
       </div>
-
-      {onGenerateQuestions && (
-        <div className="mt-6">
-          <button
-            onClick={() => onGenerateQuestions("")}
-            disabled={isLoading}
-            className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-3 rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all duration-200 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isLoading
-              ? "Generating Questions..."
-              : "Generate Interview Questions"}
-          </button>
-        </div>
-      )}
     </div>
   );
 };

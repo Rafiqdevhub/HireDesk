@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import type { Route } from "./+types/dashboard";
-import Navbar from "../components/layout/Navbar";
 import ProtectedRoute from "../components/auth/ProtectedRoute";
 import { useAuth } from "../contexts/AuthContext";
 import ResumeUpload from "../components/resume/ResumeUpload";
@@ -269,77 +268,6 @@ const Dashboard = () => {
         category: errorCategory,
         originalError: error,
       });
-      setIsLoading(false);
-    }
-  };
-
-  const handleGenerateQuestions = async (jobDescription: string) => {
-    if (!resumeData) {
-      setError({
-        show: true,
-        message: "Please upload your resume first.",
-        type: "warning",
-        category: "validation",
-        originalError: null,
-      });
-      return;
-    }
-
-    if (questions && questions.length > 0) {
-      return;
-    }
-
-    setIsLoading(true);
-    setError({
-      show: false,
-      message: "",
-      type: "error",
-      category: null,
-      originalError: null,
-    });
-
-    try {
-      const resume_text = resumeData.resume_text || resumeData.resumeText || "";
-
-      const response = await fetch(API_ENDPOINTS.GENERATE_QUESTIONS, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          resume_text: resume_text,
-          job_description: jobDescription,
-        }),
-        mode: "cors",
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        let error;
-        try {
-          error = JSON.parse(errorText);
-        } catch {
-          error = { message: errorText || "Unknown error occurred" };
-        }
-
-        throw new Error(error.message || "Failed to generate questions");
-      }
-
-      const data = await response.json();
-      const generatedQuestions = data.questions || data || [];
-      setQuestions(generatedQuestions);
-      setIsLoading(false);
-    } catch (error: any) {
-      const errorCategory = getErrorCategory(error);
-
-      setError({
-        show: true,
-        message: formatErrorMessage(error),
-        type: "error",
-        category: errorCategory,
-        originalError: error,
-      });
-
       setIsLoading(false);
     }
   };
@@ -916,7 +844,7 @@ const Dashboard = () => {
                         <button
                           type="submit"
                           disabled={isLoading || !currentFile}
-                          className="group relative w-full overflow-hidden rounded-xl sm:rounded-2xl bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-600 p-1 shadow-2xl hover:shadow-cyan-500/25 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-500"
+                          className="group relative w-full overflow-hidden rounded-xl sm:rounded-2xl bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-600 p-1 shadow-2xl hover:shadow-cyan-500/25 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-500 cursor-pointer"
                         >
                           <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                           <div className="relative bg-slate-900/80 rounded-lg sm:rounded-xl px-6 sm:px-8 py-4 sm:py-5 group-hover:bg-transparent transition-all duration-500">
@@ -1055,7 +983,6 @@ const Dashboard = () => {
                   )}
                   <ResumeDetailsWrapper
                     resumeData={resumeData}
-                    onGenerateQuestions={handleGenerateQuestions}
                     isLoading={isLoading}
                   />
                   {roleRecommendations && roleRecommendations.length > 0 && (
