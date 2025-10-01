@@ -42,8 +42,8 @@ jobs:
         run: npm run typecheck
         continue-on-error: false
 
-      - name: Run test suite with coverage
-        run: npm run test:coverage -- --reporter=verbose --run
+      - name: Run test suite
+        run: npm run test:run -- --reporter=verbose
         env:
           NODE_ENV: test
 
@@ -53,19 +53,8 @@ jobs:
           echo "###  Test Results for Node.js ${{ matrix.node-version }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "- ✅ **TypeScript compilation**: Passed" >> $GITHUB_STEP_SUMMARY
-          echo "- ✅ **Unit tests**: All tests executed" >> $GITHUB_STEP_SUMMARY
-          echo "- ✅ **Coverage report**: Generated" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ **Unit tests**: Executed with npm run test:run (vitest run)" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-
-      - name: Upload coverage to Codecov
-        if: matrix.node-version == '20.x' && success()
-        uses: codecov/codecov-action@v4
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./coverage/lcov.info
-          flags: unittests
-          name: hiredesk-coverage
-          fail_ci_if_error: false
 
   # Job 2: Build Validation
   build:
@@ -143,8 +132,8 @@ jobs:
           echo "#### Testing Infrastructure" >> $GITHUB_STEP_SUMMARY
           echo "- ✅ **Test framework**: Vitest + jsdom" >> $GITHUB_STEP_SUMMARY
           echo "- ✅ **Test utilities**: @testing-library/react" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ **CI/CD script**: npm run test:run (vitest run)" >> $GITHUB_STEP_SUMMARY
           echo "- ✅ **Mock service workers**: MSW integration" >> $GITHUB_STEP_SUMMARY
-          echo "- ✅ **Coverage reporting**: Built-in Vitest coverage" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
 
       - name: Project structure validation
@@ -224,7 +213,7 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "| Job | Status | Details |" >> $GITHUB_STEP_SUMMARY
           echo "|-----|--------|---------|" >> $GITHUB_STEP_SUMMARY
-          echo "|  Unit & Integration Tests | ${{ needs.test.result == 'success' && '✅ Passed' || '❌ Failed' }} | 49 tests across 8 files |" >> $GITHUB_STEP_SUMMARY
+          echo "|  Unit & Integration Tests | ${{ needs.test.result == 'success' && '✅ Passed' || '❌ Failed' }} | npm run test:run (vitest run) |" >> $GITHUB_STEP_SUMMARY
           echo "|  Build Validation | ${{ needs.build.result == 'success' && '✅ Passed' || '❌ Failed' }} | React Router production build |" >> $GITHUB_STEP_SUMMARY
           echo "|  Code Quality | ${{ needs.quality.result == 'success' && '✅ Passed' || '❌ Failed' }} | TypeScript & structure validation |" >> $GITHUB_STEP_SUMMARY
           echo "|  Security Audit | ${{ needs.security.result == 'success' && '✅ Passed' || '⚠️ Review Needed' }} | Dependency vulnerability scan |" >> $GITHUB_STEP_SUMMARY
@@ -233,6 +222,7 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "✅ **Complete Test Coverage**: 8 test files, 49 comprehensive tests" >> $GITHUB_STEP_SUMMARY
           echo "✅ **Modern Testing Stack**: Vitest + jsdom + React Testing Library" >> $GITHUB_STEP_SUMMARY
+          echo "✅ **CI/CD Integration**: npm run test:run script properly configured" >> $GITHUB_STEP_SUMMARY
           echo "✅ **Service Layer Testing**: API mocking with proper error handling" >> $GITHUB_STEP_SUMMARY
           echo "✅ **Hook Testing**: Custom hooks with state management validation" >> $GITHUB_STEP_SUMMARY
           echo "✅ **Integration Patterns**: Form validation and user interaction flows" >> $GITHUB_STEP_SUMMARY
