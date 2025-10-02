@@ -145,7 +145,7 @@ const SignUp = () => {
 
                 <div>
                   <label
-                    htmlFor="company"
+                    htmlFor="company_name"
                     className="block text-sm font-medium text-gray-300 mb-2"
                   >
                     Company Name
