@@ -41,6 +41,18 @@ export default defineConfig(({ command, mode }) => {
         "./__tests__/setup/jsdom-setup.ts",
         "./__tests__/setup/react-testing-library.ts",
       ],
+      include: [
+        "**/*.{test,spec}.{js,ts,jsx,tsx}",
+        "__tests__/**/*.{js,ts,jsx,tsx}",
+      ],
+      exclude: [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/.{idea,git,cache,output,temp}/**",
+        "__tests__/setup/**",
+        "__tests__/mocks/**",
+        "__tests__/utils/**",
+      ],
       globals: true,
       css: true,
       pool: "forks",
