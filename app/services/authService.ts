@@ -4,21 +4,19 @@ import type {
   AxiosError,
   InternalAxiosRequestConfig,
 } from "axios";
-
-const API_BASE_URL = "https://jobpsych-payment.vercel.app/api";
-// const API_BASE_URL = "http://localhost:5000/api";
+import { AUTH_API_ENDPOINTS } from "~/utils/api";
 
 interface ExtendedAxiosRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;
 }
 
 const api = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: AUTH_API_ENDPOINTS.API_BASE_URL,
   withCredentials: true,
 });
 
 const authApi = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: AUTH_API_ENDPOINTS.API_BASE_URL,
   withCredentials: true,
 });
 
