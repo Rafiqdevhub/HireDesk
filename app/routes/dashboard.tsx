@@ -6,10 +6,10 @@ import ResumeUpload from "../components/resume/ResumeUpload";
 import ResumeDetailsWrapper from "../components/resume/ResumeDetailsWrapper";
 import GeneratedQuestions from "../components/GeneratedQuestions";
 import Toast from "../components/toast/Toast";
-import { API_ENDPOINTS } from "../utils/api";
 import { getErrorCategory, formatErrorMessage } from "../utils/errorHandler";
 import StandardQuestions from "../components/StandardQuestions";
 import { features } from "../data/features";
+import { HIREDESK_ANALYZE } from "~/utils/api";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -215,7 +215,7 @@ const Dashboard = () => {
       formData.append("target_role", targetRole);
       formData.append("job_description", jobDescription);
 
-      const response = await fetch(API_ENDPOINTS.HIREDESK_ANALYZE, {
+      const response = await fetch(HIREDESK_ANALYZE, {
         method: "POST",
         body: formData,
         mode: "cors",
@@ -345,7 +345,7 @@ const Dashboard = () => {
                     <div className="absolute inset-0 bg-indigo-400/20 rounded-full blur-sm group-hover:bg-indigo-300/30 transition-all"></div>
                   </div>
                   <span className="text-sm sm:text-base text-slate-200 font-semibold group-hover:text-white transition-colors">
-                    Back
+                    Back to Home
                   </span>
                 </button>
               </div>

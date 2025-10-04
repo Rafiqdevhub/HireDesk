@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router";
 import { useAuth } from "../../contexts/AuthContext";
 import TipsModal from "../ui/TipsModal";
@@ -10,8 +10,43 @@ interface NavbarProps {
 const Navbar = ({ onOpenTips }: NavbarProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-  const { user, isAuthenticated, logout } = useAuth();
+  const { user, isAuthenticated, logout, refreshProfile } = useAuth();
   const navigate = useNavigate();
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  // Refresh profile data when component mounts
+  useEffect(() => {
+    if (isAuthenticated) {
+      refreshProfile();
+    }
+  }, [isAuthenticated]);
+
+  // Calculate rate limit status
+  const uploadLimit = 10;
+  const filesUploaded = user?.filesUploaded || 0;
+  const remainingUploads = Math.max(0, uploadLimit - filesUploaded);
+  const uploadPercentage = Math.min(100, (filesUploaded / uploadLimit) * 100);
+
+  // Get status color based on usage
+  const getStatusColor = () => {
+    if (uploadPercentage >= 100) return "text-red-400";
+    if (uploadPercentage >= 80) return "text-orange-400";
+    if (uploadPercentage >= 50) return "text-yellow-400";
+    return "text-green-400";
+  };
+
+  const getProgressBarColor = () => {
+    if (uploadPercentage >= 100) return "bg-red-500";
+    if (uploadPercentage >= 80) return "bg-orange-500";
+    if (uploadPercentage >= 50) return "bg-yellow-500";
+    return "bg-green-500";
+  };
+
+  const handleRefreshStats = async () => {
+    setIsRefreshing(true);
+    await refreshProfile();
+    setTimeout(() => setIsRefreshing(false), 500);
+  };
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -77,12 +112,58 @@ const Navbar = ({ onOpenTips }: NavbarProps) => {
                 </button>
 
                 {isUserMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-gray-800 rounded-lg shadow-lg border border-gray-700 py-1 z-50">
-                    <div className="px-4 py-2 border-b border-gray-700">
-                      <p className="text-sm text-gray-300">{user?.email}</p>
-                      <p className="text-xs text-gray-500">
-                        Files uploaded: {user?.filesUploaded || 0}
+                  <div className="absolute right-0 mt-2 w-72 bg-gray-800 rounded-lg shadow-lg border border-gray-700 py-1 z-50">
+                    <div className="px-4 py-3 border-b border-gray-700">
+                      <p className="text-sm text-gray-300 font-medium">
+                        {user?.email}
                       </p>
+                      <div className="mt-3 space-y-2">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-2">
+                            <p className="text-xs text-gray-400">
+                              Upload Status:
+                            </p>
+                            <button
+                              onClick={handleRefreshStats}
+                              className="text-gray-400 hover:text-blue-400 transition-colors"
+                              title="Refresh stats"
+                              aria-label="Refresh upload statistics"
+                            >
+                              <svg
+                                className={`w-3 h-3 ${isRefreshing ? "animate-spin" : ""}`}
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                                />
+                              </svg>
+                            </button>
+                          </div>
+                          <span
+                            className={`text-xs font-semibold ${getStatusColor()}`}
+                          >
+                            {filesUploaded}/{uploadLimit}
+                          </span>
+                        </div>
+                        <div className="relative w-full h-2 bg-gray-700 rounded-full overflow-hidden">
+                          <div
+                            className={`absolute top-0 left-0 h-full ${getProgressBarColor()} transition-all duration-500 ease-out`}
+                            style={{ width: `${uploadPercentage}%` }}
+                          />
+                        </div>
+                        <p
+                          className={`text-xs ${remainingUploads === 0 ? "text-red-400 font-semibold" : "text-gray-500"}`}
+                        >
+                          {remainingUploads === 0
+                            ? "⚠️ Upload limit reached"
+                            : `${remainingUploads} upload${remainingUploads !== 1 ? "s" : ""} remaining`}
+                        </p>
+                      </div>
                     </div>
                     <button
                       onClick={() => {
@@ -165,19 +246,66 @@ const Navbar = ({ onOpenTips }: NavbarProps) => {
               <div className="border-t border-gray-600 pt-4">
                 {isAuthenticated ? (
                   <>
-                    <div className="px-3 py-2">
-                      <div className="flex items-center space-x-3">
+                    <div className="px-3 py-3 border-b border-gray-700">
+                      <div className="flex items-center space-x-3 mb-3">
                         <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center">
                           <span className="text-white text-sm font-medium">
                             {user?.name.charAt(0).toUpperCase()}
                           </span>
                         </div>
-                        <div>
+                        <div className="flex-1">
                           <p className="text-sm font-medium text-white">
                             {user?.name}
                           </p>
                           <p className="text-xs text-gray-400">{user?.email}</p>
                         </div>
+                      </div>
+                      <div className="space-y-2 bg-gray-900/50 p-2 rounded-lg">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-2">
+                            <p className="text-xs text-gray-400">
+                              Upload Status:
+                            </p>
+                            <button
+                              onClick={handleRefreshStats}
+                              className="text-gray-400 hover:text-blue-400 transition-colors"
+                              aria-label="Refresh upload statistics"
+                              title="Refresh stats"
+                            >
+                              <svg
+                                className={`w-3 h-3 ${isRefreshing ? "animate-spin" : ""}`}
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                                />
+                              </svg>
+                            </button>
+                          </div>
+                          <span
+                            className={`text-xs font-semibold ${getStatusColor()}`}
+                          >
+                            {filesUploaded}/{uploadLimit}
+                          </span>
+                        </div>
+                        <div className="relative w-full h-2 bg-gray-700 rounded-full overflow-hidden">
+                          <div
+                            className={`absolute top-0 left-0 h-full ${getProgressBarColor()} transition-all duration-500`}
+                            style={{ width: `${uploadPercentage}%` }}
+                          />
+                        </div>
+                        <p
+                          className={`text-xs ${remainingUploads === 0 ? "text-red-400 font-semibold" : "text-gray-500"}`}
+                        >
+                          {remainingUploads === 0
+                            ? "⚠️ Upload limit reached"
+                            : `${remainingUploads} remaining`}
+                        </p>
                       </div>
                     </div>
                     <button

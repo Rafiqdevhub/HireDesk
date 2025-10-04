@@ -4,19 +4,19 @@ import type {
   AxiosError,
   InternalAxiosRequestConfig,
 } from "axios";
-import { AUTH_API_ENDPOINTS } from "~/utils/api";
+import { API_AUTH_URL } from "~/utils/api";
 
 interface ExtendedAxiosRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;
 }
 
 const api = axios.create({
-  baseURL: AUTH_API_ENDPOINTS.API_BASE_URL,
+  baseURL: API_AUTH_URL,
   withCredentials: true,
 });
 
 const authApi = axios.create({
-  baseURL: AUTH_API_ENDPOINTS.API_BASE_URL,
+  baseURL: API_AUTH_URL,
   withCredentials: true,
 });
 

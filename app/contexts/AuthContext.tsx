@@ -10,6 +10,7 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   register: (userData: RegisterRequest) => Promise<void>;
   logout: () => Promise<void>;
+  refreshProfile: () => Promise<void>;
   isAuthenticated: boolean;
 }
 
@@ -141,12 +142,29 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
+  const refreshProfile = async () => {
+    try {
+      const profileResponse = await authService.getProfile();
+      const updatedUser: User = {
+        id: profileResponse.id,
+        name: profileResponse.name,
+        email: profileResponse.email,
+        company_name: profileResponse.company_name,
+        filesUploaded: profileResponse.filesUploaded,
+      };
+      setUser(updatedUser);
+    } catch (error) {
+      console.error("Failed to refresh profile:", error);
+    }
+  };
+
   const value: AuthContextType = {
     user,
     loading,
     login,
     register,
     logout,
+    refreshProfile,
     isAuthenticated: !!user,
   };
 
