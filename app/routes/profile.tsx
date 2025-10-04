@@ -212,57 +212,63 @@ const Profile = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-900">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
       <Navbar />
-      <div className="pt-20 pb-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto">
+
+      {/* Hero Section with Profile Card */}
+      <div className="pt-20 pb-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto">
           <div className="relative mb-8">
-            <div className="absolute inset-0 bg-blue-600/10 rounded-3xl blur-3xl"></div>
-            <div className="relative bg-slate-800/50 backdrop-blur-xl rounded-3xl border border-white/10 p-8">
-              <div className="flex flex-col md:flex-row items-center md:items-start space-y-6 md:space-y-0 md:space-x-8">
-                <div className="relative">
-                  <div className="w-24 h-24 bg-blue-600 rounded-full flex items-center justify-center shadow-2xl">
-                    <span className="text-3xl font-bold text-white">
-                      {(profile?.name || user?.name || "")
-                        .charAt(0)
-                        .toUpperCase()}
-                    </span>
-                  </div>
-                  <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-green-500 rounded-full border-4 border-slate-900 flex items-center justify-center">
-                    <div className="w-3 h-3 bg-white rounded-full"></div>
-                  </div>
-                </div>
-
-                <div className="flex-1 text-center md:text-left">
-                  <h1 className="text-4xl font-bold text-white mb-2">
-                    {profile?.name || user?.name}
-                  </h1>
-                  <p className="text-xl text-blue-400 mb-1">
-                    {profile?.company_name || user?.company_name}
-                  </p>
-                  <p className="text-gray-400 mb-4">
-                    {profile?.email || user?.email}
-                  </p>
-                  <div className="flex flex-wrap justify-center md:justify-start gap-4 text-sm">
-                    <div className="flex items-center space-x-2 bg-slate-700 rounded-full px-4 py-2">
-                      <svg
-                        className="w-4 h-4 text-green-400"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                      <span className="text-white">Active Account</span>
+            <div className="absolute -inset-4 bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-indigo-600/20 rounded-3xl blur-3xl"></div>
+            <div className="relative bg-gradient-to-br from-slate-800/90 via-slate-800/95 to-slate-900/90 backdrop-blur-xl rounded-3xl border border-slate-700/50 overflow-hidden shadow-2xl">
+              <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-indigo-500"></div>
+              <div className="p-8 md:p-10">
+                <div className="flex flex-col lg:flex-row items-center lg:items-start gap-8">
+                  <div className="relative flex-shrink-0">
+                    <div className="relative">
+                      <div className="absolute -inset-2 bg-gradient-to-r from-blue-500 via-purple-500 to-indigo-500 rounded-full blur-md opacity-75 animate-pulse"></div>
+                      <div className="relative w-32 h-32 bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-600 rounded-full flex items-center justify-center shadow-2xl ring-4 ring-slate-800">
+                        <span className="text-5xl font-bold text-white">
+                          {(profile?.name || user?.name || "")
+                            .charAt(0)
+                            .toUpperCase()}
+                        </span>
+                      </div>
+                      <div className="absolute -bottom-2 -right-2 flex items-center gap-2 bg-slate-800 rounded-full px-3 py-1.5 border-2 border-green-500 shadow-lg">
+                        <div className="w-2.5 h-2.5 bg-green-400 rounded-full animate-pulse"></div>
+                        <span className="text-xs font-semibold text-green-400">
+                          Active
+                        </span>
+                      </div>
                     </div>
-                    <div className="flex items-center space-x-2 bg-slate-700 rounded-full px-4 py-2">
+                  </div>
+                  <div className="flex-1 text-center lg:text-left">
+                    <div className="mb-4">
+                      <h1 className="text-4xl md:text-5xl font-bold mb-2">
+                        <span className="bg-gradient-to-r from-blue-300 via-purple-300 to-indigo-300 bg-clip-text text-transparent">
+                          {profile?.name || user?.name}
+                        </span>
+                      </h1>
+                      <p className="text-xl text-slate-300 font-medium flex items-center justify-center lg:justify-start gap-2">
+                        <svg
+                          className="w-5 h-5 text-purple-400"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                          />
+                        </svg>
+                        {profile?.company_name || user?.company_name}
+                      </p>
+                    </div>
+                    <div className="mb-6 flex items-center justify-center lg:justify-start gap-2 text-slate-400">
                       <svg
-                        className="w-4 h-4 text-blue-400"
+                        className="w-4 h-4"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -271,50 +277,169 @@ const Profile = () => {
                           strokeLinecap="round"
                           strokeLinejoin="round"
                           strokeWidth={2}
-                          d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 4v10a2 2 0 002 2h4a2 2 0 002-2V11M9 11h6"
+                          d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                         />
                       </svg>
-                      <span className="text-white">
-                        {profile?.filesUploaded || 0} Files
+                      <span className="text-sm">
+                        {profile?.email || user?.email}
                       </span>
                     </div>
-                    <div className="flex items-center space-x-2 bg-slate-700 rounded-full px-4 py-2">
-                      <svg
-                        className="w-4 h-4 text-purple-400"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                      <span className="text-white">
-                        Member since{" "}
-                        {profile?.createdAt
-                          ? formatDate(profile.createdAt)
-                          : "N/A"}
-                      </span>
+                    <div className="flex flex-wrap justify-center lg:justify-start gap-3 mb-6">
+                      <div className="group relative">
+                        <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl opacity-75 group-hover:opacity-100 blur transition duration-200"></div>
+                        <div className="relative flex flex-col gap-2 bg-slate-800 rounded-xl px-4 py-2.5 border border-blue-500/30 min-w-[180px]">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <svg
+                                className="w-4 h-4 text-blue-400"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                                />
+                              </svg>
+                              <span className="text-sm font-semibold text-white">
+                                {profile?.filesUploaded || 0}/10 Files
+                              </span>
+                            </div>
+                            <span
+                              className={`text-xs font-bold ${
+                                (profile?.filesUploaded || 0) >= 10
+                                  ? "text-red-400"
+                                  : (profile?.filesUploaded || 0) >= 8
+                                    ? "text-orange-400"
+                                    : (profile?.filesUploaded || 0) >= 5
+                                      ? "text-yellow-400"
+                                      : "text-green-400"
+                              }`}
+                            >
+                              {Math.round(
+                                ((profile?.filesUploaded || 0) / 10) * 100
+                              )}
+                              %
+                            </span>
+                          </div>
+                          <div className="w-full bg-slate-700/50 rounded-full h-1.5 overflow-hidden">
+                            <div
+                              className={`h-full rounded-full transition-all duration-500 ${
+                                (profile?.filesUploaded || 0) >= 10
+                                  ? "bg-red-500"
+                                  : (profile?.filesUploaded || 0) >= 8
+                                    ? "bg-orange-500"
+                                    : (profile?.filesUploaded || 0) >= 5
+                                      ? "bg-yellow-500"
+                                      : "bg-green-500"
+                              }`}
+                              style={{
+                                width: `${Math.min(100, ((profile?.filesUploaded || 0) / 10) * 100)}%`,
+                              }}
+                            ></div>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs text-slate-400 font-medium">
+                              {Math.max(0, 10 - (profile?.filesUploaded || 0))}{" "}
+                              remaining
+                            </span>
+                            <span className="text-xs text-slate-500 font-medium">
+                              {(profile?.filesUploaded || 0) >= 10
+                                ? "Limit reached"
+                                : "Upload limit"}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="group relative">
+                        <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl opacity-75 group-hover:opacity-100 blur transition duration-200"></div>
+                        <div className="relative flex flex-col gap-1 bg-slate-800 rounded-xl px-4 py-2 border border-purple-500/30">
+                          <div className="flex items-center gap-2">
+                            <svg
+                              className="w-4 h-4 text-purple-400"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                              />
+                            </svg>
+                            <span className="text-xs font-medium text-purple-300">
+                              Member Since
+                            </span>
+                          </div>
+                          <span className="text-sm font-semibold text-white">
+                            {profile?.createdAt
+                              ? new Date(profile.createdAt).toLocaleString(
+                                  "en-US",
+                                  {
+                                    month: "short",
+                                    day: "numeric",
+                                    year: "numeric",
+                                    hour: "numeric",
+                                    minute: "2-digit",
+                                    hour12: true,
+                                  }
+                                )
+                              : "N/A"}
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="flex flex-col space-y-3">
-                  <button
-                    onClick={() => setShowPasswordChange(!showPasswordChange)}
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-medium transition-all duration-200 transform hover:scale-105 shadow-lg"
-                  >
-                    {showPasswordChange ? "Cancel Change" : "Change Password"}
-                  </button>
-                  <Link
-                    to="/dashboard"
-                    className="bg-slate-700 hover:bg-slate-600 text-white px-6 py-3 rounded-xl font-medium transition-all duration-200 text-center border border-slate-600"
-                  >
-                    Go to Dashboard
-                  </Link>
+                  {/* Action Buttons */}
+                  <div className="flex flex-col gap-3 w-full lg:w-auto">
+                    <button
+                      onClick={() => setShowPasswordChange(!showPasswordChange)}
+                      className="group relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-blue-500/50 cursor-pointer"
+                    >
+                      <span className="relative z-10 flex items-center justify-center gap-2">
+                        <svg
+                          className="w-5 h-5"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"
+                          />
+                        </svg>
+                        {showPasswordChange ? "Cancel" : "Change Password"}
+                      </span>
+                    </button>
+
+                    <Link
+                      to="/dashboard"
+                      className="group relative overflow-hidden bg-slate-700/50 hover:bg-slate-600/50 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 border border-slate-600 hover:border-slate-500 text-center"
+                    >
+                      <span className="flex items-center justify-center gap-2">
+                        <svg
+                          className="w-5 h-5"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                          />
+                        </svg>
+                        Dashboard
+                      </span>
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
@@ -322,339 +447,300 @@ const Profile = () => {
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-8">
-              <div className="bg-slate-800/50 backdrop-blur-xl rounded-2xl border border-white/10 p-6">
-                <div className="flex items-center space-x-3 mb-6">
-                  <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center">
-                    <svg
-                      className="w-5 h-5 text-white"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                      />
-                    </svg>
-                  </div>
-                  <h2 className="text-2xl font-bold text-white">
-                    Personal Information
-                  </h2>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="bg-white/5 rounded-xl p-4 border border-white/10">
-                    <label className="block text-sm font-medium text-gray-400 mb-2">
-                      Full Name
-                    </label>
-                    <p className="text-white text-lg font-medium">
-                      {profile?.name || user?.name}
-                    </p>
-                  </div>
-                  <div className="bg-white/5 rounded-xl p-4 border border-white/10">
-                    <label className="block text-sm font-medium text-gray-400 mb-2">
-                      Email Address
-                    </label>
-                    <p className="text-white text-lg font-medium">
-                      {profile?.email || user?.email}
-                    </p>
-                  </div>
-                  <div className="bg-white/5 rounded-xl p-4 border border-white/10 md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-400 mb-2">
-                      Company
-                    </label>
-                    <p className="text-white text-lg font-medium">
-                      {profile?.company_name || user?.company_name}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
               {showPasswordChange && (
-                <div className="bg-slate-800/50 backdrop-blur-xl rounded-2xl border border-white/10 p-6">
-                  <div className="flex items-center space-x-3 mb-6">
-                    <div className="w-10 h-10 bg-green-600 rounded-xl flex items-center justify-center">
-                      <svg
-                        className="w-5 h-5 text-white"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                        />
-                      </svg>
-                    </div>
-                    <h2 className="text-2xl font-bold text-white">
-                      Change Password
-                    </h2>
-                  </div>
-
-                  <div className="space-y-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-2">
-                        Current Password
-                      </label>
+                <div className="relative">
+                  <div className="absolute -inset-0.5 bg-gradient-to-r from-green-500/20 via-emerald-500/20 to-teal-500/20 rounded-2xl blur-xl"></div>
+                  <div className="relative bg-slate-800/90 backdrop-blur-xl rounded-2xl border border-slate-700/50 p-6 md:p-8">
+                    <div className="flex items-center gap-4 mb-6 pb-4 border-b border-slate-700/50">
                       <div className="relative">
-                        <input
-                          type={
-                            passwordVisibility.currentPassword
-                              ? "text"
-                              : "password"
-                          }
-                          value={passwordData.currentPassword}
-                          onChange={(e) =>
-                            handlePasswordInputChange(
-                              "currentPassword",
-                              e.target.value
-                            )
-                          }
-                          className={`w-full px-4 py-3 pr-12 bg-white/5 border rounded-xl focus:ring-2 focus:border-transparent transition-all placeholder-gray-500 ${
-                            passwordErrors.currentPassword
-                              ? "border-red-500/50 bg-red-500/10 text-red-300"
-                              : "border-white/20 text-white focus:ring-blue-500/50 focus:border-blue-500/50"
-                          }`}
-                          placeholder="Enter your current password"
-                        />
+                        <div className="absolute -inset-1 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl blur opacity-75"></div>
+                        <div className="relative w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg">
+                          <svg
+                            className="w-6 h-6 text-white"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                            />
+                          </svg>
+                        </div>
+                      </div>
+                      <div>
+                        <h2 className="text-2xl font-bold text-white">
+                          Change Password
+                        </h2>
+                        <p className="text-sm text-slate-400 mt-1">
+                          Update your account security credentials
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-300 mb-2">
+                          Current Password
+                        </label>
+                        <div className="relative">
+                          <input
+                            type={
+                              passwordVisibility.currentPassword
+                                ? "text"
+                                : "password"
+                            }
+                            value={passwordData.currentPassword}
+                            onChange={(e) =>
+                              handlePasswordInputChange(
+                                "currentPassword",
+                                e.target.value
+                              )
+                            }
+                            className={`w-full px-4 py-3 pr-12 bg-white/5 border rounded-xl focus:ring-2 focus:border-transparent transition-all placeholder-gray-500 ${
+                              passwordErrors.currentPassword
+                                ? "border-red-500/50 bg-red-500/10 text-red-300"
+                                : "border-white/20 text-white focus:ring-blue-500/50 focus:border-blue-500/50"
+                            }`}
+                            placeholder="Enter your current password"
+                          />
+                          <button
+                            type="button"
+                            onClick={() =>
+                              togglePasswordVisibility("currentPassword")
+                            }
+                            className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-300 transition-colors"
+                          >
+                            {passwordVisibility.currentPassword ? (
+                              <svg
+                                className="w-5 h-5"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"
+                                />
+                              </svg>
+                            ) : (
+                              <svg
+                                className="w-5 h-5"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                                />
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                                />
+                              </svg>
+                            )}
+                          </button>
+                        </div>
+                        {passwordErrors.currentPassword && (
+                          <p className="mt-2 text-sm text-red-400">
+                            {passwordErrors.currentPassword}
+                          </p>
+                        )}
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-300 mb-2">
+                            New Password
+                          </label>
+                          <div className="relative">
+                            <input
+                              type={
+                                passwordVisibility.newPassword
+                                  ? "text"
+                                  : "password"
+                              }
+                              value={passwordData.newPassword}
+                              onChange={(e) =>
+                                handlePasswordInputChange(
+                                  "newPassword",
+                                  e.target.value
+                                )
+                              }
+                              className={`w-full px-4 py-3 pr-12 bg-white/5 border rounded-xl focus:ring-2 focus:border-transparent transition-all placeholder-gray-500 ${
+                                passwordErrors.newPassword
+                                  ? "border-red-500/50 bg-red-500/10 text-red-300"
+                                  : "border-white/20 text-white focus:ring-blue-500/50 focus:border-blue-500/50"
+                              }`}
+                              placeholder="Enter your new password"
+                            />
+                            <button
+                              type="button"
+                              onClick={() =>
+                                togglePasswordVisibility("newPassword")
+                              }
+                              className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-300 transition-colors"
+                            >
+                              {passwordVisibility.newPassword ? (
+                                <svg
+                                  className="w-5 h-5"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"
+                                  />
+                                </svg>
+                              ) : (
+                                <svg
+                                  className="w-5 h-5"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                                  />
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                                  />
+                                </svg>
+                              )}
+                            </button>
+                          </div>
+                          {passwordErrors.newPassword && (
+                            <p className="mt-2 text-sm text-red-400">
+                              {passwordErrors.newPassword}
+                            </p>
+                          )}
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-medium text-gray-300 mb-2">
+                            Confirm Password
+                          </label>
+                          <div className="relative">
+                            <input
+                              type={
+                                passwordVisibility.confirmPassword
+                                  ? "text"
+                                  : "password"
+                              }
+                              value={passwordData.confirmPassword}
+                              onChange={(e) =>
+                                handlePasswordInputChange(
+                                  "confirmPassword",
+                                  e.target.value
+                                )
+                              }
+                              className={`w-full px-4 py-3 pr-12 bg-white/5 border rounded-xl focus:ring-2 focus:border-transparent transition-all placeholder-gray-500 ${
+                                passwordErrors.confirmPassword
+                                  ? "border-red-500/50 bg-red-500/10 text-red-300"
+                                  : "border-white/20 text-white focus:ring-blue-500/50 focus:border-blue-500/50"
+                              }`}
+                              placeholder="Confirm your new password"
+                            />
+                            <button
+                              type="button"
+                              onClick={() =>
+                                togglePasswordVisibility("confirmPassword")
+                              }
+                              className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-300 transition-colors"
+                            >
+                              {passwordVisibility.confirmPassword ? (
+                                <svg
+                                  className="w-5 h-5"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"
+                                  />
+                                </svg>
+                              ) : (
+                                <svg
+                                  className="w-5 h-5"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                                  />
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                                  />
+                                </svg>
+                              )}
+                            </button>
+                          </div>
+                          {passwordErrors.confirmPassword && (
+                            <p className="mt-2 text-sm text-red-400">
+                              {passwordErrors.confirmPassword}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="flex space-x-4 pt-4">
                         <button
-                          type="button"
-                          onClick={() =>
-                            togglePasswordVisibility("currentPassword")
-                          }
-                          className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-300 transition-colors"
+                          onClick={handlePasswordChange}
+                          disabled={isChangingPassword}
+                          className="flex-1 bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-600 hover:to-teal-600 text-white py-3 px-6 rounded-xl font-medium transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none shadow-lg cursor-pointer"
                         >
-                          {passwordVisibility.currentPassword ? (
-                            <svg
-                              className="w-5 h-5"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"
-                              />
-                            </svg>
+                          {isChangingPassword ? (
+                            <div className="flex items-center justify-center">
+                              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                              Updating Password...
+                            </div>
                           ) : (
-                            <svg
-                              className="w-5 h-5"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                              />
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                              />
-                            </svg>
+                            "Update Password"
                           )}
                         </button>
+                        <button
+                          onClick={() => {
+                            setShowPasswordChange(false);
+                            setPasswordData({
+                              currentPassword: "",
+                              newPassword: "",
+                              confirmPassword: "",
+                            });
+                            setPasswordErrors({});
+                          }}
+                          className="px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-xl font-medium transition-all duration-200 border border-white/20 cursor-pointer"
+                        >
+                          Cancel
+                        </button>
                       </div>
-                      {passwordErrors.currentPassword && (
-                        <p className="mt-2 text-sm text-red-400">
-                          {passwordErrors.currentPassword}
-                        </p>
-                      )}
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-2">
-                          New Password
-                        </label>
-                        <div className="relative">
-                          <input
-                            type={
-                              passwordVisibility.newPassword
-                                ? "text"
-                                : "password"
-                            }
-                            value={passwordData.newPassword}
-                            onChange={(e) =>
-                              handlePasswordInputChange(
-                                "newPassword",
-                                e.target.value
-                              )
-                            }
-                            className={`w-full px-4 py-3 pr-12 bg-white/5 border rounded-xl focus:ring-2 focus:border-transparent transition-all placeholder-gray-500 ${
-                              passwordErrors.newPassword
-                                ? "border-red-500/50 bg-red-500/10 text-red-300"
-                                : "border-white/20 text-white focus:ring-blue-500/50 focus:border-blue-500/50"
-                            }`}
-                            placeholder="Enter your new password"
-                          />
-                          <button
-                            type="button"
-                            onClick={() =>
-                              togglePasswordVisibility("newPassword")
-                            }
-                            className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-300 transition-colors"
-                          >
-                            {passwordVisibility.newPassword ? (
-                              <svg
-                                className="w-5 h-5"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"
-                                />
-                              </svg>
-                            ) : (
-                              <svg
-                                className="w-5 h-5"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                                />
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                                />
-                              </svg>
-                            )}
-                          </button>
-                        </div>
-                        {passwordErrors.newPassword && (
-                          <p className="mt-2 text-sm text-red-400">
-                            {passwordErrors.newPassword}
-                          </p>
-                        )}
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-2">
-                          Confirm Password
-                        </label>
-                        <div className="relative">
-                          <input
-                            type={
-                              passwordVisibility.confirmPassword
-                                ? "text"
-                                : "password"
-                            }
-                            value={passwordData.confirmPassword}
-                            onChange={(e) =>
-                              handlePasswordInputChange(
-                                "confirmPassword",
-                                e.target.value
-                              )
-                            }
-                            className={`w-full px-4 py-3 pr-12 bg-white/5 border rounded-xl focus:ring-2 focus:border-transparent transition-all placeholder-gray-500 ${
-                              passwordErrors.confirmPassword
-                                ? "border-red-500/50 bg-red-500/10 text-red-300"
-                                : "border-white/20 text-white focus:ring-blue-500/50 focus:border-blue-500/50"
-                            }`}
-                            placeholder="Confirm your new password"
-                          />
-                          <button
-                            type="button"
-                            onClick={() =>
-                              togglePasswordVisibility("confirmPassword")
-                            }
-                            className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-300 transition-colors"
-                          >
-                            {passwordVisibility.confirmPassword ? (
-                              <svg
-                                className="w-5 h-5"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"
-                                />
-                              </svg>
-                            ) : (
-                              <svg
-                                className="w-5 h-5"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                                />
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                                />
-                              </svg>
-                            )}
-                          </button>
-                        </div>
-                        {passwordErrors.confirmPassword && (
-                          <p className="mt-2 text-sm text-red-400">
-                            {passwordErrors.confirmPassword}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-
-                    <div className="flex space-x-4 pt-4">
-                      <button
-                        onClick={handlePasswordChange}
-                        disabled={isChangingPassword}
-                        className="flex-1 bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-600 hover:to-teal-600 text-white py-3 px-6 rounded-xl font-medium transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none shadow-lg"
-                      >
-                        {isChangingPassword ? (
-                          <div className="flex items-center justify-center">
-                            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                            Updating Password...
-                          </div>
-                        ) : (
-                          "Update Password"
-                        )}
-                      </button>
-                      <button
-                        onClick={() => {
-                          setShowPasswordChange(false);
-                          setPasswordData({
-                            currentPassword: "",
-                            newPassword: "",
-                            confirmPassword: "",
-                          });
-                          setPasswordErrors({});
-                        }}
-                        className="px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-xl font-medium transition-all duration-200 border border-white/20"
-                      >
-                        Cancel
-                      </button>
                     </div>
                   </div>
                 </div>
@@ -662,83 +748,6 @@ const Profile = () => {
             </div>
 
             <div className="space-y-8">
-              <div className="bg-slate-800/50 backdrop-blur-xl rounded-2xl border border-white/10 p-6">
-                <div className="flex items-center space-x-3 mb-6">
-                  <div className="w-10 h-10 bg-purple-600 rounded-xl flex items-center justify-center">
-                    <svg
-                      className="w-5 h-5 text-white"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                      />
-                    </svg>
-                  </div>
-                  <h2 className="text-2xl font-bold text-white">Statistics</h2>
-                </div>
-
-                <div className="space-y-4">
-                  <div className="bg-blue-600/20 rounded-xl p-4 border border-blue-500/20">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-blue-300 text-sm font-medium">
-                          Files Uploaded
-                        </p>
-                        <p className="text-white text-2xl font-bold">
-                          {profile?.filesUploaded || 0}
-                        </p>
-                      </div>
-                      <div className="w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center">
-                        <svg
-                          className="w-6 h-6 text-blue-400"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                          />
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-green-600/20 rounded-xl p-4 border border-green-500/20">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-green-300 text-sm font-medium">
-                          Account Status
-                        </p>
-                        <p className="text-white text-2xl font-bold">Active</p>
-                      </div>
-                      <div className="w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center">
-                        <svg
-                          className="w-6 h-6 text-green-400"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                          />
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
               <div className="bg-slate-800/50 backdrop-blur-xl rounded-2xl border border-white/10 p-6">
                 <div className="flex items-center space-x-3 mb-6">
                   <div className="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center">
@@ -770,7 +779,7 @@ const Profile = () => {
                 <div className="space-y-3">
                   <button
                     onClick={handleLogout}
-                    className="w-full bg-red-600 hover:bg-red-700 text-white py-3 px-4 rounded-xl font-medium transition-all duration-200 transform hover:scale-105 shadow-lg flex items-center justify-center space-x-2"
+                    className="w-full bg-red-600 hover:bg-red-700 text-white py-3 px-4 rounded-xl font-medium transition-all duration-200 transform hover:scale-105 shadow-lg flex items-center justify-center space-x-2 cursor-pointer"
                   >
                     <svg
                       className="w-4 h-4"
