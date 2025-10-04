@@ -39,7 +39,13 @@ const Dashboard = () => {
     setRoleRecommendationsState(value);
     localStorage.setItem("hiredesk_roleRecommendations", JSON.stringify(value));
   };
-  const [questions, setQuestions] = useState([]);
+
+  const [questionsState, setQuestionsState] = useState<any[]>([]);
+
+  const setQuestions = (value: any[]) => {
+    setQuestionsState(value);
+    localStorage.setItem("hiredesk_questions", JSON.stringify(value));
+  };
   const [error, setError] = useState<{
     show: boolean;
     message: string;
@@ -134,10 +140,6 @@ const Dashboard = () => {
     localStorage.setItem("hiredesk_reasoning", reasoning);
   }, [reasoning]);
 
-  useEffect(() => {
-    localStorage.setItem("hiredesk_questions", JSON.stringify(questions));
-  }, [questions]);
-
   const clearPersistedData = () => {
     localStorage.removeItem("hiredesk_resumeData");
     localStorage.removeItem("hiredesk_fitStatus");
@@ -215,8 +217,17 @@ const Dashboard = () => {
       formData.append("target_role", targetRole);
       formData.append("job_description", jobDescription);
 
+      const token = localStorage.getItem("accessToken");
+
+      if (!token) {
+        throw new Error("Authentication token not found. Please login again.");
+      }
+
       const response = await fetch(HIREDESK_ANALYZE, {
         method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
         body: formData,
         mode: "cors",
       });
@@ -1101,7 +1112,7 @@ const Dashboard = () => {
             </section>
           )}
 
-          {questions.length > 0 && (
+          {questionsState.length > 0 && (
             <section className="mb-12 sm:mb-16">
               <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl border border-slate-700/50">
                 <div className="relative bg-gradient-to-r from-purple-600/20 to-indigo-600/20 px-4 sm:px-6 md:px-8 py-4 sm:py-6 border-b border-slate-700/50">
@@ -1150,7 +1161,7 @@ const Dashboard = () => {
                 </div>
 
                 <div className="p-4 sm:p-6 md:p-8">
-                  <GeneratedQuestions questions={questions} />
+                  <GeneratedQuestions questions={questionsState} />
                 </div>
               </div>
             </section>
