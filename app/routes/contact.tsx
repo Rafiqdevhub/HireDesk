@@ -3,6 +3,8 @@ import { Link } from "react-router";
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
 import type { Route } from "./+types/contact";
+import emailjs from "@emailjs/browser";
+import { useToast } from "../contexts/ToastContext";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -16,6 +18,7 @@ export function meta({}: Route.MetaArgs) {
 }
 
 const Contact = () => {
+  const { showToast } = useToast();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -23,10 +26,6 @@ const Contact = () => {
     message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<{
-    type: "success" | "error" | null;
-    message: string;
-  }>({ type: null, message: "" });
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -40,18 +39,45 @@ const Contact = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setSubmitStatus({ type: null, message: "" });
 
-    // Simulate API call
-    setTimeout(() => {
-      setSubmitStatus({
-        type: "success",
-        message:
+    try {
+      emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
+      const result = await emailjs.send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        {
+          from_name: formData.name,
+          from_email: formData.email,
+          subject: formData.subject,
+          message: formData.message,
+          to_email: "rafkhan9323@gmail.com",
+        }
+      );
+
+      if (result.status === 200) {
+        showToast(
           "Thank you for reaching out! We'll get back to you within 24 hours.",
-      });
-      setFormData({ name: "", email: "", subject: "", message: "" });
+          "success",
+          {
+            title: "Message Sent!",
+            duration: 5000,
+          }
+        );
+        setFormData({ name: "", email: "", subject: "", message: "" });
+      }
+    } catch (error) {
+      console.error("EmailJS Error:", error);
+      showToast(
+        "Failed to send message. Please try again or contact us directly at rafkhan9323@gmail.com",
+        "error",
+        {
+          title: "Error Sending Message",
+          duration: 7000,
+        }
+      );
+    } finally {
       setIsSubmitting(false);
-    }, 1500);
+    }
   };
 
   return (
@@ -261,42 +287,6 @@ const Contact = () => {
                     questions, or want to learn more about our features, we're
                     here to help!
                   </p>
-
-                  {submitStatus.type && (
-                    <div
-                      className={`mb-6 p-4 rounded-xl border ${
-                        submitStatus.type === "success"
-                          ? "bg-green-500/10 border-green-500/30 text-green-300"
-                          : "bg-red-500/10 border-red-500/30 text-red-300"
-                      }`}
-                    >
-                      <div className="flex items-start gap-3">
-                        <svg
-                          className="w-5 h-5 mt-0.5 flex-shrink-0"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          {submitStatus.type === "success" ? (
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                            />
-                          ) : (
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                            />
-                          )}
-                        </svg>
-                        <p>{submitStatus.message}</p>
-                      </div>
-                    </div>
-                  )}
 
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
