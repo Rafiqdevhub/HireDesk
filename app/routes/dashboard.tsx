@@ -10,6 +10,7 @@ import { getErrorCategory, formatErrorMessage } from "../utils/errorHandler";
 import StandardQuestions from "../components/StandardQuestions";
 import { features } from "../data/features";
 import { HIREDESK_ANALYZE } from "~/utils/api";
+import RateLimitModal from "../components/ui/RateLimitModal";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -66,6 +67,7 @@ const Dashboard = () => {
   >("success");
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const [dataLoadedFromStorage, setDataLoadedFromStorage] = useState(false);
+  const [showRateLimitModal, setShowRateLimitModal] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -169,6 +171,15 @@ const Dashboard = () => {
   }, [showProfileDropdown]);
 
   const handleFileUpload = async (file: File) => {
+    // Check rate limit before proceeding
+    const uploadLimit = 10;
+    const filesUploaded = user?.filesUploaded || 0;
+
+    if (filesUploaded >= uploadLimit) {
+      setShowRateLimitModal(true);
+      return;
+    }
+
     clearPersistedData();
     setResumeData(null);
     setFitStatus("");
@@ -1215,6 +1226,12 @@ const Dashboard = () => {
               onClose={handleToastClose}
             />
           )}
+          <RateLimitModal
+            isOpen={showRateLimitModal}
+            onClose={() => setShowRateLimitModal(false)}
+            filesUploaded={user?.filesUploaded || 0}
+            uploadLimit={10}
+          />
         </main>
       </div>
     </ProtectedRoute>
