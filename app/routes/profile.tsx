@@ -23,6 +23,9 @@ const Profile = () => {
   const [error, setError] = useState<string | null>(null);
 
   const [showPasswordChange, setShowPasswordChange] = useState(false);
+  const [showNameEdit, setShowNameEdit] = useState(false);
+  const [newName, setNewName] = useState("");
+  const [nameError, setNameError] = useState<string | null>(null);
   const [passwordData, setPasswordData] = useState({
     currentPassword: "",
     newPassword: "",
@@ -103,7 +106,7 @@ const Profile = () => {
 
     try {
       setIsChangingPassword(true);
-      await authService.changePassword({
+      await authService.updateProfile({
         currentPassword: passwordData.currentPassword,
         newPassword: passwordData.newPassword,
         confirmPassword: passwordData.confirmPassword,
@@ -118,6 +121,39 @@ const Profile = () => {
       setShowPasswordChange(false);
     } catch (error) {
       throw error;
+    } finally {
+      setIsChangingPassword(false);
+    }
+  };
+
+  const handleNameUpdate = async () => {
+    if (!newName.trim()) {
+      setNameError("Name cannot be empty");
+      return;
+    }
+
+    if (newName.trim() === (profile?.name || user?.name)) {
+      setNameError("New name must be different from current name");
+      return;
+    }
+
+    try {
+      setIsChangingPassword(true); // Reusing this state for loading
+      setNameError(null);
+
+      const updatedUser = await authService.updateProfile({
+        name: newName.trim(),
+      });
+
+      // Update local state
+      setProfile((prev: any) =>
+        prev ? { ...prev, name: updatedUser.name } : null
+      );
+
+      setShowNameEdit(false);
+      setNewName("");
+    } catch (error: any) {
+      setNameError(error.message || "Failed to update name");
     } finally {
       setIsChangingPassword(false);
     }
@@ -214,8 +250,6 @@ const Profile = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
       <Navbar />
-
-      {/* Hero Section with Profile Card */}
       <div className="pt-20 pb-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
           <div className="relative mb-8">
@@ -244,11 +278,54 @@ const Profile = () => {
                   </div>
                   <div className="flex-1 text-center lg:text-left">
                     <div className="mb-4">
-                      <h1 className="text-4xl md:text-5xl font-bold mb-2">
-                        <span className="bg-gradient-to-r from-blue-300 via-purple-300 to-indigo-300 bg-clip-text text-transparent">
-                          {profile?.name || user?.name}
-                        </span>
-                      </h1>
+                      {showNameEdit ? (
+                        <div className="space-y-4">
+                          <input
+                            type="text"
+                            value={newName}
+                            onChange={(e) => {
+                              setNewName(e.target.value);
+                              setNameError(null);
+                            }}
+                            className={`w-full px-4 py-3 bg-white/5 border rounded-xl focus:ring-2 focus:border-transparent transition-all placeholder-gray-500 ${
+                              nameError
+                                ? "border-red-500/50 bg-red-500/10 text-red-300"
+                                : "border-white/20 text-white focus:ring-blue-500/50 focus:border-blue-500/50"
+                            }`}
+                            placeholder="Enter your full name"
+                          />
+                          {nameError && (
+                            <p className="text-sm text-red-400">{nameError}</p>
+                          )}
+                          <div className="flex gap-3">
+                            <button
+                              onClick={handleNameUpdate}
+                              disabled={isChangingPassword}
+                              className="px-6 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 text-white rounded-xl font-medium transition-all duration-200 disabled:opacity-50 cursor-pointer"
+                            >
+                              {isChangingPassword
+                                ? "Updating..."
+                                : "Update Name"}
+                            </button>
+                            <button
+                              onClick={() => {
+                                setShowNameEdit(false);
+                                setNewName("");
+                                setNameError(null);
+                              }}
+                              className="px-6 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl font-medium transition-all duration-200 border border-white/20 cursor-pointer"
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <h1 className="text-4xl md:text-5xl font-bold mb-2">
+                          <span className="bg-gradient-to-r from-blue-300 via-purple-300 to-indigo-300 bg-clip-text text-transparent">
+                            {profile?.name || user?.name}
+                          </span>
+                        </h1>
+                      )}
                       <p className="text-xl text-slate-300 font-medium flex items-center justify-center lg:justify-start gap-2">
                         <svg
                           className="w-5 h-5 text-purple-400"
@@ -394,8 +471,34 @@ const Profile = () => {
                     </div>
                   </div>
 
-                  {/* Action Buttons */}
                   <div className="flex flex-col gap-3 w-full lg:w-auto">
+                    <button
+                      onClick={() => {
+                        setShowNameEdit(!showNameEdit);
+                        if (!showNameEdit) {
+                          setNewName(profile?.name || user?.name || "");
+                        }
+                      }}
+                      className="group relative overflow-hidden bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-green-500/50 cursor-pointer"
+                    >
+                      <span className="relative z-10 flex items-center justify-center gap-2">
+                        <svg
+                          className="w-5 h-5"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                          />
+                        </svg>
+                        {showNameEdit ? "Cancel" : "Change Name"}
+                      </span>
+                    </button>
+
                     <button
                       onClick={() => setShowPasswordChange(!showPasswordChange)}
                       className="group relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-blue-500/50 cursor-pointer"

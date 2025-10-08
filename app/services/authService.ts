@@ -156,10 +156,11 @@ export interface ResetPasswordRequest {
   newPassword: string;
 }
 
-export interface ChangePasswordRequest {
-  currentPassword: string;
-  newPassword: string;
-  confirmPassword: string;
+export interface UpdateProfileRequest {
+  name?: string;
+  currentPassword?: string;
+  newPassword?: string;
+  confirmPassword?: string;
 }
 
 export const authService = {
@@ -268,20 +269,22 @@ export const authService = {
     }
   },
 
-  async changePassword(changeData: ChangePasswordRequest): Promise<void> {
+  async updateProfile(updateData: UpdateProfileRequest): Promise<User> {
     try {
-      const response = await api.post<AuthResponse>(
-        "/auth/change-password",
-        changeData
+      const response = await api.put<AuthResponse>(
+        "/auth/update-profile",
+        updateData
       );
 
-      if (!response.data.success) {
-        throw new Error(response.data.message || "Password change failed");
+      if (!response.data.success || !response.data.data) {
+        throw new Error(response.data.message || "Profile update failed");
       }
+
+      return response.data.data as User;
     } catch (error: any) {
       const errorMessage = extractErrorMessage(
         error,
-        "Password change failed. Please try again."
+        "Profile update failed. Please try again."
       );
       throw new Error(errorMessage);
     }
