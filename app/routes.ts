@@ -7,6 +7,9 @@ export default [
   route("/login", "routes/login.tsx"),
   route("/signup", "routes/signup.tsx"),
   route("/dashboard", "routes/dashboard.tsx"),
+  route("/hiredesk-analyze", "routes/hiredesk-analyze.tsx"),
+  route("/batch-analyze", "routes/batch-analyze.tsx"),
+  route("/compare-resumes", "routes/compare-resumes.tsx"),
   route("/profile", "routes/profile.tsx"),
   route("*", "routes/404.tsx"),
 ] satisfies RouteConfig;

@@ -54,7 +54,7 @@ const Home = () => {
                 to="/dashboard"
                 className="bg-blue-600 text-white px-10 py-5 rounded-xl hover:bg-blue-700 transition-all duration-300 font-semibold text-lg shadow-2xl hover:shadow-blue-500/25 transform hover:-translate-y-1 hover:scale-105"
               >
-                HireDesk
+                Open HireDesk
               </Link>
             </div>
           </div>
