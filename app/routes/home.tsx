@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 import type { Route } from "./+types/home";
-import Navbar from "../components/layout/Navbar";
-import Footer from "~/components/layout/Footer";
+import Navbar from "@components/layout/Navbar";
+import Footer from "@components/layout/Footer";
 
 export function meta({}: Route.MetaArgs) {
   return [

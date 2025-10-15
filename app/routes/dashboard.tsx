@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import type { Route } from "./+types/dashboard";
-import ProtectedRoute from "../components/auth/ProtectedRoute";
+import ProtectedRoute from "@components/auth/ProtectedRoute";
 import { useAuth } from "../contexts/AuthContext";
 import { useState, useEffect, useRef } from "react";
 

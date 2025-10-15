@@ -1,6 +1,5 @@
-import { Link } from "react-router";
 import type { Route } from "../routes/+types/about";
-import Navbar from "../components/layout/Navbar";
+import Navbar from "@components/layout/Navbar";
 
 export function meta({}: Route.MetaArgs) {
   return [

@@ -1,13 +1,11 @@
 import { Link } from "react-router";
 import type { Route } from "./+types/batch-analyze";
-import ProtectedRoute from "../components/auth/ProtectedRoute";
+import ProtectedRoute from "@components/auth/ProtectedRoute";
 import { useAuth } from "../contexts/AuthContext";
 import { useState, useEffect, useRef } from "react";
 import { getErrorCategory, formatErrorMessage } from "../utils/errorHandler";
 import { HIREDESK_ANALYZE } from "~/utils/api";
-import RateLimitModal from "../components/ui/RateLimitModal";
 import Toast from "../components/toast/Toast";
-import ResumeUpload from "../components/resume/ResumeUpload";
 
 const batchFeatures = [
   {

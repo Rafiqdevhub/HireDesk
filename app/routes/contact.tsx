@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { Link } from "react-router";
-import Navbar from "../components/layout/Navbar";
-import Footer from "../components/layout/Footer";
+import Navbar from "@components/layout/Navbar";
+import Footer from "@components/layout/Footer";
 import type { Route } from "./+types/contact";
 import emailjs from "@emailjs/browser";
 import { useToast } from "../contexts/ToastContext";
