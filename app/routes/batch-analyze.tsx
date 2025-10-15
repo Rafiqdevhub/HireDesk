@@ -176,7 +176,6 @@ const BatchAnalyze = () => {
       }
     }
 
-    setCurrentFiles(files);
     setBatchResults([]);
     setIsLoading(true);
     setError({
@@ -250,6 +249,79 @@ const BatchAnalyze = () => {
       });
       setIsLoading(false);
     }
+  };
+
+  const handleAddFiles = (newFiles: File[]) => {
+    // Validate each new file
+    for (const file of newFiles) {
+      if (!file.type.match(/pdf|msword|officedocument/)) {
+        setError({
+          show: true,
+          message: `File "${file.name}" is not supported. Please upload only PDF or Word documents.`,
+          type: "warning",
+          category: "file",
+          originalError: "Unsupported file type",
+        });
+        return;
+      }
+
+      if (file.size > 10 * 1024 * 1024) {
+        // 10MB
+        setError({
+          show: true,
+          message: `File "${file.name}" exceeds 10MB limit.`,
+          type: "warning",
+          category: "file",
+          originalError: "File too large",
+        });
+        return;
+      }
+
+      // Check for duplicates
+      if (
+        currentFiles.some(
+          (existingFile) =>
+            existingFile.name === file.name && existingFile.size === file.size
+        )
+      ) {
+        setError({
+          show: true,
+          message: `File "${file.name}" is already added.`,
+          type: "warning",
+          category: "file",
+          originalError: "Duplicate file",
+        });
+        return;
+      }
+    }
+
+    // Check total limit
+    if (currentFiles.length + newFiles.length > 10) {
+      setError({
+        show: true,
+        message: `Cannot add ${newFiles.length} more files. Maximum 10 files allowed (currently have ${currentFiles.length}).`,
+        type: "warning",
+        category: "file",
+        originalError: "Too many files",
+      });
+      return;
+    }
+
+    // Add files to current files
+    setCurrentFiles((prev) => [...prev, ...newFiles]);
+
+    // Clear any previous errors
+    setError({
+      show: false,
+      message: "",
+      type: "error",
+      category: null,
+      originalError: null,
+    });
+  };
+
+  const handleRemoveFile = (index: number) => {
+    setCurrentFiles((prev) => prev.filter((_, i) => i !== index));
   };
 
   const handleReset = () => {
@@ -755,34 +827,88 @@ const BatchAnalyze = () => {
                                     e.target.files || []
                                   );
                                   if (files.length > 0) {
-                                    handleFileUpload(files);
+                                    handleAddFiles(files);
+                                    // Clear the input so user can select the same files again if needed
+                                    e.target.value = "";
                                   }
                                 }}
                                 className="w-full bg-slate-700/50 border border-slate-600/30 rounded-lg sm:rounded-xl px-3 sm:px-4 py-3 sm:py-4 text-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-green-600 file:text-white hover:file:bg-green-700 transition-all duration-300 text-sm sm:text-base"
                               />
                               <p className="text-xs text-slate-400">
-                                Upload 2-10 PDF or Word documents (max 10MB
-                                each)
+                                Select files to add to your batch (
+                                {currentFiles.length}/10 selected)
                               </p>
                             </div>
+
+                            {currentFiles.length > 0 && (
+                              <div className="mt-4 space-y-2">
+                                <p className="text-sm text-slate-400">
+                                  Selected files:
+                                </p>
+                                <div className="space-y-2 max-h-40 overflow-y-auto">
+                                  {currentFiles.map((file, index) => (
+                                    <div
+                                      key={`${file.name}-${file.size}-${index}`}
+                                      className="flex items-center justify-between bg-slate-700/50 rounded-lg px-3 py-2"
+                                    >
+                                      <div className="flex items-center space-x-2 flex-1 min-w-0">
+                                        <svg
+                                          className="h-4 w-4 text-green-400 flex-shrink-0"
+                                          fill="none"
+                                          viewBox="0 0 24 24"
+                                          stroke="currentColor"
+                                        >
+                                          <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M9 12h6m-6-4h6m-6 8h6m-7-4h.01M4 12a8 8 0 1116 0 8 8 0 01-16 0z"
+                                          />
+                                        </svg>
+                                        <span className="text-sm text-white truncate">
+                                          {file.name}
+                                        </span>
+                                        <span className="text-xs text-slate-400 flex-shrink-0">
+                                          (
+                                          {(file.size / 1024 / 1024).toFixed(1)}
+                                          MB)
+                                        </span>
+                                      </div>
+                                      <button
+                                        onClick={() => handleRemoveFile(index)}
+                                        className="text-red-400 hover:text-red-300 transition-colors flex-shrink-0 ml-2"
+                                        title="Remove file"
+                                      >
+                                        <svg
+                                          className="h-4 w-4"
+                                          fill="none"
+                                          viewBox="0 0 24 24"
+                                          stroke="currentColor"
+                                        >
+                                          <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M6 18L18 6M6 6l12 12"
+                                          />
+                                        </svg>
+                                      </button>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
                           </div>
                         </div>
 
                         <div className="text-center">
                           <button
                             onClick={() => {
-                              const fileInput = document.querySelector(
-                                'input[type="file"]'
-                              ) as HTMLInputElement;
-                              if (
-                                fileInput &&
-                                fileInput.files &&
-                                fileInput.files.length > 0
-                              ) {
-                                handleFileUpload(Array.from(fileInput.files));
+                              if (currentFiles.length > 0) {
+                                handleFileUpload(currentFiles);
                               }
                             }}
-                            disabled={isLoading}
+                            disabled={isLoading || currentFiles.length < 2}
                             className="group relative inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white font-semibold rounded-xl sm:rounded-2xl transition-all duration-300 shadow-lg hover:shadow-green-500/25 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none cursor-pointer"
                           >
                             {isLoading ? (
@@ -807,7 +933,8 @@ const BatchAnalyze = () => {
                                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                                   ></path>
                                 </svg>
-                                Analyzing Resumes...
+                                Analyzing {currentFiles.length} Resume
+                                {currentFiles.length !== 1 ? "s" : ""}...
                               </>
                             ) : (
                               <>
@@ -824,7 +951,8 @@ const BatchAnalyze = () => {
                                     d="M13 10V3L4 14h7v7l9-11h-7z"
                                   />
                                 </svg>
-                                Analyze Batch
+                                Analyze {currentFiles.length} Resume
+                                {currentFiles.length !== 1 ? "s" : ""}
                               </>
                             )}
                           </button>
