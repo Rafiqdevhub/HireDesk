@@ -109,8 +109,10 @@ const Contact = () => {
               </span>
             </h1>
             <p className="text-xl text-slate-300 max-w-2xl mx-auto">
-              Have questions about HireDesk? Need to upgrade your plan? We're
-              here to help you streamline your hiring process.
+              Questions about our three analysis methods? Need help choosing
+              between Individual Deep Analysis, Batch Processing, or
+              Side-by-Side Comparison? We're here to help you streamline your
+              hiring process with AI-powered insights.
             </p>
           </div>
 
@@ -151,36 +153,9 @@ const Contact = () => {
           </div>
           <div className="mb-12">
             <h2 className="text-3xl font-bold text-white text-center mb-8">
-              How Can We Help You Today?
+              Three Analysis Methods, One Powerful Platform
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="relative group">
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-2xl opacity-75 group-hover:opacity-100 blur transition duration-200"></div>
-                <div className="relative bg-slate-800 rounded-2xl p-6 h-full border border-slate-700">
-                  <div className="w-12 h-12 bg-emerald-500/20 rounded-xl flex items-center justify-center mb-4">
-                    <svg
-                      className="w-6 h-6 text-emerald-400"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-                      />
-                    </svg>
-                  </div>
-                  <h3 className="text-lg font-bold text-white mb-2">
-                    Upgrade Plan
-                  </h3>
-                  <p className="text-sm text-slate-400">
-                    Need more than 10 uploads? Let's discuss Premium or
-                    Enterprise plans tailored to your needs.
-                  </p>
-                </div>
-              </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="relative group">
                 <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl opacity-75 group-hover:opacity-100 blur transition duration-200"></div>
                 <div className="relative bg-slate-800 rounded-2xl p-6 h-full border border-slate-700">
@@ -195,23 +170,52 @@ const Contact = () => {
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         strokeWidth={2}
-                        d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-                      />
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
                       />
                     </svg>
                   </div>
                   <h3 className="text-lg font-bold text-white mb-2">
-                    Technical Support
+                    Individual Deep Analysis
                   </h3>
-                  <p className="text-sm text-slate-400">
-                    Experiencing issues? Our technical team is ready to help you
-                    resolve any problems quickly.
+                  <p className="text-sm text-slate-400 mb-3">
+                    Comprehensive AI analysis for single candidates with
+                    personality insights, career trajectory, and tailored
+                    interview questions.
                   </p>
+                  <div className="text-xs text-blue-400 font-semibold">
+                    Perfect for final candidate evaluation
+                  </div>
+                </div>
+              </div>
+              <div className="relative group">
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl opacity-75 group-hover:opacity-100 blur transition duration-200"></div>
+                <div className="relative bg-slate-800 rounded-2xl p-6 h-full border border-slate-700">
+                  <div className="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center mb-4">
+                    <svg
+                      className="w-6 h-6 text-green-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                      />
+                    </svg>
+                  </div>
+                  <h3 className="text-lg font-bold text-white mb-2">
+                    Batch Processing (2-10)
+                  </h3>
+                  <p className="text-sm text-slate-400 mb-3">
+                    Process multiple resumes simultaneously with automated
+                    ranking and consistent evaluation criteria for large
+                    applicant pools.
+                  </p>
+                  <div className="text-xs text-green-400 font-semibold">
+                    Perfect for initial screening phases
+                  </div>
                 </div>
               </div>
               <div className="relative group">
@@ -228,44 +232,21 @@ const Contact = () => {
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         strokeWidth={2}
-                        d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
                       />
                     </svg>
                   </div>
                   <h3 className="text-lg font-bold text-white mb-2">
-                    Feature Requests
+                    Side-by-Side Comparison (2-5)
                   </h3>
-                  <p className="text-sm text-slate-400">
-                    Have an idea to make HireDesk better? We'd love to hear your
-                    suggestions and feedback!
+                  <p className="text-sm text-slate-400 mb-3">
+                    Compare top candidates visually with intelligent ranking
+                    algorithms for objective final decision-making between
+                    similar candidates.
                   </p>
-                </div>
-              </div>
-              <div className="relative group">
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-orange-500 to-red-500 rounded-2xl opacity-75 group-hover:opacity-100 blur transition duration-200"></div>
-                <div className="relative bg-slate-800 rounded-2xl p-6 h-full border border-slate-700">
-                  <div className="w-12 h-12 bg-orange-500/20 rounded-xl flex items-center justify-center mb-4">
-                    <svg
-                      className="w-6 h-6 text-orange-400"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                      />
-                    </svg>
+                  <div className="text-xs text-purple-400 font-semibold">
+                    Perfect for final candidate selection
                   </div>
-                  <h3 className="text-lg font-bold text-white mb-2">
-                    Partnerships
-                  </h3>
-                  <p className="text-sm text-slate-400">
-                    Interested in partnering with HireDesk? Let's explore
-                    collaboration opportunities together.
-                  </p>
                 </div>
               </div>
             </div>
@@ -280,9 +261,11 @@ const Contact = () => {
                     Send us a message
                   </h2>
                   <p className="text-slate-400 mb-6">
-                    Whether you need to upgrade your plan, have technical
-                    questions, or want to learn more about our features, we're
-                    here to help!
+                    Questions about Individual Deep Analysis, Batch Processing,
+                    or Side-by-Side Comparison? Need help choosing the right
+                    method for your hiring workflow? We're here to help you get
+                    the most out of HireDesk's AI-powered resume analysis
+                    platform.
                   </p>
 
                   <form onSubmit={handleSubmit} className="space-y-6">
@@ -606,12 +589,32 @@ const Contact = () => {
                     <span className="flex-shrink-0 w-6 h-6 bg-blue-500/20 rounded-lg flex items-center justify-center text-blue-400 text-sm">
                       Q
                     </span>
-                    What happens when I reach the 10 upload limit?
+                    When should I use Individual Deep Analysis?
                   </h3>
                   <p className="text-slate-400 text-sm ml-9">
-                    Once you've uploaded 10 resumes, you'll need to upgrade to
-                    continue. Contact us to discuss Premium or Enterprise plans
-                    with higher or unlimited uploads based on your needs.
+                    Use Individual Deep Analysis for final-round candidates or
+                    key positions requiring comprehensive evaluation. It
+                    provides personality insights, leadership assessments,
+                    career trajectory analysis, and tailored interview
+                    questions.
+                  </p>
+                </div>
+              </div>
+              <div className="relative">
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-green-600/10 to-emerald-600/10 rounded-2xl blur"></div>
+                <div className="relative bg-slate-800/90 backdrop-blur-xl rounded-2xl border border-slate-700/50 p-6">
+                  <h3 className="text-lg font-semibold text-white mb-3 flex items-start gap-3">
+                    <span className="flex-shrink-0 w-6 h-6 bg-green-500/20 rounded-lg flex items-center justify-center text-green-400 text-sm">
+                      Q
+                    </span>
+                    What's the best way to handle large applicant pools?
+                  </h3>
+                  <p className="text-slate-400 text-sm ml-9">
+                    For large applicant pools (20+ candidates), start with Batch
+                    Processing to analyze 2-10 resumes simultaneously. This
+                    provides consistent evaluation criteria and automated
+                    ranking to quickly identify top candidates for further
+                    review.
                   </p>
                 </div>
               </div>
@@ -622,28 +625,13 @@ const Contact = () => {
                     <span className="flex-shrink-0 w-6 h-6 bg-purple-500/20 rounded-lg flex items-center justify-center text-purple-400 text-sm">
                       Q
                     </span>
-                    How quickly can I upgrade my account?
+                    How does Side-by-Side Comparison help with final decisions?
                   </h3>
                   <p className="text-slate-400 text-sm ml-9">
-                    Upgrades are processed within 4 hours during business hours.
-                    Contact us with your requirements, and we'll get you set up
-                    quickly with your new plan and increased limits.
-                  </p>
-                </div>
-              </div>
-              <div className="relative">
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-emerald-600/10 to-teal-600/10 rounded-2xl blur"></div>
-                <div className="relative bg-slate-800/90 backdrop-blur-xl rounded-2xl border border-slate-700/50 p-6">
-                  <h3 className="text-lg font-semibold text-white mb-3 flex items-start gap-3">
-                    <span className="flex-shrink-0 w-6 h-6 bg-emerald-500/20 rounded-lg flex items-center justify-center text-emerald-400 text-sm">
-                      Q
-                    </span>
-                    What's included in the Premium plan?
-                  </h3>
-                  <p className="text-slate-400 text-sm ml-9">
-                    Premium includes 100+ monthly uploads, priority AI
-                    processing, advanced analytics, priority email support, and
-                    custom question templates. Perfect for growing teams!
+                    Side-by-Side Comparison allows you to visually compare 2-5
+                    top candidates using intelligent ranking algorithms. Perfect
+                    for making objective final decisions when you have multiple
+                    strong applicants with similar qualifications.
                   </p>
                 </div>
               </div>
@@ -654,13 +642,15 @@ const Contact = () => {
                     <span className="flex-shrink-0 w-6 h-6 bg-orange-500/20 rounded-lg flex items-center justify-center text-orange-400 text-sm">
                       Q
                     </span>
-                    Do you offer custom enterprise solutions?
+                    Can I combine different analysis methods in my hiring
+                    process?
                   </h3>
                   <p className="text-slate-400 text-sm ml-9">
-                    Yes! Enterprise plans include unlimited uploads, API access,
-                    dedicated account manager, custom integrations, SLA
-                    guarantees, and white-label options. Contact us for a custom
-                    quote.
+                    Absolutely! Many recruiters use Batch Processing for initial
+                    screening, Individual Deep Analysis for final candidates,
+                    and Side-by-Side Comparison for the final selection. This
+                    multi-stage approach ensures thorough evaluation at each
+                    hiring phase.
                   </p>
                 </div>
               </div>
