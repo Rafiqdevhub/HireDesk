@@ -126,6 +126,53 @@ const BatchAnalyze = () => {
     };
   }, [showProfileDropdown]);
 
+  // Load persisted batch results on component mount
+  useEffect(() => {
+    try {
+      const persistedResults = localStorage.getItem("batch-analyze-results");
+      if (persistedResults) {
+        const parsedResults = JSON.parse(persistedResults);
+        if (Array.isArray(parsedResults) && parsedResults.length > 0) {
+          setBatchResults(parsedResults);
+        }
+      }
+    } catch (error) {
+      console.warn("Failed to load persisted batch results:", error);
+      // Clear corrupted data
+      localStorage.removeItem("batch-analyze-results");
+    }
+  }, []);
+
+  // Save batch results to localStorage whenever they change
+  useEffect(() => {
+    if (batchResults.length > 0) {
+      try {
+        localStorage.setItem(
+          "batch-analyze-results",
+          JSON.stringify(batchResults)
+        );
+      } catch (error) {
+        console.warn("Failed to persist batch results:", error);
+        // If storage is full, try to clear old data and retry
+        try {
+          localStorage.removeItem("batch-analyze-results");
+          localStorage.setItem(
+            "batch-analyze-results",
+            JSON.stringify(batchResults)
+          );
+        } catch (retryError) {
+          console.error(
+            "Failed to persist batch results after retry:",
+            retryError
+          );
+        }
+      }
+    } else {
+      // Clear persisted data when results are reset
+      localStorage.removeItem("batch-analyze-results");
+    }
+  }, [batchResults]);
+
   const handleFileUpload = async (files: File[]) => {
     // Check batch limits
     if (files.length < 2) {

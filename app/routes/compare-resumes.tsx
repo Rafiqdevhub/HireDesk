@@ -6,7 +6,6 @@ import { useState, useEffect, useRef } from "react";
 import { getErrorCategory, formatErrorMessage } from "../utils/errorHandler";
 import { HIREDESK_ANALYZE } from "~/utils/api";
 import Toast from "@components/toast/Toast";
-import ResumeUpload from "@components/resume/ResumeUpload";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -65,6 +64,48 @@ const CompareResumes = () => {
     };
   }, [showProfileDropdown]);
 
+  useEffect(() => {
+    try {
+      const persistedResults = localStorage.getItem("compare-resumes-results");
+      if (persistedResults) {
+        const parsedResults = JSON.parse(persistedResults);
+        if (parsedResults && typeof parsedResults === "object") {
+          setComparisonResults(parsedResults);
+        }
+      }
+    } catch (error) {
+      console.warn("Failed to load persisted comparison results:", error);
+      localStorage.removeItem("compare-resumes-results");
+    }
+  }, []);
+
+  useEffect(() => {
+    if (comparisonResults) {
+      try {
+        localStorage.setItem(
+          "compare-resumes-results",
+          JSON.stringify(comparisonResults)
+        );
+      } catch (error) {
+        console.warn("Failed to persist comparison results:", error);
+        try {
+          localStorage.removeItem("compare-resumes-results");
+          localStorage.setItem(
+            "compare-resumes-results",
+            JSON.stringify(comparisonResults)
+          );
+        } catch (retryError) {
+          console.error(
+            "Failed to persist comparison results after retry:",
+            retryError
+          );
+        }
+      }
+    } else {
+      localStorage.removeItem("compare-resumes-results");
+    }
+  }, [comparisonResults]);
+
   const handleSignOut = async () => {
     try {
       localStorage.clear();
@@ -75,7 +116,6 @@ const CompareResumes = () => {
   };
 
   const handleFileUpload = async (files: File[]) => {
-    // Check comparison limits
     if (files.length < 2) {
       setError({
         show: true,
@@ -124,7 +164,6 @@ const CompareResumes = () => {
       }
     }
 
-    setCurrentFiles(files);
     setComparisonResults(null);
     setIsLoading(true);
     setError({
@@ -197,6 +236,76 @@ const CompareResumes = () => {
       });
       setIsLoading(false);
     }
+  };
+
+  const handleAddFiles = (newFiles: File[]) => {
+    for (const file of newFiles) {
+      if (!file.type.match(/pdf|msword|officedocument/)) {
+        setError({
+          show: true,
+          message: `File "${file.name}" is not supported. Please upload only PDF or Word documents.`,
+          type: "warning",
+          category: "file",
+          originalError: "Unsupported file type",
+        });
+        return;
+      }
+
+      if (file.size > 10 * 1024 * 1024) {
+        // 10MB
+        setError({
+          show: true,
+          message: `File "${file.name}" exceeds 10MB limit.`,
+          type: "warning",
+          category: "file",
+          originalError: "File too large",
+        });
+        return;
+      }
+
+      // Check for duplicates
+      if (
+        currentFiles.some(
+          (existingFile) =>
+            existingFile.name === file.name && existingFile.size === file.size
+        )
+      ) {
+        setError({
+          show: true,
+          message: `File "${file.name}" is already added.`,
+          type: "warning",
+          category: "file",
+          originalError: "Duplicate file",
+        });
+        return;
+      }
+    }
+
+    // Check total limit
+    if (currentFiles.length + newFiles.length > 5) {
+      setError({
+        show: true,
+        message: `Cannot add ${newFiles.length} more files. Maximum 5 files allowed (currently have ${currentFiles.length}).`,
+        type: "warning",
+        category: "file",
+        originalError: "Too many files",
+      });
+      return;
+    }
+
+    setCurrentFiles((prev) => [...prev, ...newFiles]);
+
+    setError({
+      show: false,
+      message: "",
+      type: "error",
+      category: null,
+      originalError: null,
+    });
+  };
+
+  const handleRemoveFile = (index: number) => {
+    setCurrentFiles((prev) => prev.filter((_, i) => i !== index));
   };
 
   const handleReset = () => {
@@ -549,52 +658,42 @@ const CompareResumes = () => {
                               Resume Files
                             </h4>
                           </div>
-                          <ResumeUpload
-                            onFileUpload={(file) => {
-                              if (file) {
-                                setCurrentFiles((prev) => {
-                                  // Check if file already exists
-                                  if (
-                                    prev.some(
-                                      (f) =>
-                                        f.name === file.name &&
-                                        f.size === file.size
-                                    )
-                                  ) {
-                                    return prev;
-                                  }
-                                  // Add new file, limit to 5
-                                  const newFiles = [...prev, file];
-                                  return newFiles.slice(0, 5);
-                                });
-                              }
-                            }}
-                            isLoading={isLoading}
-                            onError={(errorData) => {
-                              setError({
-                                show: true,
-                                message:
-                                  errorData.message || "Error with file upload",
-                                type: "warning",
-                                category: errorData.category || "file",
-                                originalError: errorData,
-                              });
-                            }}
-                          />
+                          <div className="space-y-3">
+                            <input
+                              type="file"
+                              multiple
+                              accept=".pdf,.doc,.docx"
+                              aria-label="Upload resume files (2-5 PDF or Word documents, max 10MB each)"
+                              onChange={(e) => {
+                                const files = Array.from(e.target.files || []);
+                                if (files.length > 0) {
+                                  handleAddFiles(files);
+                                  // Clear the input so user can select the same files again if needed
+                                  e.target.value = "";
+                                }
+                              }}
+                              className="w-full bg-slate-700/50 border border-slate-600/30 rounded-lg sm:rounded-xl px-3 sm:px-4 py-3 sm:py-4 text-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-purple-600 file:text-white hover:file:bg-purple-700 transition-all duration-300 text-sm sm:text-base"
+                            />
+                            <p className="text-xs text-slate-400">
+                              Select files to add to your comparison (
+                              {currentFiles.length}/5 selected)
+                            </p>
+                          </div>
+
                           {currentFiles.length > 0 && (
                             <div className="mt-4 space-y-2">
                               <p className="text-sm text-slate-400">
-                                Selected files ({currentFiles.length}/5):
+                                Selected files:
                               </p>
-                              <div className="space-y-2 max-h-32 overflow-y-auto">
+                              <div className="space-y-2 max-h-40 overflow-y-auto">
                                 {currentFiles.map((file, index) => (
                                   <div
-                                    key={`${file.name}-${file.size}`}
+                                    key={`${file.name}-${file.size}-${index}`}
                                     className="flex items-center justify-between bg-slate-700/50 rounded-lg px-3 py-2"
                                   >
-                                    <div className="flex items-center space-x-2">
+                                    <div className="flex items-center space-x-2 flex-1 min-w-0">
                                       <svg
-                                        className="h-4 w-4 text-purple-400"
+                                        className="h-4 w-4 text-purple-400 flex-shrink-0"
                                         fill="none"
                                         viewBox="0 0 24 24"
                                         stroke="currentColor"
@@ -603,25 +702,21 @@ const CompareResumes = () => {
                                           strokeLinecap="round"
                                           strokeLinejoin="round"
                                           strokeWidth={2}
-                                          d="M9 12h6m-6-4h6m-6 8h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                                          d="M9 12h6m-6-4h6m-6 8h6m-7-4h.01M4 12a8 8 0 1116 0 8 8 0 01-16 0z"
                                         />
                                       </svg>
                                       <span className="text-sm text-white truncate">
                                         {file.name}
                                       </span>
-                                      <span className="text-xs text-slate-400">
+                                      <span className="text-xs text-slate-400 flex-shrink-0">
                                         ({(file.size / 1024 / 1024).toFixed(1)}
                                         MB)
                                       </span>
                                     </div>
                                     <button
-                                      onClick={() => {
-                                        setCurrentFiles((prev) =>
-                                          prev.filter((_, i) => i !== index)
-                                        );
-                                      }}
-                                      className="text-red-400 hover:text-red-300 transition-colors"
-                                      aria-label="Remove file"
+                                      onClick={() => handleRemoveFile(index)}
+                                      className="text-red-400 hover:text-red-300 transition-colors flex-shrink-0 ml-2"
+                                      title="Remove file"
                                     >
                                       <svg
                                         className="h-4 w-4"
@@ -677,7 +772,8 @@ const CompareResumes = () => {
                                   d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                                 ></path>
                               </svg>
-                              Comparing Candidates...
+                              Comparing {currentFiles.length} Candidate
+                              {currentFiles.length !== 1 ? "s" : ""}...
                             </>
                           ) : (
                             <>
@@ -694,7 +790,8 @@ const CompareResumes = () => {
                                   d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
                                 />
                               </svg>
-                              Compare Candidates
+                              Compare {currentFiles.length} Candidate
+                              {currentFiles.length !== 1 ? "s" : ""}
                             </>
                           )}
                         </button>
