@@ -31,14 +31,15 @@ const About = () => {
           </div>
 
           <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
-            Hire Faster,
-            <span className="text-blue-400 block">Save Hours Daily</span>
+            Three Ways to Analyze,
+            <span className="text-blue-400 block">One Powerful Platform</span>
           </h1>
 
           <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed">
-            Stop wasting hours on manual resume screening and endless
-            interviews. HireDesk automates the tedious parts so you can focus on
-            what matters most - finding the perfect candidate for your team.
+            Choose the perfect analysis method for your hiring needs - from deep
+            individual reviews and batch processing dozens of resumes to
+            side-by-side candidate comparisons. Transform your entire hiring
+            workflow with AI that adapts to your needs.
           </p>
         </div>
       </section>
@@ -54,21 +55,23 @@ const About = () => {
               </div>
 
               <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight">
-                Cut Your Hiring Time
-                <span className="text-blue-400"> by 70%</span>
+                Three Analysis Methods,
+                <span className="text-blue-400"> One Platform</span>
               </h2>
 
               <p className="text-lg text-gray-300 leading-relaxed">
-                We know you're drowning in resumes and struggling to find
-                qualified candidates. Traditional recruitment methods are slow,
-                inefficient, and frustrating. That's why we built HireDesk to
-                eliminate the time wasting parts of hiring.
+                Whether you need deep individual analysis, batch processing of
+                multiple resumes, or side-by-side candidate comparisons,
+                HireDesk adapts to your workflow. Stop wasting time on manual
+                screening and let AI handle the heavy lifting across all your
+                hiring needs.
               </p>
 
               <p className="text-lg text-gray-300 leading-relaxed">
-                Our AI does the heavy lifting so you can spend less time
-                screening and more time building great teams. No more late
-                nights reviewing applications or endless interview loops.
+                Our comprehensive platform eliminates time-wasting tasks so you
+                can focus on strategic decisions. Process one resume deeply,
+                analyze 10 simultaneously, or compare candidates visually - all
+                with persistent results and intelligent insights.
               </p>
             </div>
 
@@ -136,10 +139,11 @@ const About = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              Streamlined Hiring Process
+              Three Analysis Methods for Every Hiring Scenario
             </h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              From resume upload to final hire faster than ever before.
+              Choose the right tool for your specific hiring needs - individual
+              deep dives, batch processing, or direct comparisons.
             </p>
           </div>
 
@@ -156,18 +160,21 @@ const About = () => {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth={2}
-                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                    d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
                   />
                 </svg>
               </div>
               <h3 className="text-2xl font-bold text-white mb-4">
-                Quick Upload
+                Deep Analysis
               </h3>
               <p className="text-gray-300 leading-relaxed">
-                Upload candidate resumes in seconds. No more manual data entry
-                or tedious form filling. Drag, drop, and move on to your next
-                task.
+                Comprehensive individual resume review with personality
+                insights, leadership assessments, and tailored interview
+                questions. Perfect for final candidate evaluation.
               </p>
+              <div className="text-sm text-blue-400 font-semibold mt-4">
+                Best for: Individual candidates
+              </div>
             </div>
 
             <div className="bg-slate-800/50 backdrop-blur-sm p-8 rounded-3xl border border-gray-600/30 hover:border-green-400/40 transition-all duration-300">
@@ -182,18 +189,20 @@ const About = () => {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth={2}
-                    d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
                   />
                 </svg>
               </div>
               <h3 className="text-2xl font-bold text-white mb-4">
-                Instant Analysis
+                Batch Processing
               </h3>
               <p className="text-gray-300 leading-relaxed">
-                AI instantly extracts and analyzes candidate information. Get
-                comprehensive profiles without spending hours reading resumes
-                yourself.
+                Analyze 2-10 resumes simultaneously with automated ranking.
+                Perfect for large applicant pools and initial screening phases.
               </p>
+              <div className="text-sm text-green-400 font-semibold mt-4">
+                Best for: Large applicant pools
+              </div>
             </div>
 
             <div className="bg-slate-800/50 backdrop-blur-sm p-8 rounded-3xl border border-gray-600/30 hover:border-purple-400/40 transition-all duration-300">
@@ -208,94 +217,84 @@ const About = () => {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth={2}
-                    d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
                   />
                 </svg>
               </div>
               <h3 className="text-2xl font-bold text-white mb-4">
-                Smart Interviews
+                Side-by-Side Comparison
               </h3>
               <p className="text-gray-300 leading-relaxed">
-                Get AI-generated interview questions tailored to each candidate.
-                No more generic questions - focus on what really matters for
-                your role.
+                Visual comparison of 2-5 candidates with intelligent ranking
+                algorithms. Perfect for final decision-making between top
+                candidates.
               </p>
+              <div className="text-sm text-purple-400 font-semibold mt-4">
+                Best for: Final candidate selection
+              </div>
             </div>
           </div>
 
           <div className="bg-slate-800/50 backdrop-blur-sm rounded-3xl p-8 border border-gray-600/30">
             <div className="text-center mb-8">
               <h3 className="text-2xl font-bold text-white mb-4">
-                Your Time-Saving Workflow
+                Choose Your Analysis Method
               </h3>
               <p className="text-gray-300 max-w-2xl mx-auto">
-                Spend less time on administrative tasks and more time on
-                strategic hiring decisions.
+                Select the perfect tool for your hiring scenario - from
+                individual deep dives to comprehensive batch processing and
+                direct comparisons.
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-8">
-              <div className="space-y-4">
-                <div className="flex items-start space-x-4">
-                  <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-white font-bold text-sm">1</span>
-                  </div>
-                  <div>
-                    <h4 className="text-white font-semibold mb-2">
-                      Upload & Auto-Process
-                    </h4>
-                    <p className="text-gray-300 text-sm">
-                      Drop resumes and let AI handle the initial screening
-                      instantly.
-                    </p>
-                  </div>
+            <div className="grid md:grid-cols-3 gap-8">
+              <div className="text-center p-6 bg-blue-600/10 rounded-2xl border border-blue-500/20">
+                <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center mx-auto mb-4">
+                  <span className="text-white font-bold">1</span>
                 </div>
-
-                <div className="flex items-start space-x-4">
-                  <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-white font-bold text-sm">2</span>
-                  </div>
-                  <div>
-                    <h4 className="text-white font-semibold mb-2">
-                      Review Top Candidates
-                    </h4>
-                    <p className="text-gray-300 text-sm">
-                      Focus only on qualified candidates with comprehensive
-                      profiles ready.
-                    </p>
-                  </div>
+                <h4 className="text-white font-semibold mb-2">
+                  Individual Deep Analysis
+                </h4>
+                <p className="text-gray-300 text-sm">
+                  Upload one resume for comprehensive AI analysis with
+                  personality insights, career trajectory, and tailored
+                  interview questions.
+                </p>
+                <div className="text-xs text-blue-400 mt-3 font-semibold">
+                  Perfect for final candidates
                 </div>
               </div>
 
-              <div className="space-y-4">
-                <div className="flex items-start space-x-4">
-                  <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-white font-bold text-sm">3</span>
-                  </div>
-                  <div>
-                    <h4 className="text-white font-semibold mb-2">
-                      Guided Interviews
-                    </h4>
-                    <p className="text-gray-300 text-sm">
-                      Use AI-generated questions to conduct efficient, targeted
-                      interviews.
-                    </p>
-                  </div>
+              <div className="text-center p-6 bg-green-600/10 rounded-2xl border border-green-500/20">
+                <div className="w-12 h-12 bg-green-600 rounded-xl flex items-center justify-center mx-auto mb-4">
+                  <span className="text-white font-bold">2-10</span>
                 </div>
+                <h4 className="text-white font-semibold mb-2">
+                  Batch Processing
+                </h4>
+                <p className="text-gray-300 text-sm">
+                  Process multiple resumes simultaneously with automated ranking
+                  and bulk analysis. Handle large applicant pools efficiently.
+                </p>
+                <div className="text-xs text-green-400 mt-3 font-semibold">
+                  Perfect for initial screening
+                </div>
+              </div>
 
-                <div className="flex items-start space-x-4">
-                  <div className="w-8 h-8 bg-orange-600 rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-white font-bold text-sm">4</span>
-                  </div>
-                  <div>
-                    <h4 className="text-white font-semibold mb-2">
-                      Fast Hiring Decisions
-                    </h4>
-                    <p className="text-gray-300 text-sm">
-                      Make confident decisions quickly with all the information
-                      you need.
-                    </p>
-                  </div>
+              <div className="text-center p-6 bg-purple-600/10 rounded-2xl border border-purple-500/20">
+                <div className="w-12 h-12 bg-purple-600 rounded-xl flex items-center justify-center mx-auto mb-4">
+                  <span className="text-white font-bold">2-5</span>
+                </div>
+                <h4 className="text-white font-semibold mb-2">
+                  Side-by-Side Comparison
+                </h4>
+                <p className="text-gray-300 text-sm">
+                  Compare top candidates visually with intelligent ranking
+                  algorithms. Make objective final decisions between similar
+                  candidates.
+                </p>
+                <div className="text-xs text-purple-400 mt-3 font-semibold">
+                  Perfect for final selection
                 </div>
               </div>
             </div>
@@ -333,13 +332,13 @@ const About = () => {
                 </svg>
               </div>
               <h3 className="text-2xl font-bold text-white mb-4">
-                Save Hours Daily
+                Three Analysis Methods, One Platform
               </h3>
               <p className="text-gray-300 leading-relaxed text-lg">
-                Eliminate manual resume screening and repetitive administrative
-                tasks. Our AI handles the routine work so you can focus on
-                building relationships with candidates and making strategic
-                hiring decisions.
+                Whether you need deep individual analysis, batch processing of
+                multiple resumes, or side-by-side candidate comparisons,
+                HireDesk adapts to your workflow. Choose the right tool for each
+                hiring scenario.
               </p>
             </div>
 
@@ -366,13 +365,14 @@ const About = () => {
                 </svg>
               </div>
               <h3 className="text-2xl font-bold text-white mb-4">
-                Better Hires Faster
+                Persistent Results & Smart Insights
               </h3>
               <p className="text-gray-300 leading-relaxed text-lg">
-                Make data-driven hiring decisions with comprehensive candidate
-                insights. Reduce time-to-hire while improving quality of hire.
-                Find the right person for the job without the endless
-                back-and-forth.
+                Your analysis results are automatically saved across all
+                methods. Return anytime to review candidate evaluations. Get
+                AI-powered insights including personality assessments, career
+                trajectories, and tailored interview questions for every
+                candidate.
               </p>
             </div>
           </div>

@@ -22,40 +22,44 @@ const Footer = () => {
               </span>
             </div>
             <p className="text-gray-400">
-              Revolutionizing recruitment with AI-powered matching and
-              streamlined hiring processes.
+              The AI-powered hiring platform that processes resumes in bulk,
+              compares candidates side-by-side, and delivers insights that
+              transform your recruitment process.
             </p>
           </div>
           <div>
-            <h3 className="font-semibold mb-4">Product</h3>
+            <h3 className="font-semibold mb-4">Features</h3>
             <ul className="space-y-2 text-gray-400">
               <li>
                 <Link
-                  to="/features"
+                  to="/batch-analyze"
                   className="hover:text-white transition-colors"
                 >
-                  Features
+                  Batch Resume Analysis
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/pricing"
+                  to="/compare-resumes"
                   className="hover:text-white transition-colors"
                 >
-                  Pricing
+                  Side-by-Side Comparison
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/integrations"
+                  to="/hiredesk-analyze"
                   className="hover:text-white transition-colors"
                 >
-                  Integrations
+                  AI-Powered Insights
                 </Link>
               </li>
               <li>
-                <Link to="/api" className="hover:text-white transition-colors">
-                  API
+                <Link
+                  to="/dashboard"
+                  className="hover:text-white transition-colors"
+                >
+                  Interview Questions
                 </Link>
               </li>
             </ul>
@@ -127,7 +131,10 @@ const Footer = () => {
           </div>
         </div>
         <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-          <p>&copy; 2025 HireDesk. All rights reserved.</p>
+          <p>
+            &copy; 2024 HireDesk. All rights reserved. Built for the future of
+            hiring.
+          </p>
         </div>
       </div>
     </footer>
