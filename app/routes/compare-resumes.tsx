@@ -4,7 +4,7 @@ import ProtectedRoute from "@components/auth/ProtectedRoute";
 import { useAuth } from "../contexts/AuthContext";
 import { useState, useEffect, useRef } from "react";
 import { getErrorCategory, formatErrorMessage } from "../utils/errorHandler";
-import { HIREDESK_ANALYZE } from "~/utils/api";
+import { AI_API } from "~/utils/api";
 import Toast from "@components/toast/Toast";
 
 export function meta({}: Route.MetaArgs) {
@@ -182,14 +182,11 @@ const CompareResumes = () => {
         formData.append("files", file);
       });
 
-      const response = await fetch(
-        `${HIREDESK_ANALYZE.replace("/api/hiredesk-analyze", "/api/compare-resumes")}`,
-        {
-          method: "POST",
-          body: formData,
-          mode: "cors",
-        }
-      );
+      const response = await fetch(`${AI_API}/compare-resumes`, {
+        method: "POST",
+        body: formData,
+        mode: "cors",
+      });
 
       if (!response.ok) {
         const errorText = await response.text();
