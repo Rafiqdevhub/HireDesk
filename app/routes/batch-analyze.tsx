@@ -4,68 +4,18 @@ import ProtectedRoute from "@components/auth/ProtectedRoute";
 import { useAuth } from "../contexts/AuthContext";
 import { useState, useEffect, useRef } from "react";
 import { getErrorCategory, formatErrorMessage } from "../utils/errorHandler";
-import { HIREDESK_ANALYZE } from "~/utils/api";
+import { AI_API } from "~/utils/api";
 import Toast from "../components/toast/Toast";
+import { batchFeatures } from "../data/BatchFeatures";
+import type {
+  RoleRecommendation,
+  UsageStats,
+  UpgradePrompt,
+  BatchAnalysisResult,
+  BatchAnalysisResponse,
+} from "../../types/index";
 
-const batchFeatures = [
-  {
-    icon: () => (
-      <svg
-        className="h-6 w-6"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-        />
-      </svg>
-    ),
-    title: "Batch Processing",
-    description: "Process 2-10 resumes simultaneously with AI-powered analysis",
-  },
-  {
-    icon: () => (
-      <svg
-        className="h-6 w-6"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-        />
-      </svg>
-    ),
-    title: "Candidate Ranking",
-    description: "Automatically rank and compare candidates based on job fit",
-  },
-  {
-    icon: () => (
-      <svg
-        className="h-6 w-6"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M13 10V3L4 14h7v7l9-11h-7z"
-        />
-      </svg>
-    ),
-    title: "Efficiency Boost",
-    description: "Save hours of manual screening with automated AI analysis",
-  },
-];
+// Get the base API URL from HIREDESK_ANALYZE and replace the endpoint
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -73,7 +23,7 @@ export function meta({}: Route.MetaArgs) {
     {
       name: "description",
       content:
-        "Batch analyze multiple resumes with AI-powered screening - process up to 10 resumes simultaneously.",
+        "Batch analyze multiple resumes with AI-powered screening - process 2-5 resumes per batch with intelligent analysis.",
     },
   ];
 }
@@ -85,7 +35,12 @@ const BatchAnalyze = () => {
   const [targetRole, setTargetRole] = useState("");
   const [jobDescription, setJobDescription] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [batchResults, setBatchResults] = useState<any[]>([]);
+  const [batchResults, setBatchResults] = useState<BatchAnalysisResult[]>([]);
+  const [usageStats, setUsageStats] = useState<UsageStats | null>(null);
+  const [upgradePrompt, setUpgradePrompt] = useState<UpgradePrompt | null>(
+    null
+  );
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [error, setError] = useState<{
     show: boolean;
     message: string;
@@ -174,7 +129,7 @@ const BatchAnalyze = () => {
   }, [batchResults]);
 
   const handleFileUpload = async (files: File[]) => {
-    // Check batch limits
+    // Check batch limits (2-5 files as per API spec)
     if (files.length < 2) {
       setError({
         show: true,
@@ -186,14 +141,28 @@ const BatchAnalyze = () => {
       return;
     }
 
-    if (files.length > 10) {
+    if (files.length > 5) {
       setError({
         show: true,
-        message: "Maximum 10 files allowed for batch analysis.",
+        message: "Maximum 5 files allowed per batch. Please upload 2-5 files.",
         type: "warning",
         category: "file",
-        originalError: "Maximum 10 files exceeded",
+        originalError: "Maximum 5 files exceeded",
       });
+      return;
+    }
+
+    // Check batch analysis quota before uploading
+    if (usageStats && usageStats.batches_processed >= 5) {
+      setError({
+        show: true,
+        message:
+          "You've reached your batch analysis limit (5 per account). Please upgrade to analyze more batches.",
+        type: "warning",
+        category: "limit",
+        originalError: "Batch limit exceeded",
+      });
+      setShowUpgradeModal(true);
       return;
     }
 
@@ -234,6 +203,21 @@ const BatchAnalyze = () => {
     });
 
     try {
+      // Get JWT token from localStorage (uses 'accessToken' key from authService)
+      const jwtToken = localStorage.getItem("accessToken");
+
+      if (!jwtToken) {
+        setError({
+          show: true,
+          message: "Authentication required. Please login first.",
+          type: "error",
+          category: "auth",
+          originalError: "No auth token",
+        });
+        setIsLoading(false);
+        return;
+      }
+
       const formData = new FormData();
 
       // Add all files to form data
@@ -244,27 +228,67 @@ const BatchAnalyze = () => {
       if (targetRole) formData.append("target_role", targetRole);
       if (jobDescription) formData.append("job_description", jobDescription);
 
-      const response = await fetch(
-        `${HIREDESK_ANALYZE.replace("/api/hiredesk-analyze", "/api/batch-analyze")}`,
-        {
-          method: "POST",
-          body: formData,
-          mode: "cors",
-        }
-      );
+      const response = await fetch(`${AI_API}/batch-analyze`, {
+        method: "POST",
+        body: formData,
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      });
+
+      // Handle 429 Rate Limit Error (Batch Analysis Only)
+      if (response.status === 429) {
+        const errorData: any = await response.json();
+
+        setUsageStats({
+          files_uploaded: 0,
+          batches_processed: errorData.batches_processed || 0,
+          files_remaining: 0,
+          files_limit: 10,
+          approaching_limit: false,
+          approaching_limit_threshold: 8,
+        });
+
+        setError({
+          show: true,
+          message:
+            errorData.message ||
+            "You've reached your batch analysis limit (5 per account). Please upgrade your plan to analyze more batches.",
+          type: "error",
+          category: "limit",
+          originalError: errorData,
+        });
+        setShowUpgradeModal(true);
+        setIsLoading(false);
+        return;
+      }
+
+      // Handle 401 Authentication Error
+      if (response.status === 401) {
+        localStorage.removeItem("accessToken");
+        setError({
+          show: true,
+          message: "Your session has expired. Please login again.",
+          type: "error",
+          category: "auth",
+          originalError: "Token expired",
+        });
+        setIsLoading(false);
+        return;
+      }
 
       if (!response.ok) {
         const errorText = await response.text();
-        let error;
+        let errorData;
         try {
-          error = JSON.parse(errorText);
+          errorData = JSON.parse(errorText);
         } catch {
-          error = { message: errorText || "Unknown error occurred" };
+          errorData = { message: errorText || "Unknown error occurred" };
         }
-        throw new Error(error.message || "Batch analysis failed");
+        throw new Error(errorData.message || "Batch analysis failed");
       }
 
-      let responseData;
+      let responseData: BatchAnalysisResponse;
       try {
         responseData = await response.json();
       } catch (jsonError) {
@@ -274,13 +298,31 @@ const BatchAnalyze = () => {
         );
       }
 
-      if (!responseData || !Array.isArray(responseData)) {
-        throw new Error("Invalid response format from API");
+      // Update usage stats from response
+      if (responseData.usage_stats) {
+        setUsageStats(responseData.usage_stats);
       }
 
-      setBatchResults(responseData);
+      // Check if upgrade prompt should be shown
+      if (responseData.upgrade_prompt && responseData.upgrade_prompt.show) {
+        setUpgradePrompt(responseData.upgrade_prompt);
+        setShowUpgradeModal(true);
+      }
 
-      setToastMessage(`Successfully analyzed ${responseData.length} resumes!`);
+      // Update batch results
+      if (responseData.results && Array.isArray(responseData.results)) {
+        setBatchResults(responseData.results);
+      }
+
+      // Show success toast with detailed message
+      const toastMsg =
+        responseData.message ||
+        `Successfully analyzed ${files.length} resumes!`;
+      const batchInfo =
+        responseData.usage_stats && responseData.usage_stats.batches_processed
+          ? ` • Batch ${responseData.usage_stats.batches_processed} of 5`
+          : "";
+      setToastMessage(toastMsg + batchInfo);
       setToastType("success");
       setShowToast(true);
 
@@ -342,11 +384,11 @@ const BatchAnalyze = () => {
       }
     }
 
-    // Check total limit
-    if (currentFiles.length + newFiles.length > 10) {
+    // Check total limit (2-5 files per batch as per API spec)
+    if (currentFiles.length + newFiles.length > 5) {
       setError({
         show: true,
-        message: `Cannot add ${newFiles.length} more files. Maximum 10 files allowed (currently have ${currentFiles.length}).`,
+        message: `Cannot add ${newFiles.length} more files. Maximum 5 files per batch allowed (currently have ${currentFiles.length}).`,
         type: "warning",
         category: "file",
         originalError: "Too many files",
@@ -868,7 +910,7 @@ const BatchAnalyze = () => {
                                 type="file"
                                 multiple
                                 accept=".pdf,.doc,.docx"
-                                aria-label="Upload resume files (2-10 PDF or Word documents, max 10MB each)"
+                                aria-label="Upload resume files (2-5 PDF or Word documents, max 10MB each)"
                                 onChange={(e) => {
                                   const files = Array.from(
                                     e.target.files || []
@@ -883,7 +925,7 @@ const BatchAnalyze = () => {
                               />
                               <p className="text-xs text-slate-400">
                                 Select files to add to your batch (
-                                {currentFiles.length}/10 selected)
+                                {currentFiles.length}/5 selected)
                               </p>
                             </div>
 
@@ -1007,6 +1049,192 @@ const BatchAnalyze = () => {
                       </div>
                     </div>
 
+                    {/* Usage Stats Widget - Batch Analysis Only */}
+                    {usageStats && (
+                      <div className="mt-8 sm:mt-12 mb-8">
+                        <div className="relative overflow-hidden rounded-xl sm:rounded-2xl bg-gradient-to-r from-slate-800/80 to-slate-900/80 backdrop-blur-xl border border-slate-700/50 p-4 sm:p-6">
+                          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                            <div className="flex-1">
+                              <h5 className="text-sm font-semibold text-slate-300 mb-2">
+                                Batch Analysis Quota
+                              </h5>
+                              <div className="flex items-center gap-2 mb-3">
+                                <span className="text-sm text-slate-400">
+                                  {usageStats.batches_processed} of 5 batches
+                                  used
+                                </span>
+                                <span className="text-sm font-medium text-slate-300">
+                                  ({5 - usageStats.batches_processed} remaining)
+                                </span>
+                              </div>
+                              <div className="w-full bg-slate-700/50 rounded-full h-2">
+                                <div
+                                  className={`h-2 rounded-full transition-all duration-300 ${
+                                    usageStats.batches_processed >= 4
+                                      ? "bg-red-500"
+                                      : usageStats.batches_processed >= 3
+                                        ? "bg-yellow-500"
+                                        : "bg-blue-500"
+                                  }`}
+                                  style={{
+                                    width: `${(usageStats.batches_processed / 5) * 100}%`,
+                                  }}
+                                ></div>
+                              </div>
+                            </div>
+                            {usageStats.batches_processed >= 4 && (
+                              <button
+                                onClick={() => setShowUpgradeModal(true)}
+                                className="px-4 py-2 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white text-sm font-semibold rounded-lg transition-all duration-300 flex-shrink-0 whitespace-nowrap"
+                              >
+                                Upgrade
+                              </button>
+                            )}
+                          </div>
+                          {usageStats.batches_processed >= 4 && (
+                            <div className="mt-3 p-3 bg-amber-500/10 border border-amber-500/20 rounded-lg flex items-start gap-2">
+                              <svg
+                                className="h-4 w-4 text-amber-400 flex-shrink-0 mt-0.5"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M12 8v4m0 4v.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                />
+                              </svg>
+                              <div className="text-xs sm:text-sm text-amber-200 space-y-1">
+                                <p>
+                                  You've used {usageStats.batches_processed} of
+                                  5 batch analysis operations.
+                                </p>
+                                <p>
+                                  Upgrade now to get unlimited batch analysis
+                                  operations.
+                                </p>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Upgrade Modal */}
+                    {showUpgradeModal && upgradePrompt && (
+                      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+                        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 backdrop-blur-xl border border-slate-700/50 max-w-md w-full shadow-2xl">
+                          <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 to-emerald-500/10 pointer-events-none"></div>
+                          <div className="relative p-6 sm:p-8">
+                            <div className="absolute top-4 right-4">
+                              <button
+                                onClick={() => setShowUpgradeModal(false)}
+                                className="text-slate-400 hover:text-slate-300 transition-colors"
+                                aria-label="Close upgrade modal"
+                                title="Close"
+                              >
+                                <svg
+                                  className="h-6 w-6"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M6 18L18 6M6 6l12 12"
+                                  />
+                                </svg>
+                              </button>
+                            </div>
+
+                            <div className="mb-4">
+                              <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg flex items-center justify-center mb-4">
+                                <svg
+                                  className="h-6 w-6 text-white"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M13 10V3L4 14h7v7l9-11h-7z"
+                                  />
+                                </svg>
+                              </div>
+                              <h3 className="text-xl sm:text-2xl font-bold text-white mb-2">
+                                Upgrade to Pro
+                              </h3>
+                              <p className="text-slate-400 text-sm mb-4">
+                                {upgradePrompt.message}
+                              </p>
+                            </div>
+
+                            <div className="space-y-3 mb-6">
+                              <div className="flex items-start gap-3 p-3 bg-slate-700/30 rounded-lg">
+                                <svg
+                                  className="h-5 w-5 text-green-400 flex-shrink-0 mt-0.5"
+                                  fill="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" />
+                                </svg>
+                                <span className="text-sm text-slate-300">
+                                  Unlimited resume uploads
+                                </span>
+                              </div>
+                              <div className="flex items-start gap-3 p-3 bg-slate-700/30 rounded-lg">
+                                <svg
+                                  className="h-5 w-5 text-green-400 flex-shrink-0 mt-0.5"
+                                  fill="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" />
+                                </svg>
+                                <span className="text-sm text-slate-300">
+                                  Advanced analytics & insights
+                                </span>
+                              </div>
+                              <div className="flex items-start gap-3 p-3 bg-slate-700/30 rounded-lg">
+                                <svg
+                                  className="h-5 w-5 text-green-400 flex-shrink-0 mt-0.5"
+                                  fill="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" />
+                                </svg>
+                                <span className="text-sm text-slate-300">
+                                  Priority support
+                                </span>
+                              </div>
+                            </div>
+
+                            <div className="flex gap-3">
+                              <button
+                                onClick={() => setShowUpgradeModal(false)}
+                                className="flex-1 px-4 py-2 bg-slate-700/50 text-slate-300 font-semibold rounded-lg hover:bg-slate-700 transition-all duration-300"
+                              >
+                                Maybe Later
+                              </button>
+                              <button
+                                onClick={() => {
+                                  window.location.href = "/upgrade";
+                                }}
+                                className="flex-1 px-4 py-2 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white font-semibold rounded-lg transition-all duration-300"
+                              >
+                                {upgradePrompt.cta}
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
                     {batchResults.length > 0 && (
                       <div className="mt-8 sm:mt-12">
                         <div className="text-center mb-6 sm:mb-8">
@@ -1014,7 +1242,12 @@ const BatchAnalyze = () => {
                             Analysis Results
                           </h4>
                           <p className="text-slate-400">
-                            {batchResults.length} resumes analyzed successfully
+                            {
+                              batchResults.filter((r) => r.status === "success")
+                                .length
+                            }{" "}
+                            of {batchResults.length} resumes analyzed
+                            successfully
                           </p>
                         </div>
 
@@ -1024,65 +1257,100 @@ const BatchAnalyze = () => {
                               key={index}
                               className="relative overflow-hidden rounded-xl sm:rounded-2xl bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl border border-slate-700/50 p-4 sm:p-6"
                             >
-                              <div className="flex items-start justify-between mb-4">
-                                <div className="flex items-center space-x-3">
-                                  <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg flex items-center justify-center">
-                                    <span className="text-white font-bold text-sm">
-                                      {index + 1}
-                                    </span>
-                                  </div>
-                                  <div>
-                                    <h5 className="text-lg font-semibold text-white">
-                                      {result.resumeData?.personalInfo?.name ||
-                                        `Candidate ${index + 1}`}
-                                    </h5>
-                                    <p className="text-slate-400 text-sm">
-                                      Resume Analysis Complete
-                                    </p>
-                                  </div>
-                                </div>
-                                <div className="text-right">
-                                  <div className="text-2xl font-bold text-green-400">
-                                    {result.resumeScore?.overall_score ||
-                                      result.resumeScore ||
-                                      "N/A"}
-                                  </div>
-                                  <div className="text-xs text-slate-400">
-                                    Score
-                                  </div>
-                                </div>
-                              </div>
-
-                              {result.roleRecommendations &&
-                                result.roleRecommendations.length > 0 && (
-                                  <div className="mb-4">
-                                    <h6 className="text-sm font-medium text-slate-300 mb-2">
-                                      Recommended Roles:
-                                    </h6>
-                                    <div className="flex flex-wrap gap-2">
-                                      {result.roleRecommendations
-                                        .slice(0, 2)
-                                        .map((rec: any, recIndex: number) => (
-                                          <span
-                                            key={recIndex}
-                                            className="px-2 py-1 bg-green-500/20 text-green-300 text-xs rounded-full border border-green-500/30"
-                                          >
-                                            {rec.roleName} (
-                                            {rec.matchPercentage}%)
-                                          </span>
-                                        ))}
+                              {result.status === "success" && result.data ? (
+                                <>
+                                  <div className="flex items-start justify-between mb-4">
+                                    <div className="flex items-center space-x-3">
+                                      <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg flex items-center justify-center">
+                                        <span className="text-white font-bold text-sm">
+                                          {index + 1}
+                                        </span>
+                                      </div>
+                                      <div>
+                                        <h5 className="text-lg font-semibold text-white">
+                                          {result.data.resumeData?.personalInfo
+                                            ?.name || `Candidate ${index + 1}`}
+                                        </h5>
+                                        <p className="text-slate-400 text-sm">
+                                          Resume Analysis Complete
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <div className="text-right">
+                                      <div className="text-2xl font-bold text-green-400">
+                                        {result.data.resumeScore
+                                          ?.overall_score || "N/A"}
+                                      </div>
+                                      <div className="text-xs text-slate-400">
+                                        Score
+                                      </div>
                                     </div>
                                   </div>
-                                )}
 
-                              <div className="flex items-center justify-between text-sm">
-                                <span className="text-slate-400">
-                                  Analysis completed with AI insights
-                                </span>
-                                <button className="text-green-400 hover:text-green-300 transition-colors">
-                                  View Details →
-                                </button>
-                              </div>
+                                  {result.data.roleRecommendations &&
+                                    result.data.roleRecommendations.length >
+                                      0 && (
+                                      <div className="mb-4">
+                                        <h6 className="text-sm font-medium text-slate-300 mb-2">
+                                          Recommended Roles:
+                                        </h6>
+                                        <div className="flex flex-wrap gap-2">
+                                          {result.data.roleRecommendations
+                                            .slice(0, 2)
+                                            .map(
+                                              (
+                                                rec: RoleRecommendation,
+                                                recIndex: number
+                                              ) => (
+                                                <span
+                                                  key={recIndex}
+                                                  className="px-2 py-1 bg-green-500/20 text-green-300 text-xs rounded-full border border-green-500/30"
+                                                >
+                                                  {rec.roleName} (
+                                                  {rec.matchPercentage}%)
+                                                </span>
+                                              )
+                                            )}
+                                        </div>
+                                      </div>
+                                    )}
+
+                                  <div className="flex items-center justify-between text-sm">
+                                    <span className="text-slate-400">
+                                      Analysis completed with AI insights
+                                    </span>
+                                    <button className="text-green-400 hover:text-green-300 transition-colors">
+                                      View Details →
+                                    </button>
+                                  </div>
+                                </>
+                              ) : (
+                                <>
+                                  <div className="flex items-start justify-between">
+                                    <div className="flex items-center space-x-3">
+                                      <div className="w-10 h-10 bg-gradient-to-br from-red-500 to-red-600 rounded-lg flex items-center justify-center">
+                                        <span className="text-white font-bold text-sm">
+                                          {index + 1}
+                                        </span>
+                                      </div>
+                                      <div>
+                                        <h5 className="text-lg font-semibold text-white">
+                                          {result.file_name ||
+                                            `File ${index + 1}`}
+                                        </h5>
+                                        <p className="text-slate-400 text-sm">
+                                          Analysis Failed
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="mt-3 p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
+                                    <p className="text-sm text-red-200">
+                                      {result.error}
+                                    </p>
+                                  </div>
+                                </>
+                              )}
                             </div>
                           ))}
                         </div>

@@ -9,7 +9,7 @@ import Toast from "@components/toast/Toast";
 import { getErrorCategory, formatErrorMessage } from "../utils/errorHandler";
 import StandardQuestions from "@components/StandardQuestions";
 import { features } from "../data/features";
-import { HIREDESK_ANALYZE } from "~/utils/api";
+import { AI_API } from "~/utils/api";
 import RateLimitModal from "@components/ui/RateLimitModal";
 
 export function meta({}: Route.MetaArgs) {
@@ -233,7 +233,7 @@ const HireDeskAnalyze = () => {
         throw new Error("Authentication token not found. Please login again.");
       }
 
-      const response = await fetch(HIREDESK_ANALYZE, {
+      const response = await fetch(`${AI_API}/hiredesk-analyze`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,

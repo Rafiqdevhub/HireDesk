@@ -21,7 +21,6 @@ const Profile = () => {
   const [profile, setProfile] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
   const [showPasswordChange, setShowPasswordChange] = useState(false);
   const [showNameEdit, setShowNameEdit] = useState(false);
   const [newName, setNewName] = useState("");
@@ -59,14 +58,6 @@ const Profile = () => {
       fetchProfile();
     }
   }, [user]);
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
 
   const validatePasswordChange = () => {
     const errors: Partial<typeof passwordData> = {};
@@ -426,6 +417,74 @@ const Profile = () => {
                               {(profile?.filesUploaded || 0) >= 10
                                 ? "Limit reached"
                                 : "Upload limit"}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="group relative">
+                        <div className="absolute -inset-0.5 bg-gradient-to-r from-indigo-500 to-violet-500 rounded-xl opacity-75 group-hover:opacity-100 blur transition duration-200"></div>
+                        <div className="relative flex flex-col gap-2 bg-slate-800 rounded-xl px-4 py-2.5 border border-indigo-500/30 min-w-[180px]">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <svg
+                                className="w-4 h-4 text-indigo-400"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                                />
+                              </svg>
+                              <span className="text-sm font-semibold text-white">
+                                {profile?.batchAnalysis || 0}/5 Batches
+                              </span>
+                            </div>
+                            <span
+                              className={`text-xs font-bold ${
+                                (profile?.batchAnalysis || 0) >= 5
+                                  ? "text-red-400"
+                                  : (profile?.batchAnalysis || 0) >= 4
+                                    ? "text-orange-400"
+                                    : (profile?.batchAnalysis || 0) >= 2
+                                      ? "text-yellow-400"
+                                      : "text-green-400"
+                              }`}
+                            >
+                              {Math.round(
+                                ((profile?.batchAnalysis || 0) / 5) * 100
+                              )}
+                              %
+                            </span>
+                          </div>
+                          <div className="w-full bg-slate-700/50 rounded-full h-1.5 overflow-hidden">
+                            <div
+                              className={`h-full rounded-full transition-all duration-500 ${
+                                (profile?.batchAnalysis || 0) >= 5
+                                  ? "bg-red-500"
+                                  : (profile?.batchAnalysis || 0) >= 4
+                                    ? "bg-orange-500"
+                                    : (profile?.batchAnalysis || 0) >= 2
+                                      ? "bg-yellow-500"
+                                      : "bg-green-500"
+                              }`}
+                              style={{
+                                width: `${Math.min(100, ((profile?.batchAnalysis || 0) / 5) * 100)}%`,
+                              }}
+                            ></div>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs text-slate-400 font-medium">
+                              {Math.max(0, 5 - (profile?.batchAnalysis || 0))}{" "}
+                              remaining
+                            </span>
+                            <span className="text-xs text-slate-500 font-medium">
+                              {(profile?.batchAnalysis || 0) >= 5
+                                ? "Limit reached"
+                                : "Batch limit"}
                             </span>
                           </div>
                         </div>
