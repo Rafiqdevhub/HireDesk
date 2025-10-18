@@ -7,6 +7,7 @@ import { getErrorCategory, formatErrorMessage } from "../utils/errorHandler";
 import { AI_API } from "~/utils/api";
 import Toast from "../components/toast/Toast";
 import { batchFeatures } from "../data/BatchFeatures";
+import BatchResultCard from "../components/batch/BatchResultCard";
 import type {
   RoleRecommendation,
   UsageStats,
@@ -14,8 +15,6 @@ import type {
   BatchAnalysisResult,
   BatchAnalysisResponse,
 } from "../../types/index";
-
-// Get the base API URL from HIREDESK_ANALYZE and replace the endpoint
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -59,7 +58,6 @@ const BatchAnalyze = () => {
   const [toastType, setToastType] = useState<
     "success" | "error" | "warning" | "info"
   >("success");
-  const [showRateLimitModal, setShowRateLimitModal] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -203,7 +201,6 @@ const BatchAnalyze = () => {
     });
 
     try {
-      // Get JWT token from localStorage (uses 'accessToken' key from authService)
       const jwtToken = localStorage.getItem("accessToken");
 
       if (!jwtToken) {
@@ -239,14 +236,16 @@ const BatchAnalyze = () => {
       // Handle 429 Rate Limit Error (Batch Analysis Only)
       if (response.status === 429) {
         const errorData: any = await response.json();
+        const batchCount = errorData.batches_processed || 0;
 
         setUsageStats({
           files_uploaded: 0,
-          batches_processed: errorData.batches_processed || 0,
-          files_remaining: 0,
-          files_limit: 10,
-          approaching_limit: false,
-          approaching_limit_threshold: 8,
+          batches_processed: batchCount,
+          files_remaining: Math.max(0, 5 - batchCount),
+          files_limit: 5,
+          approaching_limit: errorData.approaching_limit ?? batchCount >= 4,
+          approaching_limit_threshold:
+            errorData.approaching_limit_threshold ?? 4,
         });
 
         setError({
@@ -298,9 +297,19 @@ const BatchAnalyze = () => {
         );
       }
 
-      // Update usage stats from response
+      // Update usage stats from response (batch-analyze only tracks batches_processed)
       if (responseData.usage_stats) {
-        setUsageStats(responseData.usage_stats);
+        const batchCount = responseData.usage_stats.batches_processed || 0;
+        setUsageStats({
+          files_uploaded: 0,
+          batches_processed: batchCount,
+          files_remaining: Math.max(0, 5 - batchCount),
+          files_limit: 5,
+          approaching_limit:
+            responseData.usage_stats.approaching_limit ?? batchCount >= 4,
+          approaching_limit_threshold:
+            responseData.usage_stats.approaching_limit_threshold ?? 4,
+        });
       }
 
       // Check if upgrade prompt should be shown
@@ -1060,29 +1069,27 @@ const BatchAnalyze = () => {
                               </h5>
                               <div className="flex items-center gap-2 mb-3">
                                 <span className="text-sm text-slate-400">
-                                  {usageStats.batches_processed} of 5 batches
-                                  used
+                                  {usageStats.batches_processed} of{" "}
+                                  {usageStats.files_limit} batches
                                 </span>
                                 <span className="text-sm font-medium text-slate-300">
-                                  ({5 - usageStats.batches_processed} remaining)
+                                  ({usageStats.files_remaining} remaining)
                                 </span>
                               </div>
-                              <div className="w-full bg-slate-700/50 rounded-full h-2">
+                              <div className="w-full bg-slate-700/50 rounded-full h-2 overflow-hidden">
                                 <div
                                   className={`h-2 rounded-full transition-all duration-300 ${
-                                    usageStats.batches_processed >= 4
+                                    usageStats.batches_processed >=
+                                    usageStats.files_limit
                                       ? "bg-red-500"
-                                      : usageStats.batches_processed >= 3
-                                        ? "bg-yellow-500"
-                                        : "bg-blue-500"
-                                  }`}
-                                  style={{
-                                    width: `${(usageStats.batches_processed / 5) * 100}%`,
-                                  }}
+                                      : usageStats.approaching_limit
+                                        ? "bg-amber-500"
+                                        : "bg-green-500"
+                                  } usage-progress-${Math.round((usageStats.batches_processed / usageStats.files_limit) * 100)}`}
                                 ></div>
                               </div>
                             </div>
-                            {usageStats.batches_processed >= 4 && (
+                            {usageStats.approaching_limit && (
                               <button
                                 onClick={() => setShowUpgradeModal(true)}
                                 className="px-4 py-2 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white text-sm font-semibold rounded-lg transition-all duration-300 flex-shrink-0 whitespace-nowrap"
@@ -1091,7 +1098,7 @@ const BatchAnalyze = () => {
                               </button>
                             )}
                           </div>
-                          {usageStats.batches_processed >= 4 && (
+                          {usageStats.approaching_limit && (
                             <div className="mt-3 p-3 bg-amber-500/10 border border-amber-500/20 rounded-lg flex items-start gap-2">
                               <svg
                                 className="h-4 w-4 text-amber-400 flex-shrink-0 mt-0.5"
@@ -1109,7 +1116,8 @@ const BatchAnalyze = () => {
                               <div className="text-xs sm:text-sm text-amber-200 space-y-1">
                                 <p>
                                   You've used {usageStats.batches_processed} of
-                                  5 batch analysis operations.
+                                  {usageStats.files_limit} batch analysis
+                                  operations.
                                 </p>
                                 <p>
                                   Upgrade now to get unlimited batch analysis
@@ -1237,125 +1245,101 @@ const BatchAnalyze = () => {
 
                     {batchResults.length > 0 && (
                       <div className="mt-8 sm:mt-12">
+                        {/* Batch Summary */}
+                        <div className="mb-8 p-4 sm:p-6 bg-gradient-to-r from-slate-800/80 to-slate-900/80 backdrop-blur-xl border border-slate-700/50 rounded-xl sm:rounded-2xl">
+                          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                            <div>
+                              <p className="text-xs sm:text-sm text-slate-400 mb-1">
+                                Total Files
+                              </p>
+                              <p className="text-xl sm:text-2xl font-bold text-white">
+                                {batchResults.length}
+                              </p>
+                            </div>
+                            <div>
+                              <p className="text-xs sm:text-sm text-slate-400 mb-1">
+                                Successful
+                              </p>
+                              <p className="text-xl sm:text-2xl font-bold text-green-400">
+                                {
+                                  batchResults.filter(
+                                    (r) => r.status === "success"
+                                  ).length
+                                }
+                              </p>
+                            </div>
+                            <div>
+                              <p className="text-xs sm:text-sm text-slate-400 mb-1">
+                                Failed
+                              </p>
+                              <p className="text-xl sm:text-2xl font-bold text-red-400">
+                                {
+                                  batchResults.filter(
+                                    (r) => r.status === "error"
+                                  ).length
+                                }
+                              </p>
+                            </div>
+                            <div>
+                              <p className="text-xs sm:text-sm text-slate-400 mb-1">
+                                Success Rate
+                              </p>
+                              <p className="text-xl sm:text-2xl font-bold text-blue-400">
+                                {batchResults.length > 0
+                                  ? Math.round(
+                                      (batchResults.filter(
+                                        (r) => r.status === "success"
+                                      ).length /
+                                        batchResults.length) *
+                                        100
+                                    )
+                                  : 0}
+                                %
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Individual Results */}
                         <div className="text-center mb-6 sm:mb-8">
                           <h4 className="text-xl sm:text-2xl font-bold text-white mb-2">
-                            Analysis Results
+                            Detailed Analysis
                           </h4>
-                          <p className="text-slate-400">
-                            {
-                              batchResults.filter((r) => r.status === "success")
-                                .length
-                            }{" "}
-                            of {batchResults.length} resumes analyzed
-                            successfully
+                          <p className="text-slate-400 text-sm sm:text-base">
+                            Click on sections below to expand detailed insights
                           </p>
                         </div>
 
                         <div className="space-y-6">
                           {batchResults.map((result, index) => (
-                            <div
+                            <BatchResultCard
                               key={index}
-                              className="relative overflow-hidden rounded-xl sm:rounded-2xl bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl border border-slate-700/50 p-4 sm:p-6"
-                            >
-                              {result.status === "success" && result.data ? (
-                                <>
-                                  <div className="flex items-start justify-between mb-4">
-                                    <div className="flex items-center space-x-3">
-                                      <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg flex items-center justify-center">
-                                        <span className="text-white font-bold text-sm">
-                                          {index + 1}
-                                        </span>
-                                      </div>
-                                      <div>
-                                        <h5 className="text-lg font-semibold text-white">
-                                          {result.data.resumeData?.personalInfo
-                                            ?.name || `Candidate ${index + 1}`}
-                                        </h5>
-                                        <p className="text-slate-400 text-sm">
-                                          Resume Analysis Complete
-                                        </p>
-                                      </div>
-                                    </div>
-                                    <div className="text-right">
-                                      <div className="text-2xl font-bold text-green-400">
-                                        {result.data.resumeScore
-                                          ?.overall_score || "N/A"}
-                                      </div>
-                                      <div className="text-xs text-slate-400">
-                                        Score
-                                      </div>
-                                    </div>
-                                  </div>
-
-                                  {result.data.roleRecommendations &&
-                                    result.data.roleRecommendations.length >
-                                      0 && (
-                                      <div className="mb-4">
-                                        <h6 className="text-sm font-medium text-slate-300 mb-2">
-                                          Recommended Roles:
-                                        </h6>
-                                        <div className="flex flex-wrap gap-2">
-                                          {result.data.roleRecommendations
-                                            .slice(0, 2)
-                                            .map(
-                                              (
-                                                rec: RoleRecommendation,
-                                                recIndex: number
-                                              ) => (
-                                                <span
-                                                  key={recIndex}
-                                                  className="px-2 py-1 bg-green-500/20 text-green-300 text-xs rounded-full border border-green-500/30"
-                                                >
-                                                  {rec.roleName} (
-                                                  {rec.matchPercentage}%)
-                                                </span>
-                                              )
-                                            )}
-                                        </div>
-                                      </div>
-                                    )}
-
-                                  <div className="flex items-center justify-between text-sm">
-                                    <span className="text-slate-400">
-                                      Analysis completed with AI insights
-                                    </span>
-                                    <button className="text-green-400 hover:text-green-300 transition-colors">
-                                      View Details →
-                                    </button>
-                                  </div>
-                                </>
-                              ) : (
-                                <>
-                                  <div className="flex items-start justify-between">
-                                    <div className="flex items-center space-x-3">
-                                      <div className="w-10 h-10 bg-gradient-to-br from-red-500 to-red-600 rounded-lg flex items-center justify-center">
-                                        <span className="text-white font-bold text-sm">
-                                          {index + 1}
-                                        </span>
-                                      </div>
-                                      <div>
-                                        <h5 className="text-lg font-semibold text-white">
-                                          {result.file_name ||
-                                            `File ${index + 1}`}
-                                        </h5>
-                                        <p className="text-slate-400 text-sm">
-                                          Analysis Failed
-                                        </p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div className="mt-3 p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
-                                    <p className="text-sm text-red-200">
-                                      {result.error}
-                                    </p>
-                                  </div>
-                                </>
-                              )}
-                            </div>
+                              result={result}
+                              index={index}
+                            />
                           ))}
                         </div>
 
-                        <div className="text-center mt-6 sm:mt-8">
+                        <div className="text-center mt-6 sm:mt-8 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+                          <button
+                            onClick={handleReset}
+                            className="group inline-flex items-center px-6 py-3 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-semibold rounded-xl transition-all duration-300 shadow-lg hover:shadow-red-500/25 transform hover:scale-105 cursor-pointer"
+                          >
+                            <svg
+                              className="h-5 w-5 mr-2 group-hover:rotate-180 transition-transform duration-300"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                              />
+                            </svg>
+                            Clear & Start Over
+                          </button>
                           <Link
                             to="/dashboard"
                             className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-slate-700 to-slate-800 text-white font-semibold rounded-xl hover:from-slate-600 hover:to-slate-700 transition-all duration-300 shadow-lg hover:shadow-slate-500/25 transform hover:scale-105"

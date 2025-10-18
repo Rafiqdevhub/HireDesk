@@ -66,18 +66,28 @@ const Navbar = ({ onOpenTips }: NavbarProps) => {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-gray-900/80 backdrop-blur-md border-b border-gray-700/20 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <Link to="/" className="flex items-center space-x-2">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center">
-              <img
-                src="/logo/logo.png"
-                alt="HireDesk Logo"
-                className="w-8 h-8 object-contain"
-              />
-            </div>
-            <span className="text-xl font-bold text-white">
-              Hire<span className="text-blue-400">Desk</span>
-            </span>
-          </Link>
+          <div className="flex items-center space-x-3">
+            <a
+              href="https://jobpsych.vercel.app/"
+              rel="noopener noreferrer"
+              className="px-3 py-1 text-sm font-semibold text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105"
+              title="Visit JobPsych"
+            >
+              JobPsych
+            </a>
+            <Link to="/" className="flex items-center space-x-2">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center">
+                <img
+                  src="/logo/logo.png"
+                  alt="HireDesk Logo"
+                  className="w-8 h-8 object-contain"
+                />
+              </div>
+              <span className="text-xl font-bold text-white">
+                Hire<span className="text-blue-400">Desk</span>
+              </span>
+            </Link>
+          </div>
 
           <div className="hidden md:flex items-center space-x-8">
             <Link
