@@ -463,7 +463,6 @@ const Profile = () => {
 
             {/* Modern Usage Stats Section */}
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-7 mt-16 mb-16">
-              {/* Resume Files Card */}
               <div className="group relative">
                 <div className="absolute -inset-0.5 bg-gradient-to-br from-cyan-500/30 to-blue-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="relative bg-gradient-to-br from-slate-800/60 via-slate-800/40 to-slate-900/50 backdrop-blur-xl rounded-2xl border border-cyan-500/20 p-7 hover:border-cyan-500/40 transition-all duration-300 group">
@@ -541,7 +540,7 @@ const Profile = () => {
                     <span
                       className={`text-sm font-bold px-3 py-1 rounded-full ${(featureUsage?.batch_analysis || 0) >= 5 ? "text-red-400 bg-red-500/20 border border-red-500/30" : (featureUsage?.batch_analysis || 0) >= 4 ? "text-orange-400 bg-orange-500/20 border border-orange-500/30" : (featureUsage?.batch_analysis || 0) >= 2 ? "text-yellow-400 bg-yellow-500/20 border border-yellow-500/30" : "text-green-400 bg-green-500/20 border border-green-500/30"}`}
                     >
-                      {featureUsage?.batch_analysis || 0}/5
+                      {featureUsage?.batch_analysis || 0}/10
                     </span>
                   </div>
                   <h3 className="text-xl font-bold text-white mb-3">
@@ -560,12 +559,12 @@ const Profile = () => {
                   </div>
                   <div className="flex justify-between text-xs text-slate-400">
                     <span>
-                      {Math.max(0, 5 - (featureUsage?.batch_analysis || 0))}{" "}
+                      {Math.max(0, 10 - (featureUsage?.batch_analysis || 0))}{" "}
                       remaining
                     </span>
                     <span className="text-purple-400 font-semibold">
                       {Math.round(
-                        ((featureUsage?.batch_analysis || 0) / 5) * 100
+                        ((featureUsage?.batch_analysis || 0) / 10) * 100
                       )}
                       %
                     </span>
@@ -1074,7 +1073,8 @@ const Profile = () => {
 
                   <div className="mt-6 pt-6 border-t border-white/10">
                     <p className="text-xs text-slate-400 text-center">
-                      🔒 Your account is secure with us
+                      Your account is secure with us. We recommend changing your
+                      password regularly to maintain optimal security.
                     </p>
                   </div>
                 </div>
