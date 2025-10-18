@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router";
 import Navbar from "@components/layout/Navbar";
 import { useAuth } from "../contexts/AuthContext";
 import { authService } from "../services/authService";
+import { API_AUTH_URL } from "../utils/api";
 import type { Route } from "./+types/profile";
 
 export function meta({}: Route.MetaArgs) {
@@ -19,6 +20,7 @@ const Profile = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [profile, setProfile] = useState<any>(null);
+  const [featureUsage, setFeatureUsage] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showPasswordChange, setShowPasswordChange] = useState(false);
@@ -47,6 +49,33 @@ const Profile = () => {
         setError(null);
         const profileData = await authService.getProfile();
         setProfile(profileData);
+
+        if (profileData.email) {
+          try {
+            const usageResponse = await fetch(
+              `${API_AUTH_URL}/feature-usage/${profileData.email}`,
+              {
+                method: "GET",
+                headers: {
+                  "Cache-Control": "no-cache",
+                },
+              }
+            );
+            if (usageResponse.ok) {
+              const usageData = await usageResponse.json();
+
+              setFeatureUsage(usageData.features || usageData.stats);
+            } else {
+              console.error(
+                "Feature usage API error:",
+                usageResponse.status,
+                usageResponse.statusText
+              );
+            }
+          } catch (usageError) {
+            console.error("Error fetching feature usage:", usageError);
+          }
+        }
       } catch (err: any) {
         setError(err.message || "Failed to load profile");
       } finally {
@@ -129,7 +158,7 @@ const Profile = () => {
     }
 
     try {
-      setIsChangingPassword(true); // Reusing this state for loading
+      setIsChangingPassword(true);
       setNameError(null);
 
       const updatedUser = await authService.updateProfile({
@@ -239,36 +268,39 @@ const Profile = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
       <Navbar />
-      <div className="pt-20 pb-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
-          <div className="relative mb-8">
-            <div className="absolute -inset-4 bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-indigo-600/20 rounded-3xl blur-3xl"></div>
-            <div className="relative bg-gradient-to-br from-slate-800/90 via-slate-800/95 to-slate-900/90 backdrop-blur-xl rounded-3xl border border-slate-700/50 overflow-hidden shadow-2xl">
-              <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-indigo-500"></div>
-              <div className="p-8 md:p-10">
-                <div className="flex flex-col lg:flex-row items-center lg:items-start gap-8">
-                  <div className="relative flex-shrink-0">
+      <div className="pt-24 pb-24 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto space-y-12">
+          {/* Modern Hero Section */}
+          <div className="relative mb-12">
+            <div className="absolute -inset-8 bg-gradient-to-r from-cyan-500/10 via-blue-500/10 to-purple-500/10 rounded-4xl blur-3xl opacity-60 animate-pulse"></div>
+            <div className="absolute -inset-8 bg-gradient-to-r from-purple-500/5 via-pink-500/5 to-red-500/5 rounded-4xl blur-2xl opacity-40"></div>
+            <div className="relative bg-gradient-to-br from-slate-800/40 via-slate-800/50 to-slate-900/60 backdrop-blur-2xl rounded-4xl border border-white/10 overflow-hidden shadow-2xl">
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent"></div>
+              <div className="p-10 md:p-14 lg:p-20">
+                <div className="flex flex-col lg:flex-row items-center gap-16">
+                  <div className="relative flex-shrink-0 group">
                     <div className="relative">
-                      <div className="absolute -inset-2 bg-gradient-to-r from-blue-500 via-purple-500 to-indigo-500 rounded-full blur-md opacity-75 animate-pulse"></div>
-                      <div className="relative w-32 h-32 bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-600 rounded-full flex items-center justify-center shadow-2xl ring-4 ring-slate-800">
-                        <span className="text-5xl font-bold text-white">
+                      <div className="absolute -inset-4 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 rounded-full blur-2xl opacity-0 group-hover:opacity-75 transition-opacity duration-500 animate-pulse"></div>
+                      <div className="absolute -inset-2 bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 rounded-full blur-lg opacity-50 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      <div className="relative w-40 h-40 bg-gradient-to-br from-cyan-500 via-blue-600 to-purple-600 rounded-full flex items-center justify-center shadow-2xl ring-4 ring-slate-900/50 transform transition-transform duration-300 group-hover:scale-110">
+                        <span className="text-6xl font-bold text-white drop-shadow-lg">
                           {(profile?.name || user?.name || "")
                             .charAt(0)
                             .toUpperCase()}
                         </span>
                       </div>
-                      <div className="absolute -bottom-2 -right-2 flex items-center gap-2 bg-slate-800 rounded-full px-3 py-1.5 border-2 border-green-500 shadow-lg">
-                        <div className="w-2.5 h-2.5 bg-green-400 rounded-full animate-pulse"></div>
-                        <span className="text-xs font-semibold text-green-400">
-                          Active
+                      <div className="absolute -bottom-2 -right-2 flex items-center gap-2 bg-gradient-to-r from-slate-800 to-slate-900 rounded-full px-4 py-2 border-2 border-green-400 shadow-xl ring-2 ring-slate-950">
+                        <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse drop-shadow-lg"></div>
+                        <span className="text-xs font-bold text-green-300 tracking-wide">
+                          ACTIVE
                         </span>
                       </div>
                     </div>
                   </div>
                   <div className="flex-1 text-center lg:text-left">
-                    <div className="mb-4">
+                    <div className="mb-8">
                       {showNameEdit ? (
                         <div className="space-y-4">
                           <input
@@ -278,10 +310,10 @@ const Profile = () => {
                               setNewName(e.target.value);
                               setNameError(null);
                             }}
-                            className={`w-full px-4 py-3 bg-white/5 border rounded-xl focus:ring-2 focus:border-transparent transition-all placeholder-gray-500 ${
+                            className={`w-full px-5 py-3 bg-white/5 border rounded-xl focus:ring-2 focus:border-transparent transition-all placeholder-gray-500 text-lg font-medium ${
                               nameError
                                 ? "border-red-500/50 bg-red-500/10 text-red-300"
-                                : "border-white/20 text-white focus:ring-blue-500/50 focus:border-blue-500/50"
+                                : "border-white/20 text-white focus:ring-cyan-500/50 focus:border-cyan-500/50 focus:bg-white/10"
                             }`}
                             placeholder="Enter your full name"
                           />
@@ -292,11 +324,11 @@ const Profile = () => {
                             <button
                               onClick={handleNameUpdate}
                               disabled={isChangingPassword}
-                              className="px-6 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 text-white rounded-xl font-medium transition-all duration-200 disabled:opacity-50 cursor-pointer"
+                              className="flex-1 px-6 py-2.5 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 disabled:from-cyan-800 disabled:to-blue-800 text-white rounded-xl font-semibold transition-all duration-200 disabled:opacity-50 cursor-pointer transform hover:scale-105"
                             >
                               {isChangingPassword
                                 ? "Updating..."
-                                : "Update Name"}
+                                : "Save Changes"}
                             </button>
                             <button
                               onClick={() => {
@@ -304,39 +336,43 @@ const Profile = () => {
                                 setNewName("");
                                 setNameError(null);
                               }}
-                              className="px-6 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl font-medium transition-all duration-200 border border-white/20 cursor-pointer"
+                              className="px-6 py-2.5 bg-white/10 hover:bg-white/20 text-white rounded-xl font-semibold transition-all duration-200 border border-white/20 cursor-pointer"
                             >
                               Cancel
                             </button>
                           </div>
                         </div>
                       ) : (
-                        <h1 className="text-4xl md:text-5xl font-bold mb-2">
-                          <span className="bg-gradient-to-r from-blue-300 via-purple-300 to-indigo-300 bg-clip-text text-transparent">
-                            {profile?.name || user?.name}
-                          </span>
-                        </h1>
+                        <>
+                          <h1 className="text-5xl md:text-6xl font-bold mb-3">
+                            <span className="bg-gradient-to-r from-cyan-300 via-blue-300 to-purple-300 bg-clip-text text-transparent drop-shadow-lg">
+                              {profile?.name || user?.name}
+                            </span>
+                          </h1>
+                          <p className="text-lg text-slate-300 font-medium flex items-center justify-center lg:justify-start gap-3">
+                            <svg
+                              className="w-5 h-5 text-cyan-400 flex-shrink-0"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                              />
+                            </svg>
+                            {profile?.company_name ||
+                              user?.company_name ||
+                              "No company"}
+                          </p>
+                        </>
                       )}
-                      <p className="text-xl text-slate-300 font-medium flex items-center justify-center lg:justify-start gap-2">
-                        <svg
-                          className="w-5 h-5 text-purple-400"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-                          />
-                        </svg>
-                        {profile?.company_name || user?.company_name}
-                      </p>
                     </div>
-                    <div className="mb-6 flex items-center justify-center lg:justify-start gap-2 text-slate-400">
+                    <div className="mb-12 flex items-center justify-center lg:justify-start gap-3 text-slate-400 bg-white/5 px-6 py-3.5 rounded-xl border border-white/10 w-fit">
                       <svg
-                        className="w-4 h-4"
+                        className="w-5 h-5 text-cyan-400 flex-shrink-0"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -348,199 +384,20 @@ const Profile = () => {
                           d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                         />
                       </svg>
-                      <span className="text-sm">
+                      <span className="text-sm font-medium">
                         {profile?.email || user?.email}
                       </span>
                     </div>
-                    <div className="flex flex-wrap justify-center lg:justify-start gap-3 mb-6">
-                      <div className="group relative">
-                        <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl opacity-75 group-hover:opacity-100 blur transition duration-200"></div>
-                        <div className="relative flex flex-col gap-2 bg-slate-800 rounded-xl px-4 py-2.5 border border-blue-500/30 min-w-[180px]">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <svg
-                                className="w-4 h-4 text-blue-400"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                                />
-                              </svg>
-                              <span className="text-sm font-semibold text-white">
-                                {profile?.filesUploaded || 0}/10 Files
-                              </span>
-                            </div>
-                            <span
-                              className={`text-xs font-bold ${
-                                (profile?.filesUploaded || 0) >= 10
-                                  ? "text-red-400"
-                                  : (profile?.filesUploaded || 0) >= 8
-                                    ? "text-orange-400"
-                                    : (profile?.filesUploaded || 0) >= 5
-                                      ? "text-yellow-400"
-                                      : "text-green-400"
-                              }`}
-                            >
-                              {Math.round(
-                                ((profile?.filesUploaded || 0) / 10) * 100
-                              )}
-                              %
-                            </span>
-                          </div>
-                          <div className="w-full bg-slate-700/50 rounded-full h-1.5 overflow-hidden">
-                            <div
-                              className={`h-full rounded-full transition-all duration-500 ${
-                                (profile?.filesUploaded || 0) >= 10
-                                  ? "bg-red-500"
-                                  : (profile?.filesUploaded || 0) >= 8
-                                    ? "bg-orange-500"
-                                    : (profile?.filesUploaded || 0) >= 5
-                                      ? "bg-yellow-500"
-                                      : "bg-green-500"
-                              }`}
-                              style={{
-                                width: `${Math.min(100, ((profile?.filesUploaded || 0) / 10) * 100)}%`,
-                              }}
-                            ></div>
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <span className="text-xs text-slate-400 font-medium">
-                              {Math.max(0, 10 - (profile?.filesUploaded || 0))}{" "}
-                              remaining
-                            </span>
-                            <span className="text-xs text-slate-500 font-medium">
-                              {(profile?.filesUploaded || 0) >= 10
-                                ? "Limit reached"
-                                : "Upload limit"}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="group relative">
-                        <div className="absolute -inset-0.5 bg-gradient-to-r from-indigo-500 to-violet-500 rounded-xl opacity-75 group-hover:opacity-100 blur transition duration-200"></div>
-                        <div className="relative flex flex-col gap-2 bg-slate-800 rounded-xl px-4 py-2.5 border border-indigo-500/30 min-w-[180px]">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <svg
-                                className="w-4 h-4 text-indigo-400"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                                />
-                              </svg>
-                              <span className="text-sm font-semibold text-white">
-                                {profile?.batchAnalysis || 0}/5 Batches
-                              </span>
-                            </div>
-                            <span
-                              className={`text-xs font-bold ${
-                                (profile?.batchAnalysis || 0) >= 5
-                                  ? "text-red-400"
-                                  : (profile?.batchAnalysis || 0) >= 4
-                                    ? "text-orange-400"
-                                    : (profile?.batchAnalysis || 0) >= 2
-                                      ? "text-yellow-400"
-                                      : "text-green-400"
-                              }`}
-                            >
-                              {Math.round(
-                                ((profile?.batchAnalysis || 0) / 5) * 100
-                              )}
-                              %
-                            </span>
-                          </div>
-                          <div className="w-full bg-slate-700/50 rounded-full h-1.5 overflow-hidden">
-                            <div
-                              className={`h-full rounded-full transition-all duration-500 ${
-                                (profile?.batchAnalysis || 0) >= 5
-                                  ? "bg-red-500"
-                                  : (profile?.batchAnalysis || 0) >= 4
-                                    ? "bg-orange-500"
-                                    : (profile?.batchAnalysis || 0) >= 2
-                                      ? "bg-yellow-500"
-                                      : "bg-green-500"
-                              }`}
-                              style={{
-                                width: `${Math.min(100, ((profile?.batchAnalysis || 0) / 5) * 100)}%`,
-                              }}
-                            ></div>
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <span className="text-xs text-slate-400 font-medium">
-                              {Math.max(0, 5 - (profile?.batchAnalysis || 0))}{" "}
-                              remaining
-                            </span>
-                            <span className="text-xs text-slate-500 font-medium">
-                              {(profile?.batchAnalysis || 0) >= 5
-                                ? "Limit reached"
-                                : "Batch limit"}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="group relative">
-                        <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl opacity-75 group-hover:opacity-100 blur transition duration-200"></div>
-                        <div className="relative flex flex-col gap-1 bg-slate-800 rounded-xl px-4 py-2 border border-purple-500/30">
-                          <div className="flex items-center gap-2">
-                            <svg
-                              className="w-4 h-4 text-purple-400"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                              />
-                            </svg>
-                            <span className="text-xs font-medium text-purple-300">
-                              Member Since
-                            </span>
-                          </div>
-                          <span className="text-sm font-semibold text-white">
-                            {profile?.createdAt
-                              ? new Date(profile.createdAt).toLocaleString(
-                                  "en-US",
-                                  {
-                                    month: "short",
-                                    day: "numeric",
-                                    year: "numeric",
-                                    hour: "numeric",
-                                    minute: "2-digit",
-                                    hour12: true,
-                                  }
-                                )
-                              : "N/A"}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col gap-3 w-full lg:w-auto">
-                    <button
-                      onClick={() => {
-                        setShowNameEdit(!showNameEdit);
-                        if (!showNameEdit) {
-                          setNewName(profile?.name || user?.name || "");
-                        }
-                      }}
-                      className="group relative overflow-hidden bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-green-500/50 cursor-pointer"
-                    >
-                      <span className="relative z-10 flex items-center justify-center gap-2">
+                    <div className="flex flex-wrap gap-5 justify-center lg:justify-start pt-2">
+                      <button
+                        onClick={() => {
+                          setShowNameEdit(!showNameEdit);
+                          if (!showNameEdit) {
+                            setNewName(profile?.name || user?.name || "");
+                          }
+                        }}
+                        className="group relative overflow-hidden bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-110 shadow-lg hover:shadow-emerald-500/50 cursor-pointer flex items-center gap-2"
+                      >
                         <svg
                           className="w-5 h-5"
                           fill="none"
@@ -554,15 +411,15 @@ const Profile = () => {
                             d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
                           />
                         </svg>
-                        {showNameEdit ? "Cancel" : "Change Name"}
-                      </span>
-                    </button>
+                        {showNameEdit ? "Cancel" : "Edit Name"}
+                      </button>
 
-                    <button
-                      onClick={() => setShowPasswordChange(!showPasswordChange)}
-                      className="group relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-blue-500/50 cursor-pointer"
-                    >
-                      <span className="relative z-10 flex items-center justify-center gap-2">
+                      <button
+                        onClick={() =>
+                          setShowPasswordChange(!showPasswordChange)
+                        }
+                        className="group relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-110 shadow-lg hover:shadow-blue-500/50 cursor-pointer flex items-center gap-2"
+                      >
                         <svg
                           className="w-5 h-5"
                           fill="none"
@@ -577,14 +434,12 @@ const Profile = () => {
                           />
                         </svg>
                         {showPasswordChange ? "Cancel" : "Change Password"}
-                      </span>
-                    </button>
+                      </button>
 
-                    <Link
-                      to="/dashboard"
-                      className="group relative overflow-hidden bg-slate-700/50 hover:bg-slate-600/50 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 border border-slate-600 hover:border-slate-500 text-center"
-                    >
-                      <span className="flex items-center justify-center gap-2">
+                      <Link
+                        to="/dashboard"
+                        className="group relative overflow-hidden bg-gradient-to-r from-slate-700 to-slate-600 hover:from-slate-600 hover:to-slate-500 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-110 border border-slate-500/50 hover:border-slate-400 cursor-pointer flex items-center gap-2"
+                      >
                         <svg
                           className="w-5 h-5"
                           fill="none"
@@ -599,26 +454,252 @@ const Profile = () => {
                           />
                         </svg>
                         Dashboard
-                      </span>
-                    </Link>
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Modern Usage Stats Section */}
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-7 mt-16 mb-16">
+              {/* Resume Files Card */}
+              <div className="group relative">
+                <div className="absolute -inset-0.5 bg-gradient-to-br from-cyan-500/30 to-blue-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="relative bg-gradient-to-br from-slate-800/60 via-slate-800/40 to-slate-900/50 backdrop-blur-xl rounded-2xl border border-cyan-500/20 p-7 hover:border-cyan-500/40 transition-all duration-300 group">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="p-3 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-xl group-hover:from-cyan-500/30 group-hover:to-blue-500/30 transition-all">
+                      <svg
+                        className="w-6 h-6 text-cyan-400"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                        />
+                      </svg>
+                    </div>
+                    <span
+                      className={`text-sm font-bold px-3 py-1 rounded-full ${(featureUsage?.filesUploaded || 0) >= 10 ? "text-red-400 bg-red-500/20 border border-red-500/30" : (featureUsage?.filesUploaded || 0) >= 8 ? "text-orange-400 bg-orange-500/20 border border-orange-500/30" : (featureUsage?.filesUploaded || 0) >= 5 ? "text-yellow-400 bg-yellow-500/20 border border-yellow-500/30" : "text-green-400 bg-green-500/20 border border-green-500/30"}`}
+                    >
+                      {featureUsage?.filesUploaded || 0}/10
+                    </span>
+                  </div>
+                  <h3 className="text-xl font-bold text-white mb-3">
+                    Resume Files
+                  </h3>
+                  <p className="text-sm text-slate-400 mb-5">
+                    Files uploaded to your account
+                  </p>
+                  <div className="w-full bg-white/5 rounded-full h-2.5 overflow-hidden border border-white/10 mb-4">
+                    <div
+                      className={`h-full rounded-full transition-all duration-500 ${(featureUsage?.filesUploaded || 0) >= 10 ? "bg-gradient-to-r from-red-500 to-red-600" : (featureUsage?.filesUploaded || 0) >= 8 ? "bg-gradient-to-r from-orange-500 to-orange-600" : (featureUsage?.filesUploaded || 0) >= 5 ? "bg-gradient-to-r from-yellow-500 to-yellow-600" : "bg-gradient-to-r from-cyan-500 to-blue-500"}`}
+                      style={{
+                        width: `${Math.min(100, ((featureUsage?.filesUploaded || 0) / 10) * 100)}%`,
+                      }}
+                    ></div>
+                  </div>
+                  <div className="flex justify-between text-xs text-slate-400">
+                    <span>
+                      {Math.max(0, 10 - (featureUsage?.filesUploaded || 0))}{" "}
+                      remaining
+                    </span>
+                    <span className="text-cyan-400 font-semibold">
+                      {Math.round(
+                        ((featureUsage?.filesUploaded || 0) / 10) * 100
+                      )}
+                      %
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Batch Analysis Card */}
+              <div className="group relative">
+                <div className="absolute -inset-0.5 bg-gradient-to-br from-purple-500/30 to-pink-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="relative bg-gradient-to-br from-slate-800/60 via-slate-800/40 to-slate-900/50 backdrop-blur-xl rounded-2xl border border-purple-500/20 p-7 hover:border-purple-500/40 transition-all duration-300">
+                  <div className="flex items-center justify-between mb-5">
+                    <div className="p-3 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-xl group-hover:from-purple-500/30 group-hover:to-pink-500/30 transition-all">
+                      <svg
+                        className="w-6 h-6 text-purple-400"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                    </div>
+                    <span
+                      className={`text-sm font-bold px-3 py-1 rounded-full ${(featureUsage?.batch_analysis || 0) >= 5 ? "text-red-400 bg-red-500/20 border border-red-500/30" : (featureUsage?.batch_analysis || 0) >= 4 ? "text-orange-400 bg-orange-500/20 border border-orange-500/30" : (featureUsage?.batch_analysis || 0) >= 2 ? "text-yellow-400 bg-yellow-500/20 border border-yellow-500/30" : "text-green-400 bg-green-500/20 border border-green-500/30"}`}
+                    >
+                      {featureUsage?.batch_analysis || 0}/5
+                    </span>
+                  </div>
+                  <h3 className="text-xl font-bold text-white mb-3">
+                    Batch Analysis
+                  </h3>
+                  <p className="text-sm text-slate-400 mb-5">
+                    Resume analyses performed this month
+                  </p>
+                  <div className="w-full bg-white/5 rounded-full h-2.5 overflow-hidden border border-white/10 mb-4">
+                    <div
+                      className={`h-full rounded-full transition-all duration-500 ${(featureUsage?.batch_analysis || 0) >= 5 ? "bg-gradient-to-r from-red-500 to-red-600" : (featureUsage?.batch_analysis || 0) >= 4 ? "bg-gradient-to-r from-orange-500 to-orange-600" : (featureUsage?.batch_analysis || 0) >= 2 ? "bg-gradient-to-r from-yellow-500 to-yellow-600" : "bg-gradient-to-r from-purple-500 to-pink-500"}`}
+                      style={{
+                        width: `${Math.min(100, ((featureUsage?.batch_analysis || 0) / 5) * 100)}%`,
+                      }}
+                    ></div>
+                  </div>
+                  <div className="flex justify-between text-xs text-slate-400">
+                    <span>
+                      {Math.max(0, 5 - (featureUsage?.batch_analysis || 0))}{" "}
+                      remaining
+                    </span>
+                    <span className="text-purple-400 font-semibold">
+                      {Math.round(
+                        ((featureUsage?.batch_analysis || 0) / 5) * 100
+                      )}
+                      %
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Compare Resumes Card */}
+              <div className="group relative">
+                <div className="absolute -inset-0.5 bg-gradient-to-br from-emerald-500/30 to-teal-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="relative bg-gradient-to-br from-slate-800/60 via-slate-800/40 to-slate-900/50 backdrop-blur-xl rounded-2xl border border-emerald-500/20 p-6 hover:border-emerald-500/40 transition-all duration-300">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="p-3 bg-gradient-to-br from-emerald-500/20 to-teal-500/20 rounded-xl group-hover:from-emerald-500/30 group-hover:to-teal-500/30 transition-all">
+                      <svg
+                        className="w-6 h-6 text-emerald-400"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M7 16V4m0 0L3 8m4-4l4 4h6a2 2 0 012 2v10a2 2 0 01-2 2H9a2 2 0 01-2-2V8a2 2 0 012-2h6"
+                        />
+                      </svg>
+                    </div>
+                    <span className="text-sm font-bold px-3 py-1 rounded-full text-emerald-400 bg-emerald-500/20 border border-emerald-500/30">
+                      ∞
+                    </span>
+                  </div>
+                  <h3 className="text-xl font-bold text-white mb-3">
+                    Resume Comparison
+                  </h3>
+                  <p className="text-sm text-slate-400 mb-5">
+                    Comparisons this session
+                  </p>
+                  <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-lg px-3 py-2.5 mb-4">
+                    <p className="text-sm text-emerald-300 font-medium flex items-center gap-2">
+                      <span className="w-2 h-2 bg-emerald-400 rounded-full"></span>
+                      {featureUsage?.compare_resumes || 0} performed
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-slate-400">
+                    <svg
+                      className="w-4 h-4 text-emerald-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M13 10V3L4 14h7v7l9-11h-7z"
+                      />
+                    </svg>
+                    <span>Unlimited usage</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Total Usage Card */}
+              <div className="group relative">
+                <div className="absolute -inset-0.5 bg-gradient-to-br from-indigo-500/30 to-violet-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="relative bg-gradient-to-br from-slate-800/60 via-slate-800/40 to-slate-900/50 backdrop-blur-xl rounded-2xl border border-indigo-500/20 p-7 hover:border-indigo-500/40 transition-all duration-300">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="p-3 bg-gradient-to-br from-indigo-500/20 to-violet-500/20 rounded-xl group-hover:from-indigo-500/30 group-hover:to-violet-500/30 transition-all">
+                      <svg
+                        className="w-6 h-6 text-indigo-400"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                        />
+                      </svg>
+                    </div>
+                    <span className="text-sm font-bold px-3 py-1 rounded-full text-indigo-400 bg-indigo-500/20 border border-indigo-500/30">
+                      {featureUsage?.filesUploaded &&
+                      featureUsage?.batch_analysis &&
+                      featureUsage?.compare_resumes
+                        ? featureUsage.filesUploaded +
+                          featureUsage.batch_analysis +
+                          featureUsage.compare_resumes
+                        : 0}
+                    </span>
+                  </div>
+                  <h3 className="text-xl font-bold text-white mb-3">
+                    Total Usage
+                  </h3>
+                  <p className="text-sm text-slate-400 mb-5">
+                    Overall account activity
+                  </p>
+                  <div className="bg-indigo-500/10 border border-indigo-500/30 rounded-lg px-3 py-2.5 mb-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs text-slate-400">
+                        Activity Status
+                      </span>
+                      <span
+                        className={`text-xs font-bold ${featureUsage && (featureUsage.filesUploaded > 0 || featureUsage.batch_analysis > 0 || featureUsage.compare_resumes > 0) ? "text-green-400" : "text-slate-400"}`}
+                      >
+                        {featureUsage &&
+                        (featureUsage.filesUploaded > 0 ||
+                          featureUsage.batch_analysis > 0 ||
+                          featureUsage.compare_resumes > 0)
+                          ? "●  Active"
+                          : "● Idle"}
+                      </span>
+                    </div>
+                  </div>
+                  <p className="text-xs text-slate-400">
+                    Combined operations across all services
+                  </p>
+                </div>
+              </div>
+            </div>
             <div className="lg:col-span-2 space-y-8">
               {showPasswordChange && (
-                <div className="relative">
-                  <div className="absolute -inset-0.5 bg-gradient-to-r from-green-500/20 via-emerald-500/20 to-teal-500/20 rounded-2xl blur-xl"></div>
-                  <div className="relative bg-slate-800/90 backdrop-blur-xl rounded-2xl border border-slate-700/50 p-6 md:p-8">
-                    <div className="flex items-center gap-4 mb-6 pb-4 border-b border-slate-700/50">
+                <div className="relative group">
+                  <div className="absolute -inset-1 bg-gradient-to-r from-green-500/20 via-emerald-500/20 to-teal-500/20 rounded-3xl blur-2xl group-hover:opacity-100 opacity-75 transition-opacity"></div>
+                  <div className="relative bg-gradient-to-br from-slate-800/50 via-slate-800/70 to-slate-900/60 backdrop-blur-2xl rounded-3xl border border-green-500/20 p-8 md:p-10 overflow-hidden">
+                    <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-green-400/50 to-transparent"></div>
+
+                    <div className="flex items-center gap-4 mb-8 pb-6 border-b border-white/10">
                       <div className="relative">
-                        <div className="absolute -inset-1 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl blur opacity-75"></div>
-                        <div className="relative w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg">
+                        <div className="absolute -inset-1 bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl blur opacity-75"></div>
+                        <div className="relative w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg">
                           <svg
-                            className="w-6 h-6 text-white"
+                            className="w-8 h-8 text-white"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -633,21 +714,22 @@ const Profile = () => {
                         </div>
                       </div>
                       <div>
-                        <h2 className="text-2xl font-bold text-white">
-                          Change Password
+                        <h2 className="text-3xl font-bold bg-gradient-to-r from-green-300 to-emerald-300 bg-clip-text text-transparent">
+                          Update Password
                         </h2>
                         <p className="text-sm text-slate-400 mt-1">
-                          Update your account security credentials
+                          Strengthen your account security with a new password
                         </p>
                       </div>
                     </div>
 
-                    <div className="space-y-4">
+                    <div className="space-y-6">
+                      {/* Current Password */}
                       <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-2">
+                        <label className="block text-sm font-semibold text-slate-300 mb-3">
                           Current Password
                         </label>
-                        <div className="relative">
+                        <div className="relative group">
                           <input
                             type={
                               passwordVisibility.currentPassword
@@ -661,10 +743,10 @@ const Profile = () => {
                                 e.target.value
                               )
                             }
-                            className={`w-full px-4 py-3 pr-12 bg-white/5 border rounded-xl focus:ring-2 focus:border-transparent transition-all placeholder-gray-500 ${
+                            className={`w-full px-4 py-3 pr-12 bg-white/5 border rounded-xl focus:ring-2 focus:border-transparent transition-all placeholder-gray-500 font-medium ${
                               passwordErrors.currentPassword
-                                ? "border-red-500/50 bg-red-500/10 text-red-300"
-                                : "border-white/20 text-white focus:ring-blue-500/50 focus:border-blue-500/50"
+                                ? "border-red-500/50 bg-red-500/10 text-red-300 focus:ring-red-500/20 focus:bg-red-500/15"
+                                : "border-white/20 text-white focus:ring-green-500/30 focus:border-green-500/50 focus:bg-white/10 group-hover:border-white/30"
                             }`}
                             placeholder="Enter your current password"
                           />
@@ -673,7 +755,7 @@ const Profile = () => {
                             onClick={() =>
                               togglePasswordVisibility("currentPassword")
                             }
-                            className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-300 transition-colors"
+                            className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-300 transition-colors"
                           >
                             {passwordVisibility.currentPassword ? (
                               <svg
@@ -719,12 +801,13 @@ const Profile = () => {
                         )}
                       </div>
 
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {/* New Password Fields Grid */}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                          <label className="block text-sm font-medium text-gray-300 mb-2">
+                          <label className="block text-sm font-semibold text-slate-300 mb-3">
                             New Password
                           </label>
-                          <div className="relative">
+                          <div className="relative group">
                             <input
                               type={
                                 passwordVisibility.newPassword
@@ -738,19 +821,19 @@ const Profile = () => {
                                   e.target.value
                                 )
                               }
-                              className={`w-full px-4 py-3 pr-12 bg-white/5 border rounded-xl focus:ring-2 focus:border-transparent transition-all placeholder-gray-500 ${
+                              className={`w-full px-4 py-3 pr-12 bg-white/5 border rounded-xl focus:ring-2 focus:border-transparent transition-all placeholder-gray-500 font-medium ${
                                 passwordErrors.newPassword
-                                  ? "border-red-500/50 bg-red-500/10 text-red-300"
-                                  : "border-white/20 text-white focus:ring-blue-500/50 focus:border-blue-500/50"
+                                  ? "border-red-500/50 bg-red-500/10 text-red-300 focus:ring-red-500/20 focus:bg-red-500/15"
+                                  : "border-white/20 text-white focus:ring-green-500/30 focus:border-green-500/50 focus:bg-white/10 group-hover:border-white/30"
                               }`}
-                              placeholder="Enter your new password"
+                              placeholder="Create a strong password"
                             />
                             <button
                               type="button"
                               onClick={() =>
                                 togglePasswordVisibility("newPassword")
                               }
-                              className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-300 transition-colors"
+                              className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-300 transition-colors"
                             >
                               {passwordVisibility.newPassword ? (
                                 <svg
@@ -797,10 +880,10 @@ const Profile = () => {
                         </div>
 
                         <div>
-                          <label className="block text-sm font-medium text-gray-300 mb-2">
+                          <label className="block text-sm font-semibold text-slate-300 mb-3">
                             Confirm Password
                           </label>
-                          <div className="relative">
+                          <div className="relative group">
                             <input
                               type={
                                 passwordVisibility.confirmPassword
@@ -814,19 +897,19 @@ const Profile = () => {
                                   e.target.value
                                 )
                               }
-                              className={`w-full px-4 py-3 pr-12 bg-white/5 border rounded-xl focus:ring-2 focus:border-transparent transition-all placeholder-gray-500 ${
+                              className={`w-full px-4 py-3 pr-12 bg-white/5 border rounded-xl focus:ring-2 focus:border-transparent transition-all placeholder-gray-500 font-medium ${
                                 passwordErrors.confirmPassword
-                                  ? "border-red-500/50 bg-red-500/10 text-red-300"
-                                  : "border-white/20 text-white focus:ring-blue-500/50 focus:border-blue-500/50"
+                                  ? "border-red-500/50 bg-red-500/10 text-red-300 focus:ring-red-500/20 focus:bg-red-500/15"
+                                  : "border-white/20 text-white focus:ring-green-500/30 focus:border-green-500/50 focus:bg-white/10 group-hover:border-white/30"
                               }`}
-                              placeholder="Confirm your new password"
+                              placeholder="Confirm your password"
                             />
                             <button
                               type="button"
                               onClick={() =>
                                 togglePasswordVisibility("confirmPassword")
                               }
-                              className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-300 transition-colors"
+                              className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-300 transition-colors"
                             >
                               {passwordVisibility.confirmPassword ? (
                                 <svg
@@ -873,19 +956,35 @@ const Profile = () => {
                         </div>
                       </div>
 
-                      <div className="flex space-x-4 pt-4">
+                      {/* Action Buttons */}
+                      <div className="flex gap-4 pt-6">
                         <button
                           onClick={handlePasswordChange}
                           disabled={isChangingPassword}
-                          className="flex-1 bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-600 hover:to-teal-600 text-white py-3 px-6 rounded-xl font-medium transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none shadow-lg cursor-pointer"
+                          className="flex-1 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white py-3 px-6 rounded-xl font-bold transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none shadow-lg hover:shadow-green-500/50 cursor-pointer flex items-center justify-center gap-2"
                         >
                           {isChangingPassword ? (
-                            <div className="flex items-center justify-center">
-                              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                              Updating Password...
-                            </div>
+                            <>
+                              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                              Updating...
+                            </>
                           ) : (
-                            "Update Password"
+                            <>
+                              <svg
+                                className="w-5 h-5"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M5 13l4 4L19 7"
+                                />
+                              </svg>
+                              Update Password
+                            </>
                           )}
                         </button>
                         <button
@@ -898,7 +997,7 @@ const Profile = () => {
                             });
                             setPasswordErrors({});
                           }}
-                          className="px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-xl font-medium transition-all duration-200 border border-white/20 cursor-pointer"
+                          className="px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-xl font-semibold transition-all duration-200 border border-white/20 cursor-pointer transform hover:scale-105"
                         >
                           Cancel
                         </button>
@@ -910,54 +1009,74 @@ const Profile = () => {
             </div>
 
             <div className="space-y-8">
-              <div className="bg-slate-800/50 backdrop-blur-xl rounded-2xl border border-white/10 p-6">
-                <div className="flex items-center space-x-3 mb-6">
-                  <div className="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center">
-                    <svg
-                      className="w-5 h-5 text-white"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-                      />
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                      />
-                    </svg>
-                  </div>
-                  <h2 className="text-2xl font-bold text-white">
-                    Account Actions
-                  </h2>
-                </div>
+              {/* Account Actions Section */}
+              <div className="relative group">
+                <div className="absolute -inset-1 bg-gradient-to-br from-red-500/20 via-orange-500/20 to-pink-500/20 rounded-3xl blur-2xl group-hover:opacity-100 opacity-75 transition-opacity"></div>
+                <div className="relative bg-gradient-to-br from-slate-800/50 via-slate-800/70 to-slate-900/60 backdrop-blur-2xl rounded-3xl border border-red-500/20 p-8 overflow-hidden">
+                  <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-red-400/50 to-transparent"></div>
 
-                <div className="space-y-3">
-                  <button
-                    onClick={handleLogout}
-                    className="w-full bg-red-600 hover:bg-red-700 text-white py-3 px-4 rounded-xl font-medium transition-all duration-200 transform hover:scale-105 shadow-lg flex items-center justify-center space-x-2 cursor-pointer"
-                  >
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="relative">
+                      <div className="absolute -inset-1 bg-gradient-to-r from-red-500 to-orange-500 rounded-2xl blur opacity-75"></div>
+                      <div className="relative w-14 h-14 bg-gradient-to-br from-red-600 to-orange-600 rounded-2xl flex items-center justify-center shadow-lg">
+                        <svg
+                          className="w-7 h-7 text-white"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                          />
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-bold bg-gradient-to-r from-red-300 to-orange-300 bg-clip-text text-transparent">
+                        Account
+                      </h3>
+                      <p className="text-xs text-slate-400">
+                        Security & preferences
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-3">
+                    <button
+                      onClick={handleLogout}
+                      className="w-full group relative overflow-hidden bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white py-3 px-4 rounded-xl font-bold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-red-500/50 cursor-pointer flex items-center justify-center gap-3"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-                      />
-                    </svg>
-                    <span>Sign Out</span>
-                  </button>
+                      <svg
+                        className="w-5 h-5 transform group-hover:translate-x-1 transition-transform"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                        />
+                      </svg>
+                      <span>Sign Out</span>
+                    </button>
+                  </div>
+
+                  <div className="mt-6 pt-6 border-t border-white/10">
+                    <p className="text-xs text-slate-400 text-center">
+                      🔒 Your account is secure with us
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
