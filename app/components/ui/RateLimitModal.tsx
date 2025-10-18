@@ -121,7 +121,7 @@ const RateLimitModal: React.FC<RateLimitModalProps> = ({
               onClick={onClose}
               title="Close modal"
               aria-label="Close modal"
-              className="w-8 h-8 bg-white/20 hover:bg-white/30 rounded-xl flex items-center justify-center transition-all duration-200 group"
+              className="w-8 h-8 bg-white/20 hover:bg-white/30 rounded-xl flex items-center justify-center transition-all duration-200 group cursor-pointer"
             >
               <svg
                 className="w-4 h-4 text-white group-hover:scale-110 transition-transform"

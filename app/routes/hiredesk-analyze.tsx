@@ -47,6 +47,29 @@ const HireDeskAnalyze = () => {
     setQuestionsState(value);
     localStorage.setItem("hiredesk_questions", JSON.stringify(value));
   };
+
+  const [resumeScore, setResumeScoreState] = useState<any>(null);
+
+  const setResumeScore = (value: any) => {
+    setResumeScoreState(value);
+    localStorage.setItem("hiredesk_resumeScore", JSON.stringify(value));
+  };
+
+  const [personalityInsights, setPersonalityInsightsState] =
+    useState<any>(null);
+
+  const setPersonalityInsights = (value: any) => {
+    setPersonalityInsightsState(value);
+    localStorage.setItem("hiredesk_personalityInsights", JSON.stringify(value));
+  };
+
+  const [careerPath, setCareerPathState] = useState<any>(null);
+
+  const setCareerPath = (value: any) => {
+    setCareerPathState(value);
+    localStorage.setItem("hiredesk_careerPath", JSON.stringify(value));
+  };
+
   const [error, setError] = useState<{
     show: boolean;
     message: string;
@@ -88,6 +111,11 @@ const HireDeskAnalyze = () => {
           "hiredesk_roleRecommendations"
         );
         const savedQuestions = localStorage.getItem("hiredesk_questions");
+        const savedResumeScore = localStorage.getItem("hiredesk_resumeScore");
+        const savedPersonalityInsights = localStorage.getItem(
+          "hiredesk_personalityInsights"
+        );
+        const savedCareerPath = localStorage.getItem("hiredesk_careerPath");
 
         if (savedResumeData) {
           setResumeData(JSON.parse(savedResumeData));
@@ -101,13 +129,25 @@ const HireDeskAnalyze = () => {
         if (savedQuestions) {
           setQuestions(JSON.parse(savedQuestions));
         }
+        if (savedResumeScore) {
+          setResumeScore(JSON.parse(savedResumeScore));
+        }
+        if (savedPersonalityInsights) {
+          setPersonalityInsights(JSON.parse(savedPersonalityInsights));
+        }
+        if (savedCareerPath) {
+          setCareerPath(JSON.parse(savedCareerPath));
+        }
 
         if (
           savedResumeData ||
           savedFitStatus ||
           savedReasoning ||
           savedRoleRecommendations ||
-          savedQuestions
+          savedQuestions ||
+          savedResumeScore ||
+          savedPersonalityInsights ||
+          savedCareerPath
         ) {
           setDataLoadedFromStorage(true);
         }
@@ -148,6 +188,9 @@ const HireDeskAnalyze = () => {
     localStorage.removeItem("hiredesk_reasoning");
     localStorage.removeItem("hiredesk_roleRecommendations");
     localStorage.removeItem("hiredesk_questions");
+    localStorage.removeItem("hiredesk_resumeScore");
+    localStorage.removeItem("hiredesk_personalityInsights");
+    localStorage.removeItem("hiredesk_careerPath");
     localStorage.removeItem("hiredesk_expandedCategories");
   };
 
@@ -272,6 +315,9 @@ const HireDeskAnalyze = () => {
       setRoleRecommendations(responseData.roleRecommendations || []);
       setResumeData(responseData.resumeData || responseData);
       setQuestions(responseData.questions || []);
+      setResumeScore(responseData.resumeScore || null);
+      setPersonalityInsights(responseData.personalityInsights || null);
+      setCareerPath(responseData.careerPath || null);
 
       setToastMessage(
         "Resume analyzed successfully! AI insights generated. Scroll down to see the analysis."
@@ -301,6 +347,9 @@ const HireDeskAnalyze = () => {
     setFitStatus("");
     setReasoning("");
     setRoleRecommendations([]);
+    setResumeScore(null);
+    setPersonalityInsights(null);
+    setCareerPath(null);
     setDataLoadedFromStorage(false);
     setError({
       show: false,
@@ -1122,6 +1171,438 @@ const HireDeskAnalyze = () => {
             </section>
           )}
 
+          {resumeScore && (
+            <section className="mb-12 sm:mb-16">
+              <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl border border-slate-700/50">
+                <div className="relative bg-gradient-to-r from-blue-600/20 to-cyan-600/20 px-4 sm:px-6 md:px-8 py-4 sm:py-6 border-b border-slate-700/50">
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-cyan-500/10"></div>
+                  <div className="relative flex flex-col sm:flex-row sm:items-center">
+                    <div className="p-2 sm:p-3 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-xl sm:rounded-2xl mr-0 sm:mr-4 mb-3 sm:mb-0 shadow-lg">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5 sm:h-6 sm:w-6 text-white"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                        />
+                      </svg>
+                    </div>
+                    <div className="flex-1">
+                      <h2 className="text-xl sm:text-2xl font-bold text-white mb-1">
+                        Resume Score Analysis
+                      </h2>
+                      <p className="text-slate-300 text-sm sm:text-base">
+                        Comprehensive evaluation of resume quality and content
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="p-4 sm:p-6 md:p-8 space-y-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                    <div className="bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-lg sm:rounded-xl p-4 sm:p-6 border border-blue-500/30">
+                      <div className="text-sm text-slate-400 mb-2">
+                        Overall Score
+                      </div>
+                      <div className="text-3xl sm:text-4xl font-bold text-blue-300">
+                        {resumeScore.overall_score?.toFixed(1) || "N/A"}
+                      </div>
+                      <div className="text-xs text-slate-500 mt-2">
+                        out of 100
+                      </div>
+                    </div>
+                    <div className="bg-gradient-to-br from-cyan-500/20 to-blue-600/20 rounded-lg sm:rounded-xl p-4 sm:p-6 border border-cyan-500/30">
+                      <div className="text-sm text-slate-400 mb-2">
+                        Technical
+                      </div>
+                      <div className="text-3xl sm:text-4xl font-bold text-cyan-300">
+                        {resumeScore.technical_score?.toFixed(1) || "N/A"}
+                      </div>
+                      <div className="text-xs text-slate-500 mt-2">skills</div>
+                    </div>
+                    <div className="bg-gradient-to-br from-purple-500/20 to-pink-600/20 rounded-lg sm:rounded-xl p-4 sm:p-6 border border-purple-500/30">
+                      <div className="text-sm text-slate-400 mb-2">
+                        Experience
+                      </div>
+                      <div className="text-3xl sm:text-4xl font-bold text-purple-300">
+                        {resumeScore.experience_score?.toFixed(1) || "N/A"}
+                      </div>
+                      <div className="text-xs text-slate-500 mt-2">
+                        background
+                      </div>
+                    </div>
+                    <div className="bg-gradient-to-br from-green-500/20 to-emerald-600/20 rounded-lg sm:rounded-xl p-4 sm:p-6 border border-green-500/30">
+                      <div className="text-sm text-slate-400 mb-2">
+                        Education
+                      </div>
+                      <div className="text-3xl sm:text-4xl font-bold text-green-300">
+                        {resumeScore.education_score?.toFixed(1) || "N/A"}
+                      </div>
+                      <div className="text-xs text-slate-500 mt-2">
+                        qualification
+                      </div>
+                    </div>
+                    <div className="bg-gradient-to-br from-orange-500/20 to-red-600/20 rounded-lg sm:rounded-xl p-4 sm:p-6 border border-orange-500/30">
+                      <div className="text-sm text-slate-400 mb-2">
+                        Communication
+                      </div>
+                      <div className="text-3xl sm:text-4xl font-bold text-orange-300">
+                        {resumeScore.communication_score?.toFixed(1) || "N/A"}
+                      </div>
+                      <div className="text-xs text-slate-500 mt-2">
+                        presentation
+                      </div>
+                    </div>
+                  </div>
+
+                  {resumeScore.reasoning && (
+                    <div className="bg-slate-700/30 rounded-lg sm:rounded-xl p-4 sm:p-6 border border-slate-600/50">
+                      <h3 className="text-lg font-semibold text-white mb-3">
+                        Analysis Summary
+                      </h3>
+                      <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
+                        {resumeScore.reasoning}
+                      </p>
+                    </div>
+                  )}
+
+                  {resumeScore.strengths &&
+                    resumeScore.strengths.length > 0 && (
+                      <div className="bg-green-500/10 rounded-lg sm:rounded-xl p-4 sm:p-6 border border-green-500/20">
+                        <h3 className="text-lg font-semibold text-green-300 mb-4">
+                          Strengths
+                        </h3>
+                        <ul className="space-y-2">
+                          {resumeScore.strengths.map(
+                            (strength: string, idx: number) => (
+                              <li
+                                key={idx}
+                                className="flex items-start gap-3 text-slate-300 text-sm sm:text-base"
+                              >
+                                <svg
+                                  className="h-5 w-5 text-green-400 flex-shrink-0 mt-0.5"
+                                  fill="currentColor"
+                                  viewBox="0 0 20 20"
+                                >
+                                  <path
+                                    fillRule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clipRule="evenodd"
+                                  />
+                                </svg>
+                                {strength}
+                              </li>
+                            )
+                          )}
+                        </ul>
+                      </div>
+                    )}
+
+                  {resumeScore.weaknesses &&
+                    resumeScore.weaknesses.length > 0 && (
+                      <div className="bg-red-500/10 rounded-lg sm:rounded-xl p-4 sm:p-6 border border-red-500/20">
+                        <h3 className="text-lg font-semibold text-red-300 mb-4">
+                          Areas for Improvement
+                        </h3>
+                        <ul className="space-y-2">
+                          {resumeScore.weaknesses.map(
+                            (weakness: string, idx: number) => (
+                              <li
+                                key={idx}
+                                className="flex items-start gap-3 text-slate-300 text-sm sm:text-base"
+                              >
+                                <svg
+                                  className="h-5 w-5 text-red-400 flex-shrink-0 mt-0.5"
+                                  fill="currentColor"
+                                  viewBox="0 0 20 20"
+                                >
+                                  <path
+                                    fillRule="evenodd"
+                                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                    clipRule="evenodd"
+                                  />
+                                </svg>
+                                {weakness}
+                              </li>
+                            )
+                          )}
+                        </ul>
+                      </div>
+                    )}
+
+                  {resumeScore.improvement_suggestions &&
+                    resumeScore.improvement_suggestions.length > 0 && (
+                      <div className="bg-amber-500/10 rounded-lg sm:rounded-xl p-4 sm:p-6 border border-amber-500/20">
+                        <h3 className="text-lg font-semibold text-amber-300 mb-4">
+                          Recommendations
+                        </h3>
+                        <ul className="space-y-3">
+                          {resumeScore.improvement_suggestions.map(
+                            (suggestion: string, idx: number) => (
+                              <li
+                                key={idx}
+                                className="flex items-start gap-3 text-slate-300 text-sm sm:text-base"
+                              >
+                                <svg
+                                  className="h-5 w-5 text-amber-400 flex-shrink-0 mt-0.5"
+                                  fill="currentColor"
+                                  viewBox="0 0 20 20"
+                                >
+                                  <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v2h8v-2zM2 8a2 2 0 11-4 0 2 2 0 014 0zM18 15v2h-2v-2a4 4 0 00-8 0v2H4v-2a4 4 0 018 0z" />
+                                </svg>
+                                {suggestion}
+                              </li>
+                            )
+                          )}
+                        </ul>
+                      </div>
+                    )}
+                </div>
+              </div>
+            </section>
+          )}
+
+          {personalityInsights && (
+            <section className="mb-12 sm:mb-16">
+              <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl border border-slate-700/50">
+                <div className="relative bg-gradient-to-r from-pink-600/20 to-rose-600/20 px-4 sm:px-6 md:px-8 py-4 sm:py-6 border-b border-slate-700/50">
+                  <div className="absolute inset-0 bg-gradient-to-r from-pink-500/10 to-rose-500/10"></div>
+                  <div className="relative flex flex-col sm:flex-row sm:items-center">
+                    <div className="p-2 sm:p-3 bg-gradient-to-br from-pink-500 to-rose-600 rounded-xl sm:rounded-2xl mr-0 sm:mr-4 mb-3 sm:mb-0 shadow-lg">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5 sm:h-6 sm:w-6 text-white"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                    </div>
+                    <div className="flex-1">
+                      <h2 className="text-xl sm:text-2xl font-bold text-white mb-1">
+                        Personality Insights
+                      </h2>
+                      <p className="text-slate-300 text-sm sm:text-base">
+                        Professional traits and work style analysis
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="p-4 sm:p-6 md:p-8 space-y-6">
+                  {personalityInsights.traits && (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                      {Object.entries(personalityInsights.traits).map(
+                        ([trait, score]: [string, any]) => (
+                          <div
+                            key={trait}
+                            className="bg-slate-700/30 rounded-lg sm:rounded-xl p-4 sm:p-5 border border-slate-600/50"
+                          >
+                            <div className="text-sm font-semibold text-slate-300 mb-3 capitalize">
+                              {trait}
+                            </div>
+                            <div className="w-full bg-slate-700 rounded-full h-2 mb-2">
+                              <div
+                                className="bg-gradient-to-r from-indigo-500 to-purple-500 h-2 rounded-full"
+                                style={{ width: `${(score as number) / 100}%` }}
+                              ></div>
+                            </div>
+                            <div className="text-2xl font-bold text-indigo-300">
+                              {(score as number).toFixed(1)}%
+                            </div>
+                          </div>
+                        )
+                      )}
+                    </div>
+                  )}
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {personalityInsights.work_style && (
+                      <div className="bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-lg sm:rounded-xl p-4 sm:p-6 border border-blue-500/30">
+                        <h3 className="text-sm font-semibold text-blue-300 mb-2">
+                          Work Style
+                        </h3>
+                        <p className="text-lg font-bold text-blue-200">
+                          {personalityInsights.work_style}
+                        </p>
+                      </div>
+                    )}
+                    {personalityInsights.team_player_score && (
+                      <div className="bg-gradient-to-br from-green-500/20 to-green-600/20 rounded-lg sm:rounded-xl p-4 sm:p-6 border border-green-500/30">
+                        <h3 className="text-sm font-semibold text-green-300 mb-2">
+                          Team Player Score
+                        </h3>
+                        <p className="text-lg font-bold text-green-200">
+                          {personalityInsights.team_player_score.toFixed(1)}%
+                        </p>
+                      </div>
+                    )}
+                    {personalityInsights.leadership_potential && (
+                      <div className="bg-gradient-to-br from-purple-500/20 to-purple-600/20 rounded-lg sm:rounded-xl p-4 sm:p-6 border border-purple-500/30">
+                        <h3 className="text-sm font-semibold text-purple-300 mb-2">
+                          Leadership Potential
+                        </h3>
+                        <p className="text-lg font-bold text-purple-200">
+                          {personalityInsights.leadership_potential.toFixed(1)}%
+                        </p>
+                      </div>
+                    )}
+                  </div>
+
+                  {personalityInsights.analysis && (
+                    <div className="bg-slate-700/30 rounded-lg sm:rounded-xl p-4 sm:p-6 border border-slate-600/50">
+                      <h3 className="text-lg font-semibold text-white mb-3">
+                        Analysis
+                      </h3>
+                      <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
+                        {personalityInsights.analysis}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </section>
+          )}
+
+          {careerPath && (
+            <section className="mb-12 sm:mb-16">
+              <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl border border-slate-700/50">
+                <div className="relative bg-gradient-to-r from-orange-600/20 to-amber-600/20 px-4 sm:px-6 md:px-8 py-4 sm:py-6 border-b border-slate-700/50">
+                  <div className="absolute inset-0 bg-gradient-to-r from-orange-500/10 to-amber-500/10"></div>
+                  <div className="relative flex flex-col sm:flex-row sm:items-center">
+                    <div className="p-2 sm:p-3 bg-gradient-to-br from-orange-500 to-amber-600 rounded-xl sm:rounded-2xl mr-0 sm:mr-4 mb-3 sm:mb-0 shadow-lg">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5 sm:h-6 sm:w-6 text-white"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M13 10V3L4 14h7v7l9-11h-7z"
+                        />
+                      </svg>
+                    </div>
+                    <div className="flex-1">
+                      <h2 className="text-xl sm:text-2xl font-bold text-white mb-1">
+                        Career Development Path
+                      </h2>
+                      <p className="text-slate-300 text-sm sm:text-base">
+                        Recommended growth trajectory and skill development
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="p-4 sm:p-6 md:p-8 space-y-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    {careerPath.current_level && (
+                      <div className="bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-lg sm:rounded-xl p-4 sm:p-6 border border-blue-500/30">
+                        <h3 className="text-sm font-semibold text-blue-300 mb-2">
+                          Current Level
+                        </h3>
+                        <p className="text-lg font-bold text-blue-200">
+                          {careerPath.current_level}
+                        </p>
+                      </div>
+                    )}
+                    {careerPath.timeline && (
+                      <div className="bg-gradient-to-br from-green-500/20 to-green-600/20 rounded-lg sm:rounded-xl p-4 sm:p-6 border border-green-500/30">
+                        <h3 className="text-sm font-semibold text-green-300 mb-2">
+                          Timeline to Next Level
+                        </h3>
+                        <p className="text-lg font-bold text-green-200">
+                          {careerPath.timeline}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+
+                  {careerPath.next_roles &&
+                    careerPath.next_roles.length > 0 && (
+                      <div>
+                        <h3 className="text-lg font-semibold text-white mb-4">
+                          Recommended Next Roles
+                        </h3>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          {careerPath.next_roles.map(
+                            (role: string, idx: number) => (
+                              <div
+                                key={idx}
+                                className="bg-slate-700/30 rounded-lg sm:rounded-xl p-4 border border-slate-600/50"
+                              >
+                                <div className="flex items-start gap-3">
+                                  <svg
+                                    className="h-5 w-5 text-amber-400 flex-shrink-0 mt-0.5"
+                                    fill="currentColor"
+                                    viewBox="0 0 20 20"
+                                  >
+                                    <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+                                    <path
+                                      fillRule="evenodd"
+                                      d="M4 5a2 2 0 012-2 1 1 0 000 2H3a1 1 0 00-1 1v12a1 1 0 001 1h14a1 1 0 001-1V6a1 1 0 00-1-1h-3a1 1 0 000-2 2 2 0 00-2 2H4z"
+                                      clipRule="evenodd"
+                                    />
+                                  </svg>
+                                  <p className="text-slate-300 text-sm sm:text-base">
+                                    {role}
+                                  </p>
+                                </div>
+                              </div>
+                            )
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                  {careerPath.required_development &&
+                    careerPath.required_development.length > 0 && (
+                      <div>
+                        <h3 className="text-lg font-semibold text-white mb-4">
+                          Required Development Areas
+                        </h3>
+                        <ul className="space-y-3">
+                          {careerPath.required_development.map(
+                            (item: string, idx: number) => (
+                              <li
+                                key={idx}
+                                className="flex items-start gap-3 text-slate-300 text-sm sm:text-base"
+                              >
+                                <svg
+                                  className="h-5 w-5 text-orange-400 flex-shrink-0 mt-0.5"
+                                  fill="currentColor"
+                                  viewBox="0 0 20 20"
+                                >
+                                  <path
+                                    fillRule="evenodd"
+                                    d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 3.002v.952a3 3 0 01-.797 2.121l-6.588 6.589a3 3 0 01-4.243 0l-6.587-6.589A3 3 0 01.453 9.409v-.952a3.066 3.066 0 012.814-3.002z"
+                                    clipRule="evenodd"
+                                  />
+                                </svg>
+                                {item}
+                              </li>
+                            )
+                          )}
+                        </ul>
+                      </div>
+                    )}
+                </div>
+              </div>
+            </section>
+          )}
+
           {questionsState.length > 0 && (
             <section className="mb-12 sm:mb-16">
               <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl border border-slate-700/50">
@@ -1175,6 +1656,43 @@ const HireDeskAnalyze = () => {
                 </div>
               </div>
             </section>
+          )}
+
+          {(resumeData ||
+            roleRecommendations.length > 0 ||
+            questionsState.length > 0 ||
+            resumeScore ||
+            personalityInsights ||
+            careerPath) && (
+            <div className="flex justify-center mb-12 sm:mb-16">
+              <button
+                onClick={handleReset}
+                className="group relative inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 font-semibold text-base sm:text-lg text-red-400 bg-gradient-to-br from-red-500/20 via-red-500/10 to-red-600/20 rounded-xl sm:rounded-2xl border border-red-500/30 hover:border-red-400/60 transition-all duration-300 hover:from-red-500/30 hover:to-red-600/30 hover:shadow-lg hover:shadow-red-500/20 active:scale-95 cursor-pointer"
+              >
+                <div className="absolute inset-0 rounded-xl sm:rounded-2xl bg-gradient-to-r from-red-600/0 via-red-500/0 to-red-600/0 group-hover:from-red-600/5 group-hover:via-red-500/10 group-hover:to-red-600/5 transition-all duration-300"></div>
+
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5 sm:h-6 sm:w-6 mr-2 sm:mr-3 group-hover:scale-110 transition-transform duration-300"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                  />
+                </svg>
+
+                <span className="relative z-10 group-hover:text-red-300 transition-colors duration-300">
+                  Clear All Data
+                </span>
+
+                <div className="absolute inset-0 rounded-xl sm:rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur pointer-events-none bg-gradient-to-r from-red-600 to-red-500"></div>
+              </button>
+            </div>
           )}
 
           {error.show && (

@@ -6,10 +6,10 @@ import { useState, useEffect, useRef } from "react";
 import { getErrorCategory, formatErrorMessage } from "../utils/errorHandler";
 import { AI_API } from "~/utils/api";
 import Toast from "../components/toast/Toast";
+import RateLimitModal from "../components/ui/RateLimitModal";
 import { batchFeatures } from "../data/BatchFeatures";
 import BatchResultCard from "../components/batch/BatchResultCard";
 import type {
-  RoleRecommendation,
   UsageStats,
   UpgradePrompt,
   BatchAnalysisResult,
@@ -40,6 +40,7 @@ const BatchAnalyze = () => {
     null
   );
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [showRateLimitModal, setShowRateLimitModal] = useState(false);
   const [error, setError] = useState<{
     show: boolean;
     message: string;
@@ -91,7 +92,6 @@ const BatchAnalyze = () => {
       }
     } catch (error) {
       console.warn("Failed to load persisted batch results:", error);
-      // Clear corrupted data
       localStorage.removeItem("batch-analyze-results");
     }
   }, []);
@@ -151,16 +151,8 @@ const BatchAnalyze = () => {
     }
 
     // Check batch analysis quota before uploading
-    if (usageStats && usageStats.batches_processed >= 5) {
-      setError({
-        show: true,
-        message:
-          "You've reached your batch analysis limit (5 per account). Please upgrade to analyze more batches.",
-        type: "warning",
-        category: "limit",
-        originalError: "Batch limit exceeded",
-      });
-      setShowUpgradeModal(true);
+    if (usageStats && usageStats.batches_processed >= 10) {
+      setShowRateLimitModal(true);
       return;
     }
 
@@ -241,23 +233,14 @@ const BatchAnalyze = () => {
         setUsageStats({
           files_uploaded: 0,
           batches_processed: batchCount,
-          files_remaining: Math.max(0, 5 - batchCount),
-          files_limit: 5,
-          approaching_limit: errorData.approaching_limit ?? batchCount >= 4,
+          files_remaining: Math.max(0, 10 - batchCount),
+          files_limit: 10,
+          approaching_limit: errorData.approaching_limit ?? batchCount >= 8,
           approaching_limit_threshold:
-            errorData.approaching_limit_threshold ?? 4,
+            errorData.approaching_limit_threshold ?? 8,
         });
 
-        setError({
-          show: true,
-          message:
-            errorData.message ||
-            "You've reached your batch analysis limit (5 per account). Please upgrade your plan to analyze more batches.",
-          type: "error",
-          category: "limit",
-          originalError: errorData,
-        });
-        setShowUpgradeModal(true);
+        setShowRateLimitModal(true);
         setIsLoading(false);
         return;
       }
@@ -303,12 +286,12 @@ const BatchAnalyze = () => {
         setUsageStats({
           files_uploaded: 0,
           batches_processed: batchCount,
-          files_remaining: Math.max(0, 5 - batchCount),
-          files_limit: 5,
+          files_remaining: Math.max(0, 10 - batchCount),
+          files_limit: 10,
           approaching_limit:
-            responseData.usage_stats.approaching_limit ?? batchCount >= 4,
+            responseData.usage_stats.approaching_limit ?? batchCount >= 8,
           approaching_limit_threshold:
-            responseData.usage_stats.approaching_limit_threshold ?? 4,
+            responseData.usage_stats.approaching_limit_threshold ?? 8,
         });
       }
 
@@ -1340,25 +1323,6 @@ const BatchAnalyze = () => {
                             </svg>
                             Clear & Start Over
                           </button>
-                          <Link
-                            to="/dashboard"
-                            className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-slate-700 to-slate-800 text-white font-semibold rounded-xl hover:from-slate-600 hover:to-slate-700 transition-all duration-300 shadow-lg hover:shadow-slate-500/25 transform hover:scale-105"
-                          >
-                            <svg
-                              className="h-5 w-5 mr-2"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                              />
-                            </svg>
-                            Back to Dashboard
-                          </Link>
                         </div>
                       </div>
                     )}
@@ -1413,6 +1377,12 @@ const BatchAnalyze = () => {
                         onClose={handleToastClose}
                       />
                     )}
+                    <RateLimitModal
+                      isOpen={showRateLimitModal}
+                      onClose={() => setShowRateLimitModal(false)}
+                      filesUploaded={usageStats?.batches_processed || 0}
+                      uploadLimit={10}
+                    />
                   </div>
                 </div>
               </div>
