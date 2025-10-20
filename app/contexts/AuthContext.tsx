@@ -11,6 +11,10 @@ interface AuthContextType {
   register: (userData: RegisterRequest) => Promise<void>;
   logout: () => Promise<void>;
   refreshProfile: () => Promise<void>;
+  verifyEmail: (token: string) => Promise<void>;
+  resendVerification: (email: string) => Promise<void>;
+  requiresVerification: boolean;
+  unverifiedEmail: string | null;
   isAuthenticated: boolean;
 }
 
@@ -31,6 +35,8 @@ interface AuthProviderProps {
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [requiresVerification, setRequiresVerification] = useState(false);
+  const [unverifiedEmail, setUnverifiedEmail] = useState<string | null>(null);
   const { showToast } = useToast();
 
   useEffect(() => {
@@ -69,6 +75,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     try {
       const result = await authService.login({ email, password });
       setUser(result.user);
+      setRequiresVerification(false);
+      setUnverifiedEmail(null);
       showToast(
         "Welcome back! You've been successfully logged in.",
         "success",
@@ -77,6 +85,18 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         }
       );
     } catch (error: any) {
+      // Check if email verification is required
+      if (error.requiresVerification) {
+        setRequiresVerification(true);
+        setUnverifiedEmail(error.email || email);
+        const errorMessage =
+          error.message || "Please verify your email to continue.";
+        showToast(errorMessage, "warning", {
+          title: "Email Verification Required",
+        });
+        throw error;
+      }
+
       // Extract meaningful error message from backend
       let errorMessage = "Login failed. Please try again.";
 
@@ -99,11 +119,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     try {
       const result = await authService.register(userData);
       setUser(result.user);
+      // Set verification pending state after registration
+      setRequiresVerification(true);
+      setUnverifiedEmail(userData.email);
       showToast(
-        "Account created successfully! Welcome to HireDesk.",
-        "success",
+        "Account created! Please check your email to verify your account.",
+        "info",
         {
-          title: "Registration Successful",
+          title: "Verification Email Sent",
         }
       );
     } catch (error: any) {
@@ -125,10 +148,73 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
+  const verifyEmail = async (token: string) => {
+    try {
+      const result = await authService.verifyEmail(token);
+      setUser(result.user);
+      setRequiresVerification(false);
+      setUnverifiedEmail(null);
+      showToast(
+        "Email verified successfully! Welcome to HireDesk.",
+        "success",
+        {
+          title: "Email Verified",
+        }
+      );
+    } catch (error: any) {
+      let errorMessage = "Email verification failed. Please try again.";
+
+      if (error.message) {
+        errorMessage = error.message;
+      } else if (error.response?.data?.message) {
+        errorMessage = error.response.data.message;
+      } else if (error.response?.data?.error) {
+        errorMessage = error.response.data.error;
+      }
+
+      showToast(errorMessage, "error", {
+        title: "Verification Failed",
+      });
+      throw error;
+    }
+  };
+
+  const resendVerification = async (email: string) => {
+    try {
+      await authService.resendVerification(email);
+      setUnverifiedEmail(email);
+      showToast(
+        "Verification email sent successfully! Please check your email.",
+        "success",
+        {
+          title: "Email Resent",
+        }
+      );
+    } catch (error: any) {
+      let errorMessage =
+        "Failed to resend verification email. Please try again.";
+
+      if (error.message) {
+        errorMessage = error.message;
+      } else if (error.response?.data?.message) {
+        errorMessage = error.response.data.message;
+      } else if (error.response?.data?.error) {
+        errorMessage = error.response.data.error;
+      }
+
+      showToast(errorMessage, "error", {
+        title: "Resend Failed",
+      });
+      throw error;
+    }
+  };
+
   const logout = async () => {
     try {
       await authService.logout();
       setUser(null);
+      setRequiresVerification(false);
+      setUnverifiedEmail(null);
       showToast("You've been successfully logged out.", "info", {
         title: "Logged Out",
       });
@@ -136,6 +222,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       console.error("Logout error:", error);
       localStorage.removeItem("accessToken");
       setUser(null);
+      setRequiresVerification(false);
+      setUnverifiedEmail(null);
       showToast("Logged out successfully.", "info", {
         title: "Logged Out",
       });
@@ -165,6 +253,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     register,
     logout,
     refreshProfile,
+    verifyEmail,
+    resendVerification,
+    requiresVerification,
+    unverifiedEmail,
     isAuthenticated: !!user,
   };
 

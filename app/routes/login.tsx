@@ -44,6 +44,8 @@ const Login = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
+  const [loginError, setLoginError] = useState("");
+  const [unverifiedEmail, setUnverifiedEmail] = useState("");
 
   const { values, errors, isLoading, handleChange, handleSubmit } =
     useForm<LoginFormData>(
@@ -56,8 +58,25 @@ const Login = () => {
     );
 
   const onSubmit = async (formData: LoginFormData) => {
-    await login(formData.email, formData.password);
-    navigate("/");
+    setLoginError("");
+    setUnverifiedEmail("");
+
+    try {
+      await login(formData.email, formData.password);
+      navigate("/");
+    } catch (error: any) {
+      if (
+        error.response?.status === 403 &&
+        error.response?.data?.requiresVerification
+      ) {
+        setUnverifiedEmail(formData.email);
+        setLoginError("Please verify your email address before logging in.");
+      } else {
+        setLoginError(
+          error.response?.data?.error || "Login failed. Please try again."
+        );
+      }
+    }
   };
 
   return (
@@ -223,10 +242,67 @@ const Login = () => {
                     "Sign In"
                   )}
                 </button>
+
+                {loginError && (
+                  <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 mt-4">
+                    <div className="flex items-start gap-3">
+                      <svg
+                        className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 8v4m0 4v.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                      <div className="flex-1">
+                        <p className="text-red-300 text-sm font-medium">
+                          {loginError}
+                        </p>
+                        {unverifiedEmail && (
+                          <div className="mt-3 space-y-2">
+                            <p className="text-red-200 text-xs">
+                              Email:{" "}
+                              <span className="font-medium">
+                                {unverifiedEmail}
+                              </span>
+                            </p>
+                            <button
+                              type="button"
+                              onClick={() => navigate("/resend-verification")}
+                              className="text-blue-400 hover:text-blue-300 text-sm font-medium underline transition-colors"
+                            >
+                              Send verification email again
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
               </form>
 
-              <div className="mt-6 text-center">
-                <p className="text-gray-300">
+              <div className="mt-6 space-y-3">
+                <div className="flex items-center justify-between text-sm">
+                  <Link
+                    to="/forgot-password"
+                    className="text-blue-400 hover:text-blue-300 transition-colors"
+                  >
+                    Forgot password?
+                  </Link>
+                  <Link
+                    to="/resend-verification"
+                    className="text-purple-400 hover:text-purple-300 transition-colors"
+                  >
+                    Verify email
+                  </Link>
+                </div>
+
+                <p className="text-gray-300 text-center">
                   Don't have an account?{" "}
                   <Link
                     to="/signup"

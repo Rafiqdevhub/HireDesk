@@ -6,6 +6,8 @@ export default [
   route("/contact", "routes/contact.tsx"),
   route("/login", "routes/login.tsx"),
   route("/signup", "routes/signup.tsx"),
+  route("/verify-email", "routes/verify-email.tsx"),
+  route("/resend-verification", "routes/resend-verification.tsx"),
   route("/dashboard", "routes/dashboard.tsx"),
   route("/hiredesk-analyze", "routes/hiredesk-analyze.tsx"),
   route("/batch-analyze", "routes/batch-analyze.tsx"),

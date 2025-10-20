@@ -70,6 +70,8 @@ const SignUp = () => {
   const { register } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [requiresVerification, setRequiresVerification] = useState(false);
+  const [registeredEmail, setRegisteredEmail] = useState("");
 
   const { values, errors, isLoading, handleChange, handleSubmit } =
     useForm<SignUpFormData>(
@@ -94,11 +96,90 @@ const SignUp = () => {
       };
 
       await register(userData);
-      navigate("/");
+      setRegisteredEmail(formData.email);
+      setRequiresVerification(true);
     } catch (error) {
       throw error;
     }
   };
+
+  if (requiresVerification) {
+    return (
+      <RedirectIfAuthenticated>
+        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black">
+          <Navbar />
+          <div className="pt-24 pb-16 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-md mx-auto">
+              <div className="bg-gray-800 rounded-2xl shadow-xl p-8 border border-gray-700">
+                <div className="text-center mb-8">
+                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-500/20 border border-green-500/30 mb-4">
+                    <svg
+                      className="w-8 h-8 text-green-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                  </div>
+                  <h1 className="text-3xl font-bold text-white mb-2">
+                    Check Your Email
+                  </h1>
+                  <p className="text-gray-300">Account created successfully!</p>
+                </div>
+
+                <div className="bg-gray-700/50 rounded-lg p-6 mb-8 border border-gray-600">
+                  <p className="text-gray-300 mb-4">
+                    We've sent a verification link to:
+                  </p>
+                  <p className="text-center text-lg font-medium text-blue-400 break-all">
+                    {registeredEmail}
+                  </p>
+                  <p className="text-gray-400 text-sm mt-4">
+                    Click the link in the email to verify your account and get
+                    started.
+                  </p>
+                </div>
+
+                <div className="space-y-4">
+                  <button
+                    onClick={() => navigate("/resend-verification")}
+                    className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 font-medium transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+                  >
+                    Didn't receive the email?
+                  </button>
+
+                  <button
+                    onClick={() => navigate("/login")}
+                    className="w-full bg-gray-700 text-gray-100 py-3 rounded-lg hover:bg-gray-600 transition-all duration-200 font-medium transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer border border-gray-600"
+                  >
+                    Back to Login
+                  </button>
+                </div>
+
+                <div className="mt-6 text-center text-sm text-gray-400">
+                  <p>
+                    Already verified?{" "}
+                    <Link
+                      to="/login"
+                      className="text-blue-400 hover:text-blue-300 font-medium transition-colors"
+                    >
+                      Sign in here
+                    </Link>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </RedirectIfAuthenticated>
+    );
+  }
 
   return (
     <RedirectIfAuthenticated>

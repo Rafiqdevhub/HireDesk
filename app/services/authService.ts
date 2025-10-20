@@ -120,6 +120,7 @@ export interface User {
   email: string;
   company_name: string;
   filesUploaded: number;
+  emailVerified?: boolean;
   createdAt?: string;
 }
 
@@ -214,9 +215,69 @@ export const authService = {
       localStorage.setItem("accessToken", accessToken);
       return { accessToken, user };
     } catch (error: any) {
+      // Check if email verification is required
+      if (
+        error.response?.status === 403 &&
+        error.response?.data?.requiresVerification
+      ) {
+        const verificationError = new Error(
+          error.response.data.message || "Please verify your email first"
+        ) as any;
+        verificationError.requiresVerification = true;
+        verificationError.email = credentials.email;
+        throw verificationError;
+      }
+
       const errorMessage = extractErrorMessage(
         error,
         "Login failed. Please check your credentials and try again."
+      );
+      throw new Error(errorMessage);
+    }
+  },
+
+  async verifyEmail(
+    token: string
+  ): Promise<{ accessToken: string; user: User }> {
+    try {
+      const response = await authApi.post<AuthResponse>("/auth/verify-email", {
+        token,
+      });
+
+      if (!response.data.success || !response.data.data) {
+        throw new Error(response.data.message || "Email verification failed");
+      }
+
+      const tokenData = response.data.data as TokenResponse;
+      const { accessToken, user } = tokenData;
+
+      localStorage.setItem("accessToken", accessToken);
+      return { accessToken, user };
+    } catch (error: any) {
+      const errorMessage = extractErrorMessage(
+        error,
+        "Email verification failed. The link may have expired."
+      );
+      throw new Error(errorMessage);
+    }
+  },
+
+  async resendVerification(email: string): Promise<void> {
+    try {
+      const response = await authApi.post<AuthResponse>(
+        "/auth/resend-verification",
+        { email }
+      );
+
+      if (!response.data.success) {
+        throw new Error(
+          response.data.message || "Failed to resend verification email"
+        );
+      }
+    } catch (error: any) {
+      const errorMessage = extractErrorMessage(
+        error,
+        "Failed to resend verification email. Please try again."
       );
       throw new Error(errorMessage);
     }
