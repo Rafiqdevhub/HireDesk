@@ -13,6 +13,12 @@ interface AuthContextType {
   refreshProfile: () => Promise<void>;
   verifyEmail: (token: string) => Promise<void>;
   resendVerification: (email: string) => Promise<void>;
+  forgotPassword: (email: string) => Promise<void>;
+  resetPasswordWithToken: (
+    token: string,
+    newPassword: string,
+    confirmPassword: string
+  ) => Promise<void>;
   requiresVerification: boolean;
   unverifiedEmail: string | null;
   isAuthenticated: boolean;
@@ -209,6 +215,71 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
+  const forgotPassword = async (email: string) => {
+    try {
+      await authService.forgotPassword(email);
+      showToast(
+        "If an account exists with this email, a password reset link has been sent. Please check your email.",
+        "success",
+        {
+          title: "Reset Email Sent",
+        }
+      );
+    } catch (error: any) {
+      let errorMessage =
+        "Failed to send password reset email. Please try again.";
+
+      if (error.message) {
+        errorMessage = error.message;
+      } else if (error.response?.data?.message) {
+        errorMessage = error.response.data.message;
+      } else if (error.response?.data?.error) {
+        errorMessage = error.response.data.error;
+      }
+
+      showToast(errorMessage, "error", {
+        title: "Reset Request Failed",
+      });
+      throw error;
+    }
+  };
+
+  const resetPasswordWithToken = async (
+    token: string,
+    newPassword: string,
+    confirmPassword: string
+  ) => {
+    try {
+      await authService.resetPasswordWithToken(
+        token,
+        newPassword,
+        confirmPassword
+      );
+      showToast(
+        "Your password has been reset successfully. Please log in with your new password.",
+        "success",
+        {
+          title: "Password Reset Successful",
+        }
+      );
+    } catch (error: any) {
+      let errorMessage = "Password reset failed. Please try again.";
+
+      if (error.message) {
+        errorMessage = error.message;
+      } else if (error.response?.data?.message) {
+        errorMessage = error.response.data.message;
+      } else if (error.response?.data?.error) {
+        errorMessage = error.response.data.error;
+      }
+
+      showToast(errorMessage, "error", {
+        title: "Password Reset Failed",
+      });
+      throw error;
+    }
+  };
+
   const logout = async () => {
     try {
       await authService.logout();
@@ -255,6 +326,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     refreshProfile,
     verifyEmail,
     resendVerification,
+    forgotPassword,
+    resetPasswordWithToken,
     requiresVerification,
     unverifiedEmail,
     isAuthenticated: !!user,

@@ -157,6 +157,16 @@ export interface ResetPasswordRequest {
   newPassword: string;
 }
 
+export interface ForgotPasswordRequest {
+  email: string;
+}
+
+export interface ResetPasswordWithTokenRequest {
+  token: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
 export interface UpdateProfileRequest {
   name?: string;
   currentPassword?: string;
@@ -278,6 +288,50 @@ export const authService = {
       const errorMessage = extractErrorMessage(
         error,
         "Failed to resend verification email. Please try again."
+      );
+      throw new Error(errorMessage);
+    }
+  },
+
+  async forgotPassword(email: string): Promise<void> {
+    try {
+      const response = await authApi.post<AuthResponse>(
+        "/auth/forgot-password",
+        { email }
+      );
+
+      if (!response.data.success) {
+        throw new Error(
+          response.data.message || "Failed to send password reset email"
+        );
+      }
+    } catch (error: any) {
+      const errorMessage = extractErrorMessage(
+        error,
+        "Failed to send password reset email. Please try again."
+      );
+      throw new Error(errorMessage);
+    }
+  },
+
+  async resetPasswordWithToken(
+    token: string,
+    newPassword: string,
+    confirmPassword: string
+  ): Promise<void> {
+    try {
+      const response = await authApi.post<AuthResponse>(
+        "/auth/reset-password-with-token",
+        { token, newPassword, confirmPassword }
+      );
+
+      if (!response.data.success) {
+        throw new Error(response.data.message || "Password reset failed");
+      }
+    } catch (error: any) {
+      const errorMessage = extractErrorMessage(
+        error,
+        "Password reset failed. Please try again."
       );
       throw new Error(errorMessage);
     }

@@ -194,6 +194,15 @@ const Login = () => {
                   )}
                 </div>
 
+                <div className="flex items-center justify-end">
+                  <Link
+                    to="/forgot-password"
+                    className="text-sm text-blue-400 hover:text-blue-300 transition-colors"
+                  >
+                    Forgot your password?
+                  </Link>
+                </div>
+
                 <div className="flex items-center justify-between">
                   <label className="flex items-center">
                     <input
