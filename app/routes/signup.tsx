@@ -4,6 +4,8 @@ import Navbar from "@components/layout/Navbar";
 import RedirectIfAuthenticated from "@components/auth/RedirectIfAuthenticated";
 import { useAuth } from "../contexts/AuthContext";
 import { useForm } from "@hooks/useForm";
+import { TermsOfServiceModal } from "~/components/modals/TermsOfServiceModal";
+import { PrivacyPolicyModal } from "~/components/modals/PrivacyPolicyModal";
 import type { Route } from "./+types/signup";
 
 export function meta({}: Route.MetaArgs) {
@@ -72,6 +74,8 @@ const SignUp = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [requiresVerification, setRequiresVerification] = useState(false);
   const [registeredEmail, setRegisteredEmail] = useState("");
+  const [showTermsModal, setShowTermsModal] = useState(false);
+  const [showPrivacyModal, setShowPrivacyModal] = useState(false);
 
   const { values, errors, isLoading, handleChange, handleSubmit } =
     useForm<SignUpFormData>(
@@ -437,19 +441,27 @@ const SignUp = () => {
                     className="ml-2 text-sm text-gray-300"
                   >
                     I agree to the{" "}
-                    <Link
-                      to="/terms"
-                      className="text-blue-400 hover:text-blue-300"
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setShowTermsModal(true);
+                      }}
+                      className="text-blue-400 hover:text-blue-300 underline cursor-pointer"
                     >
                       Terms of Service
-                    </Link>{" "}
+                    </button>{" "}
                     and{" "}
-                    <Link
-                      to="/privacy"
-                      className="text-blue-400 hover:text-blue-300"
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setShowPrivacyModal(true);
+                      }}
+                      className="text-blue-400 hover:text-blue-300 underline cursor-pointer"
                     >
                       Privacy Policy
-                    </Link>
+                    </button>
                   </label>
                   {errors.agreeToTerms && (
                     <p className="mt-1 text-sm text-red-400">
@@ -507,6 +519,16 @@ const SignUp = () => {
             </div>
           </div>
         </div>
+
+        {/* Modals */}
+        <TermsOfServiceModal
+          isOpen={showTermsModal}
+          onClose={() => setShowTermsModal(false)}
+        />
+        <PrivacyPolicyModal
+          isOpen={showPrivacyModal}
+          onClose={() => setShowPrivacyModal(false)}
+        />
       </div>
     </RedirectIfAuthenticated>
   );

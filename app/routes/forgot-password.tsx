@@ -152,7 +152,7 @@ export default function ForgotPassword() {
               <div className="grid grid-cols-1 gap-3">
                 <button
                   onClick={() => navigate("/login")}
-                  className="group relative px-6 py-3 font-semibold text-slate-200 rounded-xl overflow-hidden transition-all duration-300 border border-indigo-500/30 hover:border-indigo-500/60 hover:bg-indigo-600/10 hover:shadow-lg hover:shadow-indigo-500/20 flex items-center justify-center gap-2"
+                  className="group relative px-6 py-3 font-semibold text-slate-200 rounded-xl overflow-hidden transition-all duration-300 border border-indigo-500/30 hover:border-indigo-500/60 hover:bg-indigo-600/10 hover:shadow-lg hover:shadow-indigo-500/20 flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-indigo-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   <svg
@@ -173,7 +173,7 @@ export default function ForgotPassword() {
 
                 <button
                   onClick={() => navigate("/signup")}
-                  className="group relative px-6 py-3 font-semibold text-slate-200 rounded-xl overflow-hidden transition-all duration-300 border border-purple-500/30 hover:border-purple-500/60 hover:bg-purple-600/10 hover:shadow-lg hover:shadow-purple-500/20 flex items-center justify-center gap-2"
+                  className="group relative px-6 py-3 font-semibold text-slate-200 rounded-xl overflow-hidden transition-all duration-300 border border-purple-500/30 hover:border-purple-500/60 hover:bg-purple-600/10 hover:shadow-lg hover:shadow-purple-500/20 flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-purple-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   <svg
@@ -194,7 +194,7 @@ export default function ForgotPassword() {
 
                 <button
                   onClick={() => navigate("/")}
-                  className="group relative px-6 py-3 font-semibold text-slate-300 rounded-xl overflow-hidden transition-all duration-300 border border-slate-600/30 hover:border-slate-600/60 hover:bg-slate-700/20 hover:shadow-lg hover:shadow-slate-600/10 flex items-center justify-center gap-2"
+                  className="group relative px-6 py-3 font-semibold text-slate-300 rounded-xl overflow-hidden transition-all duration-300 border border-slate-600/30 hover:border-slate-600/60 hover:bg-slate-700/20 hover:shadow-lg hover:shadow-slate-600/10 flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-slate-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   <svg
