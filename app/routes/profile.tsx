@@ -272,7 +272,6 @@ const Profile = () => {
       <Navbar />
       <div className="pt-24 pb-24 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto space-y-12">
-          {/* Modern Hero Section */}
           <div className="relative mb-12">
             <div className="absolute -inset-8 bg-gradient-to-r from-cyan-500/10 via-blue-500/10 to-purple-500/10 rounded-4xl blur-3xl opacity-60 animate-pulse"></div>
             <div className="absolute -inset-8 bg-gradient-to-r from-purple-500/5 via-pink-500/5 to-red-500/5 rounded-4xl blur-2xl opacity-40"></div>
@@ -461,7 +460,6 @@ const Profile = () => {
               </div>
             </div>
 
-            {/* Modern Usage Stats Section */}
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-7 mt-16 mb-16">
               <div className="group relative">
                 <div className="absolute -inset-0.5 bg-gradient-to-br from-cyan-500/30 to-blue-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -517,7 +515,6 @@ const Profile = () => {
                 </div>
               </div>
 
-              {/* Batch Analysis Card */}
               <div className="group relative">
                 <div className="absolute -inset-0.5 bg-gradient-to-br from-purple-500/30 to-pink-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="relative bg-gradient-to-br from-slate-800/60 via-slate-800/40 to-slate-900/50 backdrop-blur-xl rounded-2xl border border-purple-500/20 p-7 hover:border-purple-500/40 transition-all duration-300">
@@ -572,11 +569,10 @@ const Profile = () => {
                 </div>
               </div>
 
-              {/* Compare Resumes Card */}
               <div className="group relative">
                 <div className="absolute -inset-0.5 bg-gradient-to-br from-emerald-500/30 to-teal-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="relative bg-gradient-to-br from-slate-800/60 via-slate-800/40 to-slate-900/50 backdrop-blur-xl rounded-2xl border border-emerald-500/20 p-6 hover:border-emerald-500/40 transition-all duration-300">
-                  <div className="flex items-center justify-between mb-4">
+                <div className="relative bg-gradient-to-br from-slate-800/60 via-slate-800/40 to-slate-900/50 backdrop-blur-xl rounded-2xl border border-emerald-500/20 p-7 hover:border-emerald-500/40 transition-all duration-300">
+                  <div className="flex items-center justify-between mb-5">
                     <div className="p-3 bg-gradient-to-br from-emerald-500/20 to-teal-500/20 rounded-xl group-hover:from-emerald-500/30 group-hover:to-teal-500/30 transition-all">
                       <svg
                         className="w-6 h-6 text-emerald-400"
@@ -592,42 +588,41 @@ const Profile = () => {
                         />
                       </svg>
                     </div>
-                    <span className="text-sm font-bold px-3 py-1 rounded-full text-emerald-400 bg-emerald-500/20 border border-emerald-500/30">
-                      ∞
+                    <span
+                      className={`text-sm font-bold px-3 py-1 rounded-full ${(featureUsage?.compare_resumes || 0) >= 10 ? "text-red-400 bg-red-500/20 border border-red-500/30" : (featureUsage?.compare_resumes || 0) >= 8 ? "text-orange-400 bg-orange-500/20 border border-orange-500/30" : (featureUsage?.compare_resumes || 0) >= 5 ? "text-yellow-400 bg-yellow-500/20 border border-yellow-500/30" : "text-green-400 bg-green-500/20 border border-green-500/30"}`}
+                    >
+                      {featureUsage?.compare_resumes || 0}/10
                     </span>
                   </div>
                   <h3 className="text-xl font-bold text-white mb-3">
                     Resume Comparison
                   </h3>
                   <p className="text-sm text-slate-400 mb-5">
-                    Comparisons this session
+                    Resumes compared and ranked this month
                   </p>
-                  <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-lg px-3 py-2.5 mb-4">
-                    <p className="text-sm text-emerald-300 font-medium flex items-center gap-2">
-                      <span className="w-2 h-2 bg-emerald-400 rounded-full"></span>
-                      {featureUsage?.compare_resumes || 0} performed
-                    </p>
+                  <div className="w-full bg-white/5 rounded-full h-2.5 overflow-hidden border border-white/10 mb-4">
+                    <div
+                      className={`h-full rounded-full transition-all duration-500 ${(featureUsage?.compare_resumes || 0) >= 10 ? "bg-gradient-to-r from-red-500 to-red-600" : (featureUsage?.compare_resumes || 0) >= 8 ? "bg-gradient-to-r from-orange-500 to-orange-600" : (featureUsage?.compare_resumes || 0) >= 5 ? "bg-gradient-to-r from-yellow-500 to-yellow-600" : "bg-gradient-to-r from-emerald-500 to-teal-500"}`}
+                      style={{
+                        width: `${Math.min(100, ((featureUsage?.compare_resumes || 0) / 10) * 100)}%`,
+                      }}
+                    ></div>
                   </div>
-                  <div className="flex items-center gap-2 text-xs text-slate-400">
-                    <svg
-                      className="w-4 h-4 text-emerald-400"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M13 10V3L4 14h7v7l9-11h-7z"
-                      />
-                    </svg>
-                    <span>Unlimited usage</span>
+                  <div className="flex justify-between text-xs text-slate-400">
+                    <span>
+                      {Math.max(0, 10 - (featureUsage?.compare_resumes || 0))}{" "}
+                      remaining
+                    </span>
+                    <span className="text-emerald-400 font-semibold">
+                      {Math.round(
+                        ((featureUsage?.compare_resumes || 0) / 10) * 100
+                      )}
+                      %
+                    </span>
                   </div>
                 </div>
               </div>
 
-              {/* Total Usage Card */}
               <div className="group relative">
                 <div className="absolute -inset-0.5 bg-gradient-to-br from-indigo-500/30 to-violet-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="relative bg-gradient-to-br from-slate-800/60 via-slate-800/40 to-slate-900/50 backdrop-blur-xl rounded-2xl border border-indigo-500/20 p-7 hover:border-indigo-500/40 transition-all duration-300">
@@ -723,7 +718,6 @@ const Profile = () => {
                     </div>
 
                     <div className="space-y-6">
-                      {/* Current Password */}
                       <div>
                         <label className="block text-sm font-semibold text-slate-300 mb-3">
                           Current Password
@@ -800,7 +794,6 @@ const Profile = () => {
                         )}
                       </div>
 
-                      {/* New Password Fields Grid */}
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                           <label className="block text-sm font-semibold text-slate-300 mb-3">
@@ -955,7 +948,6 @@ const Profile = () => {
                         </div>
                       </div>
 
-                      {/* Action Buttons */}
                       <div className="flex gap-4 pt-6">
                         <button
                           onClick={handlePasswordChange}
@@ -1008,7 +1000,6 @@ const Profile = () => {
             </div>
 
             <div className="space-y-8">
-              {/* Account Actions Section */}
               <div className="relative group">
                 <div className="absolute -inset-1 bg-gradient-to-br from-red-500/20 via-orange-500/20 to-pink-500/20 rounded-3xl blur-2xl group-hover:opacity-100 opacity-75 transition-opacity"></div>
                 <div className="relative bg-gradient-to-br from-slate-800/50 via-slate-800/70 to-slate-900/60 backdrop-blur-2xl rounded-3xl border border-red-500/20 p-8 overflow-hidden">

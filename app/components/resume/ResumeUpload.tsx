@@ -1,9 +1,5 @@
 import React, { useState, useRef } from "react";
-
-interface IconProps {
-  className?: string;
-  [key: string]: any;
-}
+import type { IconProps, ResumeUploadProps } from "../../../types/components";
 
 const CloudArrowUpIcon = ({ className, ...props }: IconProps) => (
   <svg
@@ -38,20 +34,6 @@ const DocumentIcon = ({ className, ...props }: IconProps) => (
     />
   </svg>
 );
-
-interface ErrorData {
-  message: string;
-  type: string;
-  category: string;
-}
-
-interface ResumeUploadProps {
-  onFileUpload?: (file: File) => void;
-  isLoading?: boolean;
-  onError?: (error: ErrorData) => void;
-  isPremium?: boolean;
-  onResumeUploaded?: () => void;
-}
 
 function ResumeUpload({
   onFileUpload,

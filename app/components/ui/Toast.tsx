@@ -1,10 +1,5 @@
 import { useEffect, useState } from "react";
-import type { Toast as ToastType } from "../../contexts/ToastContext";
-
-interface ToastProps {
-  toast: ToastType;
-  onClose: (id: string) => void;
-}
+import type { ToastProps } from "../../../types/components";
 
 const Toast = ({ toast, onClose }: ToastProps) => {
   const [isVisible, setIsVisible] = useState(false);

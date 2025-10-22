@@ -68,6 +68,13 @@ const HireDeskAnalyze = () => {
     localStorage.setItem("hiredesk_careerPath", JSON.stringify(value));
   };
 
+  const [bestFitRole, setBestFitRoleState] = useState<string>("");
+
+  const setBestFitRole = (value: string) => {
+    setBestFitRoleState(value);
+    localStorage.setItem("hiredesk_bestFitRole", JSON.stringify(value));
+  };
+
   const [error, setError] = useState<{
     show: boolean;
     message: string;
@@ -105,6 +112,7 @@ const HireDeskAnalyze = () => {
         const savedResumeData = localStorage.getItem("hiredesk_resumeData");
         const savedFitStatus = localStorage.getItem("hiredesk_fitStatus");
         const savedReasoning = localStorage.getItem("hiredesk_reasoning");
+        const savedBestFitRole = localStorage.getItem("hiredesk_bestFitRole");
         const savedRoleRecommendations = localStorage.getItem(
           "hiredesk_roleRecommendations"
         );
@@ -120,6 +128,7 @@ const HireDeskAnalyze = () => {
         }
         if (savedFitStatus) setFitStatus(savedFitStatus);
         if (savedReasoning) setReasoning(savedReasoning);
+        if (savedBestFitRole) setBestFitRole(JSON.parse(savedBestFitRole));
         if (savedRoleRecommendations) {
           const parsed = JSON.parse(savedRoleRecommendations);
           setRoleRecommendations(parsed);
@@ -141,6 +150,7 @@ const HireDeskAnalyze = () => {
           savedResumeData ||
           savedFitStatus ||
           savedReasoning ||
+          savedBestFitRole ||
           savedRoleRecommendations ||
           savedQuestions ||
           savedResumeScore ||
@@ -184,6 +194,7 @@ const HireDeskAnalyze = () => {
     localStorage.removeItem("hiredesk_resumeData");
     localStorage.removeItem("hiredesk_fitStatus");
     localStorage.removeItem("hiredesk_reasoning");
+    localStorage.removeItem("hiredesk_bestFitRole");
     localStorage.removeItem("hiredesk_roleRecommendations");
     localStorage.removeItem("hiredesk_questions");
     localStorage.removeItem("hiredesk_resumeScore");
@@ -310,6 +321,7 @@ const HireDeskAnalyze = () => {
 
       setFitStatus(responseData.fit_status || "");
       setReasoning(responseData.reasoning || "");
+      setBestFitRole(responseData.best_fit_role || "");
       setRoleRecommendations(responseData.roleRecommendations || []);
       setResumeData(responseData.resumeData || responseData);
       setQuestions(responseData.questions || []);
@@ -344,6 +356,7 @@ const HireDeskAnalyze = () => {
     setCurrentFile(null);
     setFitStatus("");
     setReasoning("");
+    setBestFitRole("");
     setRoleRecommendations([]);
     setResumeScore(null);
     setPersonalityInsights(null);
@@ -982,6 +995,9 @@ const HireDeskAnalyze = () => {
                   resumeScore,
                   personalityInsights,
                   careerPath,
+                  fitStatus,
+                  reasoning,
+                  bestFitRole,
                 }}
                 isLoading={isLoading}
               />

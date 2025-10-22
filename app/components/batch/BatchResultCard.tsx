@@ -1,17 +1,7 @@
 import { useState } from "react";
-import type {
-  BatchAnalysisResult,
-  RoleRecommendation,
-  ResumeScore,
-  PersonalityInsights,
-  CareerPath,
-} from "../../../types/index";
+import type { BatchResultCardProps } from "../../../types/components";
+import type { RoleRecommendation } from "../../../types/index";
 import "./batch-result.css";
-
-interface BatchResultCardProps {
-  result: BatchAnalysisResult;
-  index: number;
-}
 
 export const BatchResultCard = ({ result, index }: BatchResultCardProps) => {
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
@@ -198,7 +188,6 @@ export const BatchResultCard = ({ result, index }: BatchResultCardProps) => {
           </button>
         )}
 
-        {/* Work Experience */}
         {workExperience && workExperience.length > 0 && (
           <button
             onClick={() => toggleSection("experience")}
@@ -259,7 +248,6 @@ export const BatchResultCard = ({ result, index }: BatchResultCardProps) => {
           </button>
         )}
 
-        {/* Skills */}
         {skills && skills.length > 0 && (
           <button
             onClick={() => toggleSection("skills")}
@@ -300,7 +288,6 @@ export const BatchResultCard = ({ result, index }: BatchResultCardProps) => {
           </button>
         )}
 
-        {/* Role Recommendations */}
         {roleRecommendations && roleRecommendations.length > 0 && (
           <button
             onClick={() => toggleSection("roles")}
@@ -351,7 +338,6 @@ export const BatchResultCard = ({ result, index }: BatchResultCardProps) => {
                         </div>
                       </div>
 
-                      {/* Match Progress Bar */}
                       <div className="w-full bg-slate-700/50 rounded-full h-2 mb-3 overflow-hidden">
                         <div
                           className={`h-2 rounded-full bg-gradient-to-r from-green-500 to-emerald-500 transition-all duration-300 match-progress-${role.matchPercentage}`}
@@ -362,7 +348,6 @@ export const BatchResultCard = ({ result, index }: BatchResultCardProps) => {
                         {role.reasoning}
                       </p>
 
-                      {/* Required Skills */}
                       {role.requiredSkills &&
                         role.requiredSkills.length > 0 && (
                           <div className="mb-2">
@@ -389,7 +374,6 @@ export const BatchResultCard = ({ result, index }: BatchResultCardProps) => {
                           </div>
                         )}
 
-                      {/* Missing Skills */}
                       {role.missingSkills && role.missingSkills.length > 0 && (
                         <div>
                           <p className="text-xs font-semibold text-amber-300 mb-1">
@@ -422,7 +406,6 @@ export const BatchResultCard = ({ result, index }: BatchResultCardProps) => {
           </button>
         )}
 
-        {/* Resume Score Analysis */}
         {resumeScore && (
           <button
             onClick={() => toggleSection("scoring")}
@@ -450,7 +433,6 @@ export const BatchResultCard = ({ result, index }: BatchResultCardProps) => {
             </div>
             {expandedSection === "scoring" && (
               <div className="mt-3 space-y-3">
-                {/* Reasoning */}
                 {resumeScore.reasoning && (
                   <div className="text-sm text-slate-300">
                     <p className="font-medium text-slate-200 mb-2">
@@ -462,7 +444,6 @@ export const BatchResultCard = ({ result, index }: BatchResultCardProps) => {
                   </div>
                 )}
 
-                {/* Strengths */}
                 {resumeScore.strengths && resumeScore.strengths.length > 0 && (
                   <div>
                     <p className="text-sm font-medium text-green-300 mb-2">
@@ -483,7 +464,6 @@ export const BatchResultCard = ({ result, index }: BatchResultCardProps) => {
                   </div>
                 )}
 
-                {/* Weaknesses */}
                 {resumeScore.weaknesses &&
                   resumeScore.weaknesses.length > 0 && (
                     <div>
@@ -505,7 +485,6 @@ export const BatchResultCard = ({ result, index }: BatchResultCardProps) => {
                     </div>
                   )}
 
-                {/* Improvements */}
                 {resumeScore.improvement_suggestions &&
                   resumeScore.improvement_suggestions.length > 0 && (
                     <div>
@@ -531,7 +510,6 @@ export const BatchResultCard = ({ result, index }: BatchResultCardProps) => {
           </button>
         )}
 
-        {/* Personality Insights */}
         {personalityInsights && (
           <button
             onClick={() => toggleSection("personality")}
@@ -559,7 +537,6 @@ export const BatchResultCard = ({ result, index }: BatchResultCardProps) => {
             </div>
             {expandedSection === "personality" && (
               <div className="mt-3 space-y-3">
-                {/* Traits */}
                 <div className="grid grid-cols-2 gap-2">
                   {Object.entries(personalityInsights.traits || {}).map(
                     ([trait, score]) => (
@@ -582,7 +559,6 @@ export const BatchResultCard = ({ result, index }: BatchResultCardProps) => {
                   )}
                 </div>
 
-                {/* Key Metrics */}
                 <div className="grid grid-cols-2 gap-2">
                   <div className="bg-indigo-500/10 border border-indigo-500/30 rounded p-2">
                     <p className="text-xs text-slate-400">Work Style</p>
@@ -604,7 +580,6 @@ export const BatchResultCard = ({ result, index }: BatchResultCardProps) => {
                   </div>
                 </div>
 
-                {/* Analysis */}
                 {personalityInsights.analysis && (
                   <div className="text-xs text-slate-300 leading-relaxed">
                     {personalityInsights.analysis}
@@ -615,7 +590,6 @@ export const BatchResultCard = ({ result, index }: BatchResultCardProps) => {
           </button>
         )}
 
-        {/* Career Path */}
         {careerPath && (
           <button
             onClick={() => toggleSection("career")}

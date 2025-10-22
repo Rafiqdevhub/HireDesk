@@ -6,6 +6,9 @@ import { useState, useEffect, useRef } from "react";
 import { getErrorCategory, formatErrorMessage } from "../utils/errorHandler";
 import { AI_API } from "~/utils/api";
 import Toast from "@components/toast/Toast";
+import RateLimitModal from "@components/ui/RateLimitModal";
+import { ComparisonResultsDisplay } from "@components/comparison/ComparisonResultsDisplay";
+import type { CompareResumesResponse } from "../../types/index";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -177,16 +180,44 @@ const CompareResumes = () => {
     try {
       const formData = new FormData();
 
-      // Add all files to form data
       files.forEach((file) => {
         formData.append("files", file);
       });
 
+      const token = localStorage.getItem("accessToken");
+
+      if (!token) {
+        throw new Error("Authentication token not found. Please login again.");
+      }
+
       const response = await fetch(`${AI_API}/compare-resumes`, {
         method: "POST",
         body: formData,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
         mode: "cors",
       });
+
+      if (response.status === 429) {
+        const errorData: any = await response.json();
+        setShowRateLimitModal(true);
+        setIsLoading(false);
+        return;
+      }
+
+      if (response.status === 401) {
+        localStorage.removeItem("accessToken");
+        setError({
+          show: true,
+          message: "Your session has expired. Please login again.",
+          type: "error",
+          category: "auth",
+          originalError: "Token expired",
+        });
+        setIsLoading(false);
+        return;
+      }
 
       if (!response.ok) {
         const errorText = await response.text();
@@ -797,171 +828,15 @@ const CompareResumes = () => {
 
                     {comparisonResults && (
                       <div className="mt-8 sm:mt-12">
-                        <div className="text-center mb-6 sm:mb-8">
-                          <h4 className="text-xl sm:text-2xl font-bold text-white mb-2">
-                            Comparison Results
-                          </h4>
-                          <p className="text-slate-400">
-                            {comparisonResults.comparison_summary
-                              ?.total_candidates || currentFiles.length}{" "}
-                            candidates compared and ranked
-                          </p>
-                        </div>
+                        <ComparisonResultsDisplay
+                          results={comparisonResults as CompareResumesResponse}
+                          isLoading={isLoading}
+                        />
 
-                        {/* Summary Stats */}
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-8">
-                          <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-xl p-4 border border-purple-500/20">
-                            <div className="text-2xl font-bold text-purple-400">
-                              {comparisonResults.comparison_summary
-                                ?.total_candidates || 0}
-                            </div>
-                            <div className="text-sm text-slate-400">
-                              Total Candidates
-                            </div>
-                          </div>
-                          <div className="bg-gradient-to-br from-pink-500/10 to-violet-500/10 rounded-xl p-4 border border-pink-500/20">
-                            <div className="text-2xl font-bold text-pink-400">
-                              {comparisonResults.comparison_summary
-                                ?.highest_score || 0}
-                            </div>
-                            <div className="text-sm text-slate-400">
-                              Highest Score
-                            </div>
-                          </div>
-                          <div className="bg-gradient-to-br from-violet-500/10 to-purple-500/10 rounded-xl p-4 border border-violet-500/20">
-                            <div className="text-2xl font-bold text-violet-400">
-                              {comparisonResults.comparison_summary
-                                ?.average_score || 0}
-                            </div>
-                            <div className="text-sm text-slate-400">
-                              Average Score
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Ranked Candidates */}
-                        <div className="space-y-6">
-                          {comparisonResults.ranked_candidates?.map(
-                            (candidate: any, index: number) => (
-                              <div
-                                key={index}
-                                className="relative overflow-hidden rounded-xl sm:rounded-2xl bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl border border-slate-700/50 p-4 sm:p-6"
-                              >
-                                <div className="flex items-start justify-between mb-4">
-                                  <div className="flex items-center space-x-3">
-                                    <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg flex items-center justify-center text-white font-bold text-lg shadow-lg">
-                                      #{index + 1}
-                                    </div>
-                                    <div>
-                                      <h5 className="text-lg font-semibold text-white">
-                                        {candidate.resumeData?.personalInfo
-                                          ?.name || `Candidate ${index + 1}`}
-                                      </h5>
-                                      <p className="text-slate-400 text-sm">
-                                        {candidate.filename}
-                                      </p>
-                                    </div>
-                                  </div>
-                                  <div className="text-right">
-                                    <div className="text-3xl font-bold text-purple-400">
-                                      {candidate.score}
-                                    </div>
-                                    <div className="text-xs text-slate-400">
-                                      Score
-                                    </div>
-                                  </div>
-                                </div>
-
-                                {candidate.strengths &&
-                                  candidate.strengths.length > 0 && (
-                                    <div className="mb-4">
-                                      <h6 className="text-sm font-medium text-green-400 mb-2">
-                                        Strengths:
-                                      </h6>
-                                      <div className="flex flex-wrap gap-2">
-                                        {candidate.strengths
-                                          .slice(0, 3)
-                                          .map(
-                                            (strength: string, idx: number) => (
-                                              <span
-                                                key={idx}
-                                                className="px-2 py-1 bg-green-500/20 text-green-300 text-xs rounded-full border border-green-500/30"
-                                              >
-                                                {strength}
-                                              </span>
-                                            )
-                                          )}
-                                      </div>
-                                    </div>
-                                  )}
-
-                                {candidate.weaknesses &&
-                                  candidate.weaknesses.length > 0 && (
-                                    <div className="mb-4">
-                                      <h6 className="text-sm font-medium text-red-400 mb-2">
-                                        Areas for Improvement:
-                                      </h6>
-                                      <div className="flex flex-wrap gap-2">
-                                        {candidate.weaknesses
-                                          .slice(0, 2)
-                                          .map(
-                                            (weakness: string, idx: number) => (
-                                              <span
-                                                key={idx}
-                                                className="px-2 py-1 bg-red-500/20 text-red-300 text-xs rounded-full border border-red-500/30"
-                                              >
-                                                {weakness}
-                                              </span>
-                                            )
-                                          )}
-                                      </div>
-                                    </div>
-                                  )}
-
-                                <div className="flex items-center justify-between text-sm">
-                                  <span className="text-slate-400">
-                                    Ranked by AI analysis
-                                  </span>
-                                  <button className="text-purple-400 hover:text-purple-300 transition-colors">
-                                    View Details →
-                                  </button>
-                                </div>
-                              </div>
-                            )
-                          )}
-                        </div>
-
-                        {/* Recommendations */}
-                        {comparisonResults.recommendations &&
-                          comparisonResults.recommendations.length > 0 && (
-                            <div className="mt-8">
-                              <h4 className="text-lg font-bold text-white mb-4">
-                                AI Recommendations
-                              </h4>
-                              <div className="space-y-3">
-                                {comparisonResults.recommendations.map(
-                                  (rec: string, idx: number) => (
-                                    <div
-                                      key={idx}
-                                      className="flex items-start space-x-3 bg-slate-800/50 rounded-lg p-4 border border-slate-700/50"
-                                    >
-                                      <div className="w-6 h-6 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0 mt-0.5">
-                                        {idx + 1}
-                                      </div>
-                                      <p className="text-slate-300 text-sm">
-                                        {rec}
-                                      </p>
-                                    </div>
-                                  )
-                                )}
-                              </div>
-                            </div>
-                          )}
-
-                        <div className="text-center mt-6 sm:mt-8">
-                          <Link
-                            to="/dashboard"
-                            className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-slate-700 to-slate-800 text-white font-semibold rounded-xl hover:from-slate-600 hover:to-slate-700 transition-all duration-300 shadow-lg hover:shadow-slate-500/25 transform hover:scale-105"
+                        <div className="text-center mt-8 sm:mt-12 flex flex-wrap justify-center gap-4 sm:gap-6">
+                          <button
+                            onClick={handleReset}
+                            className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-semibold rounded-xl transition-all duration-300 shadow-lg hover:shadow-red-500/25 transform hover:scale-105 cursor-pointer"
                           >
                             <svg
                               className="h-5 w-5 mr-2"
@@ -973,11 +848,11 @@ const CompareResumes = () => {
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
                                 strokeWidth={2}
-                                d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                               />
                             </svg>
-                            Back to Dashboard
-                          </Link>
+                            Clear Results
+                          </button>
                         </div>
                       </div>
                     )}
@@ -1032,6 +907,12 @@ const CompareResumes = () => {
                         onClose={handleToastClose}
                       />
                     )}
+                    <RateLimitModal
+                      isOpen={showRateLimitModal}
+                      onClose={() => setShowRateLimitModal(false)}
+                      filesUploaded={currentFiles.length}
+                      uploadLimit={5}
+                    />
                   </div>
                 </div>
               </div>

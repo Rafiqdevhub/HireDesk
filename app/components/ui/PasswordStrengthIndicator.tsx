@@ -1,7 +1,4 @@
-interface Props {
-  strength: number; // 0-100
-  newPassword: string;
-}
+import type { PasswordStrengthProps } from "../../../types/components";
 
 const getStrengthWidthClass = (strength: number): string => {
   if (strength === 0) return "w-0";
@@ -17,7 +14,10 @@ const getStrengthWidthClass = (strength: number): string => {
   return "w-full";
 };
 
-export const PasswordStrengthIndicator = ({ strength, newPassword }: Props) => {
+export const PasswordStrengthIndicator = ({
+  strength,
+  newPassword,
+}: PasswordStrengthProps) => {
   const getStrengthLabel = () => {
     if (strength === 0) return "No password";
     if (strength <= 25) return "Weak";
@@ -57,7 +57,6 @@ export const PasswordStrengthIndicator = ({ strength, newPassword }: Props) => {
 
   return (
     <div className="mt-4 space-y-3">
-      {/* Strength Bar */}
       <div>
         <div className="flex items-center justify-between mb-2">
           <span className="text-xs font-medium text-slate-400">
@@ -74,7 +73,6 @@ export const PasswordStrengthIndicator = ({ strength, newPassword }: Props) => {
         </div>
       </div>
 
-      {/* Requirements Checklist */}
       <div className="space-y-2 pt-2">
         <p className="text-xs font-medium text-slate-300">Requirements:</p>
         <ul className="space-y-1">

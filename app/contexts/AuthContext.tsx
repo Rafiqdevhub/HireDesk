@@ -1,28 +1,8 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import type { ReactNode } from "react";
 import { authService } from "../services/authService";
-import type { User, RegisterRequest } from "../services/authService";
+import type { User, RegisterRequest, AuthContextType } from "../../types";
 import { useToast } from "./ToastContext";
-
-interface AuthContextType {
-  user: User | null;
-  loading: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  register: (userData: RegisterRequest) => Promise<void>;
-  logout: () => Promise<void>;
-  refreshProfile: () => Promise<void>;
-  verifyEmail: (token: string) => Promise<void>;
-  resendVerification: (email: string) => Promise<void>;
-  forgotPassword: (email: string) => Promise<void>;
-  resetPasswordWithToken: (
-    token: string,
-    newPassword: string,
-    confirmPassword: string
-  ) => Promise<void>;
-  requiresVerification: boolean;
-  unverifiedEmail: string | null;
-  isAuthenticated: boolean;
-}
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 

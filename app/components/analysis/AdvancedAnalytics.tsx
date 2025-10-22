@@ -1,52 +1,5 @@
 import React from "react";
-
-interface InsightMetric {
-  label: string;
-  value: number;
-  color?: string;
-  description?: string;
-}
-
-interface ResumeScoreData {
-  overall_score: number;
-  technical_score: number;
-  experience_score: number;
-  education_score: number;
-  communication_score: number;
-  reasoning?: string;
-  strengths?: string[];
-  weaknesses?: string[];
-  improvement_suggestions?: string[];
-}
-
-interface PersonalityTraits {
-  extraversion: number;
-  conscientiousness: number;
-  openness: number;
-  agreeableness: number;
-  emotional_stability: number;
-}
-
-interface PersonalityData {
-  traits: PersonalityTraits;
-  work_style?: string;
-  leadership_potential?: number;
-  team_player_score?: number;
-  analysis?: string;
-}
-
-interface CareerPathData {
-  current_level: string;
-  next_roles?: string[];
-  timeline?: string;
-  required_development?: string[];
-}
-
-interface AdvancedAnalyticsProps {
-  resumeScore?: ResumeScoreData | null;
-  personalityInsights?: PersonalityData | null;
-  careerPath?: CareerPathData | null;
-}
+import type { AdvancedAnalyticsProps } from "../../../types/components";
 
 const ScoreGauge: React.FC<{ score: number; label: string }> = ({
   score,
@@ -64,7 +17,6 @@ const ScoreGauge: React.FC<{ score: number; label: string }> = ({
   return (
     <div className="flex flex-col items-center space-y-3">
       <div className="relative w-32 h-32">
-        {/* Background circle */}
         <svg
           className="w-full h-full transform -rotate-90"
           viewBox="0 0 120 120"
@@ -96,7 +48,6 @@ const ScoreGauge: React.FC<{ score: number; label: string }> = ({
           </defs>
         </svg>
 
-        {/* Center content */}
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <span className="text-3xl font-bold text-white">{score}</span>
           <span className="text-xs text-slate-400">/100</span>
@@ -121,10 +72,8 @@ export const AdvancedAnalytics: React.FC<AdvancedAnalyticsProps> = ({
 
   return (
     <div className="space-y-8 sm:space-y-12">
-      {/* Resume Score Section */}
       {resumeScore && (
         <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-sm border border-slate-700/50 p-6 sm:p-8">
-          {/* Header */}
           <div className="mb-8">
             <div className="flex items-center space-x-3 mb-2">
               <div className="relative">
@@ -156,7 +105,6 @@ export const AdvancedAnalytics: React.FC<AdvancedAnalyticsProps> = ({
             </div>
           </div>
 
-          {/* Overall score and breakdown */}
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 sm:gap-8 mb-8 sm:mb-12 place-items-center">
             <ScoreGauge
               score={Math.round(resumeScore.overall_score)}
@@ -180,7 +128,6 @@ export const AdvancedAnalytics: React.FC<AdvancedAnalyticsProps> = ({
             />
           </div>
 
-          {/* Analysis reasoning */}
           {resumeScore.reasoning && (
             <div className="mb-8 p-4 sm:p-6 rounded-lg sm:rounded-xl bg-blue-500/10 border border-blue-500/20">
               <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
@@ -189,9 +136,7 @@ export const AdvancedAnalytics: React.FC<AdvancedAnalyticsProps> = ({
             </div>
           )}
 
-          {/* Strengths and Weaknesses */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
-            {/* Strengths */}
             {resumeScore.strengths && resumeScore.strengths.length > 0 && (
               <div className="relative overflow-hidden rounded-lg sm:rounded-xl p-4 sm:p-6 bg-gradient-to-br from-green-500/10 to-emerald-500/10 border border-green-500/20 hover:border-green-500/50 transition-all duration-300">
                 <div className="absolute -inset-1 bg-gradient-to-br from-green-500 to-emerald-500 opacity-0 hover:opacity-10 rounded-lg transition-opacity"></div>
@@ -222,7 +167,6 @@ export const AdvancedAnalytics: React.FC<AdvancedAnalyticsProps> = ({
               </div>
             )}
 
-            {/* Weaknesses */}
             {resumeScore.weaknesses && resumeScore.weaknesses.length > 0 && (
               <div className="relative overflow-hidden rounded-lg sm:rounded-xl p-4 sm:p-6 bg-gradient-to-br from-orange-500/10 to-red-500/10 border border-orange-500/20 hover:border-orange-500/50 transition-all duration-300">
                 <div className="absolute -inset-1 bg-gradient-to-br from-orange-500 to-red-500 opacity-0 hover:opacity-10 rounded-lg transition-opacity"></div>
@@ -260,7 +204,6 @@ export const AdvancedAnalytics: React.FC<AdvancedAnalyticsProps> = ({
             )}
           </div>
 
-          {/* Improvement suggestions */}
           {resumeScore.improvement_suggestions &&
             resumeScore.improvement_suggestions.length > 0 && (
               <div className="mt-8 p-4 sm:p-6 rounded-lg sm:rounded-xl bg-indigo-500/10 border border-indigo-500/20">
@@ -304,10 +247,8 @@ export const AdvancedAnalytics: React.FC<AdvancedAnalyticsProps> = ({
         </section>
       )}
 
-      {/* Personality Insights Section */}
       {personalityInsights && (
         <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-sm border border-slate-700/50 p-6 sm:p-8">
-          {/* Header */}
           <div className="mb-8">
             <div className="flex items-center space-x-3 mb-2">
               <div className="relative">
@@ -339,7 +280,6 @@ export const AdvancedAnalytics: React.FC<AdvancedAnalyticsProps> = ({
             </div>
           </div>
 
-          {/* Personality traits */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-8">
             {personalityInsights.traits &&
               Object.entries(personalityInsights.traits).map(([key, value]) => (
@@ -347,7 +287,6 @@ export const AdvancedAnalytics: React.FC<AdvancedAnalyticsProps> = ({
                   key={key}
                   className="relative overflow-hidden rounded-lg sm:rounded-xl p-4 sm:p-6 bg-slate-900/30 border border-slate-700/50 hover:border-pink-500/50 transition-all duration-300 group"
                 >
-                  {/* Animated background */}
                   <div className="absolute inset-0 bg-gradient-to-r from-pink-500/5 to-rose-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
                   <div className="relative z-10">
@@ -360,7 +299,6 @@ export const AdvancedAnalytics: React.FC<AdvancedAnalyticsProps> = ({
                       </span>
                     </div>
 
-                    {/* Progress bar */}
                     <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden border border-slate-700">
                       <div
                         className="h-full bg-gradient-to-r from-pink-500 to-rose-500 transition-all duration-1000"
@@ -372,7 +310,6 @@ export const AdvancedAnalytics: React.FC<AdvancedAnalyticsProps> = ({
               ))}
           </div>
 
-          {/* Work style and analysis */}
           {personalityInsights.work_style && (
             <div className="mb-6 p-4 sm:p-6 rounded-lg sm:rounded-xl bg-pink-500/10 border border-pink-500/20">
               <h4 className="text-sm font-bold text-pink-300 mb-2 uppercase tracking-wide">
@@ -397,10 +334,8 @@ export const AdvancedAnalytics: React.FC<AdvancedAnalyticsProps> = ({
         </section>
       )}
 
-      {/* Career Path Section */}
       {careerPath && (
         <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-sm border border-slate-700/50 p-6 sm:p-8">
-          {/* Header */}
           <div className="mb-8">
             <div className="flex items-center space-x-3 mb-2">
               <div className="relative">
@@ -432,9 +367,7 @@ export const AdvancedAnalytics: React.FC<AdvancedAnalyticsProps> = ({
             </div>
           </div>
 
-          {/* Current level and next roles */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 mb-8">
-            {/* Current Level */}
             <div className="relative overflow-hidden rounded-lg sm:rounded-xl p-4 sm:p-6 bg-gradient-to-br from-cyan-500/10 to-blue-500/10 border border-cyan-500/20 hover:border-cyan-500/50 transition-all duration-300 group">
               <div className="absolute -inset-1 bg-gradient-to-br from-cyan-500 to-blue-500 opacity-0 group-hover:opacity-10 rounded-lg transition-opacity"></div>
 
@@ -451,7 +384,6 @@ export const AdvancedAnalytics: React.FC<AdvancedAnalyticsProps> = ({
               </div>
             </div>
 
-            {/* Timeline */}
             {careerPath.timeline && (
               <div className="relative overflow-hidden rounded-lg sm:rounded-xl p-4 sm:p-6 bg-gradient-to-br from-blue-500/10 to-indigo-500/10 border border-blue-500/20 hover:border-blue-500/50 transition-all duration-300 group">
                 <div className="absolute -inset-1 bg-gradient-to-br from-blue-500 to-indigo-500 opacity-0 group-hover:opacity-10 rounded-lg transition-opacity"></div>
@@ -471,7 +403,6 @@ export const AdvancedAnalytics: React.FC<AdvancedAnalyticsProps> = ({
             )}
           </div>
 
-          {/* Next roles */}
           {careerPath.next_roles && careerPath.next_roles.length > 0 && (
             <div className="mb-8">
               <h4 className="text-lg font-bold text-slate-300 mb-4 flex items-center space-x-2">
@@ -515,7 +446,6 @@ export const AdvancedAnalytics: React.FC<AdvancedAnalyticsProps> = ({
             </div>
           )}
 
-          {/* Required development */}
           {careerPath.required_development &&
             careerPath.required_development.length > 0 && (
               <div className="p-4 sm:p-6 rounded-lg sm:rounded-xl bg-indigo-500/10 border border-indigo-500/20">

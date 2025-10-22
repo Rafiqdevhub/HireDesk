@@ -7,6 +7,7 @@ import { useForm } from "@hooks/useForm";
 import { TermsOfServiceModal } from "~/components/modals/TermsOfServiceModal";
 import { PrivacyPolicyModal } from "~/components/modals/PrivacyPolicyModal";
 import type { Route } from "./+types/signup";
+import type { SignUpFormData } from "../../types";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -17,15 +18,6 @@ export function meta({}: Route.MetaArgs) {
         "Create your account on HireDesk and unlock access to our AI-powered recruitment platform to find top talent for your team.",
     },
   ];
-}
-
-interface SignUpFormData {
-  name: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  company_name: string;
-  agreeToTerms: boolean;
 }
 
 const validateSignUp = (values: Partial<SignUpFormData>) => {
@@ -520,7 +512,6 @@ const SignUp = () => {
           </div>
         </div>
 
-        {/* Modals */}
         <TermsOfServiceModal
           isOpen={showTermsModal}
           onClose={() => setShowTermsModal(false)}

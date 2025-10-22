@@ -1,18 +1,5 @@
 import React, { useState } from "react";
-
-interface RoleRecommendation {
-  roleName: string;
-  matchPercentage: number;
-  reasoning: string;
-  requiredSkills: string[];
-  missingSkills: string[];
-  careerLevel: string;
-  industryFit: string;
-}
-
-interface RoleRecommendationsProps {
-  recommendations: RoleRecommendation[];
-}
+import type { RoleRecommendationsProps } from "../../../types/components";
 
 export const RoleRecommendationsCard: React.FC<RoleRecommendationsProps> = ({
   recommendations,
@@ -47,7 +34,6 @@ export const RoleRecommendationsCard: React.FC<RoleRecommendationsProps> = ({
 
   return (
     <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-sm border border-slate-700/50 p-6 sm:p-8">
-      {/* Header */}
       <div className="mb-8">
         <div className="flex items-center space-x-3 mb-2">
           <div className="relative">
@@ -80,7 +66,6 @@ export const RoleRecommendationsCard: React.FC<RoleRecommendationsProps> = ({
         </div>
       </div>
 
-      {/* Recommendations list */}
       <div className="space-y-4 sm:space-y-6">
         {recommendations.map((role, index) => {
           const isExpanded = expandedRole === index;
@@ -96,14 +81,12 @@ export const RoleRecommendationsCard: React.FC<RoleRecommendationsProps> = ({
               }`}
               onClick={() => setExpandedRole(isExpanded ? null : index)}
             >
-              {/* Animated background */}
               <div
                 className={`absolute inset-0 bg-gradient-to-r from-emerald-500/5 to-teal-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
                   isExpanded ? "opacity-100" : ""
                 }`}
               ></div>
 
-              {/* Top border glow */}
               <div
                 className={`absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
                   isExpanded ? "opacity-100" : ""
@@ -111,7 +94,6 @@ export const RoleRecommendationsCard: React.FC<RoleRecommendationsProps> = ({
               ></div>
 
               <div className="relative z-10 p-4 sm:p-6">
-                {/* Header section */}
                 <div className="flex items-start justify-between mb-4 sm:mb-6">
                   <div className="flex-1">
                     <h4 className="text-lg sm:text-xl font-bold text-white group-hover:text-emerald-300 transition-colors duration-300">
@@ -125,7 +107,6 @@ export const RoleRecommendationsCard: React.FC<RoleRecommendationsProps> = ({
                     </p>
                   </div>
 
-                  {/* Match percentage badge */}
                   <div className="flex flex-col items-end space-y-2">
                     <div className="relative">
                       <div
@@ -154,7 +135,6 @@ export const RoleRecommendationsCard: React.FC<RoleRecommendationsProps> = ({
                   </div>
                 </div>
 
-                {/* Industry fit badge */}
                 <div className="mb-4 sm:mb-6">
                   <div className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-lg bg-slate-900/50 border border-slate-700/50">
                     <svg
@@ -171,12 +151,10 @@ export const RoleRecommendationsCard: React.FC<RoleRecommendationsProps> = ({
                   </div>
                 </div>
 
-                {/* Reasoning */}
                 <p className="text-sm sm:text-base text-slate-300 mb-4 sm:mb-6 leading-relaxed">
                   {role.reasoning}
                 </p>
 
-                {/* Expand/Collapse indicator */}
                 <div
                   className={`absolute top-4 sm:top-6 right-4 sm:right-6 transition-transform duration-300 ${
                     isExpanded ? "rotate-180" : ""
@@ -197,10 +175,8 @@ export const RoleRecommendationsCard: React.FC<RoleRecommendationsProps> = ({
                   </svg>
                 </div>
 
-                {/* Expanded content */}
                 {isExpanded && (
                   <div className="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-slate-700/50 space-y-6 sm:space-y-8 animate-in fade-in duration-300">
-                    {/* Required skills */}
                     <div>
                       <h5 className="text-sm font-bold text-emerald-300 mb-3 uppercase tracking-wider flex items-center space-x-2">
                         <svg
@@ -226,7 +202,6 @@ export const RoleRecommendationsCard: React.FC<RoleRecommendationsProps> = ({
                       </div>
                     </div>
 
-                    {/* Missing skills */}
                     {role.missingSkills.length > 0 && (
                       <div>
                         <h5 className="text-sm font-bold text-amber-300 mb-3 uppercase tracking-wider flex items-center space-x-2">

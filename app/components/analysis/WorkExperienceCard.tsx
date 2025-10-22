@@ -16,7 +16,6 @@ export const WorkExperienceCard: React.FC<WorkExperienceProps> = ({
 }) => {
   return (
     <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-sm border border-slate-700/50 p-6 sm:p-8">
-      {/* Header */}
       <div className="mb-8">
         <div className="flex items-center space-x-3 mb-2">
           <div className="relative">
@@ -49,30 +48,21 @@ export const WorkExperienceCard: React.FC<WorkExperienceProps> = ({
         </div>
       </div>
 
-      {/* Timeline */}
       <div className="relative">
-        {/* Vertical line */}
         <div className="absolute left-4 sm:left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-500 via-cyan-500 to-transparent opacity-50"></div>
-
-        {/* Experience items */}
         <div className="space-y-6 sm:space-y-8">
           {workExperience.map((exp, index) => (
             <div key={index} className="group relative pl-16 sm:pl-20">
-              {/* Timeline dot */}
               <div className="absolute left-0 top-0 w-12 sm:w-12 h-12 sm:h-12 flex items-center justify-center">
                 <div className="absolute inset-1 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full opacity-20 group-hover:opacity-40 transition-opacity duration-300 blur"></div>
                 <div className="relative w-8 sm:w-8 h-8 sm:h-8 bg-slate-900 rounded-full border-2 border-blue-500 group-hover:border-cyan-400 flex items-center justify-center transition-all duration-300">
                   <div className="w-3 sm:w-3 h-3 sm:h-3 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full"></div>
                 </div>
               </div>
-
-              {/* Experience card */}
               <div className="relative overflow-hidden rounded-xl sm:rounded-2xl bg-slate-900/50 border border-slate-700/50 group-hover:border-blue-500/50 transition-all duration-300 p-4 sm:p-6">
-                {/* Background gradient on hover */}
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
                 <div className="relative z-10">
-                  {/* Title and company */}
                   <div className="mb-3 sm:mb-4">
                     <h4 className="text-lg sm:text-xl font-bold text-white group-hover:text-cyan-300 transition-colors duration-300">
                       {exp.title}
@@ -82,7 +72,6 @@ export const WorkExperienceCard: React.FC<WorkExperienceProps> = ({
                     </p>
                   </div>
 
-                  {/* Duration */}
                   <div className="flex items-center space-x-2 mb-4 sm:mb-5">
                     <svg
                       className="w-4 h-4 text-slate-500"
@@ -102,7 +91,6 @@ export const WorkExperienceCard: React.FC<WorkExperienceProps> = ({
                     </span>
                   </div>
 
-                  {/* Description */}
                   <ul className="space-y-2 sm:space-y-3">
                     {exp.description.map((desc, descIndex) => (
                       <li key={descIndex} className="flex space-x-3">

@@ -139,7 +139,6 @@ export default function ResetPassword() {
     }
   };
 
-  // If token is missing, show error state
   if (tokenError) {
     return (
       <>

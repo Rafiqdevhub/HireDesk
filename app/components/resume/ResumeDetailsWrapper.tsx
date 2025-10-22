@@ -1,39 +1,5 @@
 import React from "react";
-
-interface ResumeData {
-  personalInfo?: {
-    name?: string;
-    email?: string;
-    phone?: string;
-    location?: string;
-  };
-  workExperience?: Array<{
-    title?: string;
-    company?: string;
-    duration?: string;
-    description?: string[];
-  }>;
-  education?: Array<{
-    degree?: string;
-    institution?: string;
-    year?: string;
-    details?: string[];
-  }>;
-  skills?: string[];
-  highlights?: string[];
-  name?: string;
-  email?: string;
-  phone?: string;
-  experience?: string | any[] | any;
-  summary?: string;
-  [key: string]: any;
-}
-
-interface ResumeDetailsWrapperProps {
-  resumeData: ResumeData | null;
-  onGenerateQuestions?: (jobDescription: string) => void;
-  isLoading?: boolean;
-}
+import type { ResumeDetailsWrapperProps } from "../../../types/components";
 
 const ResumeDetailsWrapper: React.FC<ResumeDetailsWrapperProps> = ({
   resumeData,

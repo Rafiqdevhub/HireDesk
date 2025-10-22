@@ -1,11 +1,6 @@
 import { Navigate } from "react-router";
 import { useAuth } from "../../contexts/AuthContext";
-import type { ReactNode } from "react";
-
-interface ProtectedRouteProps {
-  children: ReactNode;
-  redirectTo?: string;
-}
+import type { ProtectedRouteProps } from "../../../types/components";
 
 const ProtectedRoute = ({
   children,

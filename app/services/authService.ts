@@ -5,10 +5,22 @@ import type {
   InternalAxiosRequestConfig,
 } from "axios";
 import { API_AUTH_URL } from "~/utils/api";
+import type {
+  User,
+  ProfileResponse,
+  TokenResponse,
+  AuthResponse,
+  RegisterRequest,
+  LoginRequest,
+  ResetPasswordRequest,
+  ForgotPasswordRequest,
+  ResetPasswordWithTokenRequest,
+  UpdateProfileRequest,
+  ExtendedAxiosRequestConfig as AxiosRequestConfig,
+} from "../../types";
 
-interface ExtendedAxiosRequestConfig extends InternalAxiosRequestConfig {
-  _retry?: boolean;
-}
+type ExtendedAxiosRequestConfig = AxiosRequestConfig &
+  InternalAxiosRequestConfig;
 
 const api = axios.create({
   baseURL: API_AUTH_URL,
@@ -113,66 +125,6 @@ api.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  company_name: string;
-  filesUploaded: number;
-  emailVerified?: boolean;
-  createdAt?: string;
-}
-
-export interface ProfileResponse extends User {
-  createdAt: string;
-}
-
-export interface TokenResponse {
-  accessToken: string;
-  user: User;
-}
-
-export interface AuthResponse {
-  success: boolean;
-  message: string;
-  data?: TokenResponse | ProfileResponse;
-  error?: string;
-}
-
-export interface RegisterRequest {
-  name: string;
-  email: string;
-  password: string;
-  company_name: string;
-}
-
-export interface LoginRequest {
-  email: string;
-  password: string;
-}
-
-export interface ResetPasswordRequest {
-  email: string;
-  newPassword: string;
-}
-
-export interface ForgotPasswordRequest {
-  email: string;
-}
-
-export interface ResetPasswordWithTokenRequest {
-  token: string;
-  newPassword: string;
-  confirmPassword: string;
-}
-
-export interface UpdateProfileRequest {
-  name?: string;
-  currentPassword?: string;
-  newPassword?: string;
-  confirmPassword?: string;
-}
 
 export const authService = {
   async register(

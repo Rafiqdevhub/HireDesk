@@ -5,6 +5,7 @@ import RedirectIfAuthenticated from "@components/auth/RedirectIfAuthenticated";
 import { useAuth } from "../contexts/AuthContext";
 import { useForm } from "../hooks/useForm";
 import type { Route } from "../+types/root";
+import type { LoginFormData } from "../../types";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -15,11 +16,6 @@ export function meta({}: Route.MetaArgs) {
         "Log in to your HireDesk account and access the AI-powered recruitment platform to hire top talent to your team.",
     },
   ];
-}
-interface LoginFormData {
-  email: string;
-  password: string;
-  rememberMe: boolean;
 }
 
 const validateLogin = (values: LoginFormData) => {

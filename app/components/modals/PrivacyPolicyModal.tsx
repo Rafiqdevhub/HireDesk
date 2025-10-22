@@ -1,7 +1,4 @@
-interface PrivacyPolicyModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
+import type { PrivacyPolicyModalProps } from "../../../types/components";
 
 export const PrivacyPolicyModal = ({
   isOpen,

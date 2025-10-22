@@ -49,7 +49,6 @@ export const InterviewQuestionsCard: React.FC<InterviewQuestionsProps> = ({
 
   return (
     <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-sm border border-slate-700/50 p-6 sm:p-8">
-      {/* Header */}
       <div className="mb-8">
         <div className="flex items-center space-x-3 mb-2">
           <div className="relative">
@@ -82,7 +81,6 @@ export const InterviewQuestionsCard: React.FC<InterviewQuestionsProps> = ({
         </div>
       </div>
 
-      {/* Questions grid */}
       <div className="space-y-4 sm:space-y-6">
         {questions.map((q, index) => {
           const typeInfo = getQuestionTypeColor(q.type);
@@ -92,14 +90,11 @@ export const InterviewQuestionsCard: React.FC<InterviewQuestionsProps> = ({
               key={index}
               className="group relative overflow-hidden rounded-xl sm:rounded-2xl bg-slate-900/30 border border-slate-700/50 hover:border-slate-600/80 transition-all duration-300 hover:-translate-y-1 p-4 sm:p-6"
             >
-              {/* Animated background */}
               <div className="absolute inset-0 bg-gradient-to-br from-slate-800/50 to-slate-900/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
-              {/* Glow effect */}
               <div className="absolute -inset-1 bg-gradient-to-r from-pink-500/0 via-rose-500/0 to-pink-500/0 group-hover:from-pink-500/5 group-hover:via-rose-500/10 group-hover:to-pink-500/5 rounded-xl sm:rounded-2xl transition-all duration-300 blur"></div>
 
               <div className="relative z-10">
-                {/* Type badge and index */}
                 <div className="flex items-center justify-between mb-4 sm:mb-5">
                   <div
                     className={`inline-flex items-center space-x-2 px-3 py-1.5 rounded-lg border ${typeInfo.bg}`}
@@ -115,14 +110,11 @@ export const InterviewQuestionsCard: React.FC<InterviewQuestionsProps> = ({
                   </span>
                 </div>
 
-                {/* Question */}
                 <h4 className="text-base sm:text-lg font-bold text-white mb-4 leading-relaxed group-hover:text-slate-50 transition-colors duration-300">
                   {q.question}
                 </h4>
 
-                {/* Context / Reasoning */}
                 <div className="relative">
-                  {/* Collapsed indicator */}
                   <div className="flex items-start space-x-3 p-4 rounded-lg bg-slate-800/50 border border-slate-700/30 group-hover:border-slate-600/50 transition-all duration-300">
                     <div className="mt-0.5">
                       <svg

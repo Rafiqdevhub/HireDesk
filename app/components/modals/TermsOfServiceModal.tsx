@@ -1,7 +1,4 @@
-interface TermsOfServiceModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
+import type { TermsOfServiceModalProps } from "../../../types/components";
 
 export const TermsOfServiceModal = ({
   isOpen,
@@ -40,7 +37,6 @@ export const TermsOfServiceModal = ({
             </button>
           </div>
 
-          {/* Content */}
           <div className="overflow-y-auto flex-1 px-6 py-4 text-slate-300 space-y-4 text-sm">
             <section>
               <h3 className="text-lg font-semibold text-white mb-2">

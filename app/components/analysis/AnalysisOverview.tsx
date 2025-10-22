@@ -1,34 +1,43 @@
 import React from "react";
-
-interface ResumeAnalysis {
-  resumeData?: any;
-  roleRecommendations?: any[];
-  questions?: any[];
-  resumeScore?: any;
-  personalityInsights?: any;
-  careerPath?: any;
-}
-
-interface AnalysisOverviewProps {
-  analysis: ResumeAnalysis;
-}
+import type { AnalysisOverviewProps } from "../../../types/components";
 
 export const AnalysisOverview: React.FC<AnalysisOverviewProps> = ({
   analysis,
 }) => {
+  const getFitStatusColor = (status?: string) => {
+    switch (status?.toLowerCase()) {
+      case "fit":
+        return "from-green-500 to-emerald-500";
+      case "partial":
+        return "from-yellow-500 to-orange-500";
+      case "unfit":
+        return "from-red-500 to-rose-500";
+      default:
+        return "from-slate-500 to-gray-500";
+    }
+  };
+
   const overviewItems = [
     {
-      label: "Resume Parsed",
-      value: analysis.resumeData ? "✓" : "—",
-      icon: "📄",
-      color: analysis.resumeData
-        ? "from-blue-500 to-cyan-500"
-        : "from-slate-500 to-gray-500",
+      label: "Fit Status",
+      value: analysis.fitStatus ? analysis.fitStatus.toUpperCase() : "—",
+      icon: "✓",
+      color: getFitStatusColor(analysis.fitStatus),
+      description: analysis.reasoning || "Analyzing resume fit...",
+    },
+    {
+      label: "Best Fit Role",
+      value: analysis.bestFitRole || "—",
+      icon: "🎯",
+      color: "from-blue-500 to-cyan-500",
+      description: analysis.bestFitRole
+        ? `Recommended for: ${analysis.bestFitRole}`
+        : "No role recommendation yet",
     },
     {
       label: "Role Matches",
       value: analysis.roleRecommendations?.length || 0,
-      icon: "🎯",
+      icon: "📋",
       color: "from-emerald-500 to-teal-500",
     },
     {
@@ -38,11 +47,19 @@ export const AnalysisOverview: React.FC<AnalysisOverviewProps> = ({
       color: "from-pink-500 to-rose-500",
     },
     {
+      label: "Resume Score",
+      value: analysis.resumeScore
+        ? `${analysis.resumeScore.overall_score}%`
+        : "—",
+      icon: "⭐",
+      color: "from-purple-500 to-indigo-500",
+    },
+    {
       label: "Insights Generated",
       value:
         (analysis.personalityInsights ? 1 : 0) + (analysis.careerPath ? 1 : 0),
       icon: "🧠",
-      color: "from-purple-500 to-indigo-500",
+      color: "from-amber-500 to-orange-500",
     },
   ];
 
@@ -80,6 +97,13 @@ export const AnalysisOverview: React.FC<AnalysisOverviewProps> = ({
             <p className="text-xs sm:text-sm font-semibold text-slate-400 group-hover:text-slate-300 transition-colors uppercase tracking-wider">
               {item.label}
             </p>
+
+            {/* Description (if available) */}
+            {item.description && (
+              <p className="text-xs text-slate-500 group-hover:text-slate-400 transition-colors mt-2 line-clamp-2">
+                {item.description}
+              </p>
+            )}
           </div>
         </div>
       ))}

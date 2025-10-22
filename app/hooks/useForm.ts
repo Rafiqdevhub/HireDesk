@@ -1,19 +1,5 @@
 import { useState } from "react";
-
-export interface UseFormReturn<T> {
-  values: T;
-  errors: Partial<Record<keyof T, string>>;
-  isLoading: boolean;
-  handleChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => void;
-  handleSubmit: (
-    onSubmit: (values: T) => Promise<void>
-  ) => (e: React.FormEvent) => Promise<void>;
-  setError: (field: keyof T, message: string) => void;
-  clearErrors: () => void;
-  reset: () => void;
-}
+import type { UseFormReturn } from "../../types";
 
 export const useForm = <T extends Record<string, any>>(
   initialState: T,

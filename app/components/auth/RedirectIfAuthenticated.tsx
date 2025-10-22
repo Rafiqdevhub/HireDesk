@@ -1,11 +1,6 @@
 import { Navigate } from "react-router";
 import { useAuth } from "../../contexts/AuthContext";
-import type { ReactNode } from "react";
-
-interface RedirectIfAuthenticatedProps {
-  children: ReactNode;
-  redirectTo?: string;
-}
+import type { RedirectIfAuthenticatedProps } from "../../../types/components";
 
 const RedirectIfAuthenticated = ({
   children,

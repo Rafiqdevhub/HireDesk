@@ -14,3 +14,4 @@ coverage/
 # Copilot instructions
 copilot-instructions.md
 .github/copilot-instructions.md
+Instructions.prompt.md

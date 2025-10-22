@@ -16,10 +16,8 @@ export const PersonalInfoCard: React.FC<PersonalInfoCardProps> = ({
 }) => {
   return (
     <div className="relative group overflow-hidden rounded-2xl bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-sm border border-slate-700/50 hover:border-indigo-500/50 transition-all duration-500 p-6 sm:p-8">
-      {/* Animated background gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 via-purple-500/5 to-indigo-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
-      {/* Glowing top border */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
       <div className="relative z-10">
@@ -45,7 +43,6 @@ export const PersonalInfoCard: React.FC<PersonalInfoCardProps> = ({
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
-          {/* Email */}
           <div className="group/item">
             <div className="flex items-center space-x-3 p-4 rounded-lg bg-slate-900/50 border border-slate-700/30 group-hover/item:border-indigo-500/50 transition-all duration-300">
               <div className="relative">
@@ -77,7 +74,6 @@ export const PersonalInfoCard: React.FC<PersonalInfoCardProps> = ({
             </div>
           </div>
 
-          {/* Phone */}
           <div className="group/item">
             <div className="flex items-center space-x-3 p-4 rounded-lg bg-slate-900/50 border border-slate-700/30 group-hover/item:border-purple-500/50 transition-all duration-300">
               <div className="relative">
@@ -109,7 +105,6 @@ export const PersonalInfoCard: React.FC<PersonalInfoCardProps> = ({
             </div>
           </div>
 
-          {/* Location */}
           <div className="group/item">
             <div className="flex items-center space-x-3 p-4 rounded-lg bg-slate-900/50 border border-slate-700/30 group-hover/item:border-cyan-500/50 transition-all duration-300">
               <div className="relative">

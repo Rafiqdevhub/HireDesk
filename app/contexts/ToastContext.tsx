@@ -1,34 +1,6 @@
 import { createContext, useContext, useState, useCallback } from "react";
 import type { ReactNode } from "react";
-
-export type ToastType = "success" | "error" | "warning" | "info";
-
-export interface Toast {
-  id: string;
-  message: string;
-  type: ToastType;
-  title?: string;
-  duration?: number;
-  action?: {
-    label: string;
-    onClick: () => void;
-  };
-}
-
-interface ToastContextType {
-  toasts: Toast[];
-  showToast: (
-    message: string,
-    type?: ToastType,
-    options?: {
-      title?: string;
-      duration?: number;
-      action?: Toast["action"];
-    }
-  ) => void;
-  hideToast: (id: string) => void;
-  clearAllToasts: () => void;
-}
+import type { Toast, ToastType, ToastContextType } from "../../types";
 
 const ToastContext = createContext<ToastContextType | undefined>(undefined);
 

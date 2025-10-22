@@ -1,31 +1,16 @@
 import React, { useEffect } from "react";
+import type { ToastComponentProps } from "../../../types/components";
 
-interface Action {
-  label: string;
-  onClick: () => void;
-  variant?: "primary" | "secondary";
-}
-
-interface ToastProps {
-  type: "success" | "error" | "warning" | "info";
-  title?: string;
-  message: string;
-  show: boolean;
-  onClose: () => void;
-  duration?: number;
-  errorData?: any;
-  actions?: Action[];
-}
-
-const Toast: React.FC<ToastProps> = ({
+const Toast: React.FC<ToastComponentProps> = ({
   type,
   title,
   message,
   show,
   onClose,
   duration = 5000,
-  errorData,
+  action,
   actions,
+  errorData,
 }) => {
   useEffect(() => {
     if (show && duration > 0) {
@@ -93,33 +78,34 @@ const Toast: React.FC<ToastProps> = ({
                 </h3>
               )}
               <p className="text-slate-200 leading-relaxed">{message}</p>
-              {errorData && (
-                <div className="mt-3 p-3 bg-slate-800/50 rounded-lg">
-                  <p className="text-xs text-slate-400">
-                    Category: {errorData.errorCategory || errorData.category}
-                  </p>
-                  {errorData.originalError && (
-                    <p className="text-xs text-slate-400 mt-1">
-                      Details: {errorData.originalError.message}
-                    </p>
-                  )}
-                </div>
-              )}
-              {actions && actions.length > 0 && (
+              {(action || actions) && (
                 <div className="mt-4 flex space-x-3">
-                  {actions.map((action, index) => (
+                  {actions ? (
+                    actions.map((btn, idx) => (
+                      <button
+                        key={idx}
+                        onClick={btn.onClick}
+                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                          btn.variant === "primary"
+                            ? "bg-indigo-600 hover:bg-indigo-700 text-white"
+                            : "bg-slate-700 hover:bg-slate-600 text-slate-200"
+                        }`}
+                      >
+                        {btn.label}
+                      </button>
+                    ))
+                  ) : (
                     <button
-                      key={index}
-                      onClick={action.onClick}
+                      onClick={action!.onClick}
                       className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                        action.variant === "primary"
+                        action!.variant === "primary"
                           ? "bg-indigo-600 hover:bg-indigo-700 text-white"
                           : "bg-slate-700 hover:bg-slate-600 text-slate-200"
                       }`}
                     >
-                      {action.label}
+                      {action!.label}
                     </button>
-                  ))}
+                  )}
                 </div>
               )}
             </div>

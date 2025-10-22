@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
-
-interface RateLimitModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  filesUploaded: number;
-  uploadLimit: number;
-}
+import type { RateLimitModalProps } from "../../../types/components";
 
 const RateLimitModal: React.FC<RateLimitModalProps> = ({
   isOpen,

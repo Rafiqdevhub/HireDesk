@@ -106,5 +106,234 @@ export interface BatchAnalysisResponse {
   usage_stats: UsageStats;
   results: BatchAnalysisResult[];
   failed_files_details?: Array<{ filename: string; error: string }>;
+  upload_limit_info?: {
+    reached_limit: boolean;
+    files_rejected: number;
+    message: string;
+    upgrade_prompt?: UpgradePrompt;
+  };
   upgrade_prompt: UpgradePrompt;
 }
+
+export interface HireDeskAnalyzeResponse {
+  success: boolean;
+  fit_status: "fit" | "unfit" | "partial";
+  reasoning: string;
+  best_fit_role: string;
+  resumeData: ResumeData;
+  roleRecommendations: RoleRecommendation[];
+  questions: Array<{
+    type: "technical" | "behavioral" | "scenario-based" | "role-specific";
+    question: string;
+    context: string;
+  }>;
+  resumeScore: ResumeScore;
+  personalityInsights: PersonalityInsights;
+  careerPath: CareerPath;
+}
+
+export interface ComparisonCandidate {
+  filename: string;
+  resumeData: ResumeData;
+  score: number;
+  strengths: string[];
+  weaknesses: string[];
+  status: "success" | "error";
+  error?: string;
+}
+
+export interface ComparisonSummary {
+  total_submitted: number;
+  successful: number;
+  failed: number;
+  highest_score: number;
+  average_score: number;
+}
+
+export interface CompareResumesResponse {
+  success: boolean;
+  message: string;
+  comparison_summary: ComparisonSummary;
+  usage_stats: UsageStats;
+  ranked_candidates: ComparisonCandidate[];
+  recommendations: string[];
+  failed_files_details?: Array<{ filename: string; error: string }>;
+  upgrade_prompt?: UpgradePrompt;
+}
+
+// File Service Types
+export interface FileUploadResponse {
+  success: boolean;
+  message: string;
+  data: {
+    originalName: string;
+    size: number;
+    totalFilesUploaded: number;
+  };
+  error?: string;
+}
+
+export interface FileStatsResponse {
+  success: boolean;
+  message: string;
+  data: {
+    totalFilesUploaded: number;
+    user: {
+      id: string;
+      name: string;
+      email: string;
+    };
+  };
+  error?: string;
+}
+
+// Auth Service Types
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  company_name: string;
+  filesUploaded: number;
+  emailVerified?: boolean;
+  createdAt?: string;
+}
+
+export interface ProfileResponse extends User {
+  createdAt: string;
+}
+
+export interface TokenResponse {
+  accessToken: string;
+  user: User;
+}
+
+export interface AuthResponse {
+  success: boolean;
+  message: string;
+  data?: TokenResponse | ProfileResponse;
+  error?: string;
+}
+
+export interface RegisterRequest {
+  name: string;
+  email: string;
+  password: string;
+  company_name: string;
+}
+
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
+
+export interface ResetPasswordRequest {
+  email: string;
+  newPassword: string;
+}
+
+export interface ForgotPasswordRequest {
+  email: string;
+}
+
+export interface ResetPasswordWithTokenRequest {
+  token: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
+export interface UpdateProfileRequest {
+  name?: string;
+  currentPassword?: string;
+  newPassword?: string;
+  confirmPassword?: string;
+}
+
+// Form Hook Types
+export interface UseFormReturn<T> {
+  values: T;
+  errors: Partial<Record<keyof T, string>>;
+  isLoading: boolean;
+  handleChange: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => void;
+  handleSubmit: (
+    onSubmit: (values: T) => Promise<void>
+  ) => (e: React.FormEvent) => Promise<void>;
+  setError: (field: keyof T, message: string) => void;
+  clearErrors: () => void;
+  reset: () => void;
+}
+
+// Toast Context Types
+export type ToastType = "success" | "error" | "warning" | "info";
+
+export interface Toast {
+  id: string;
+  message: string;
+  type: ToastType;
+  title?: string;
+  duration?: number;
+  action?: {
+    label: string;
+    onClick: () => void;
+  };
+}
+
+export interface ToastContextType {
+  toasts: Toast[];
+  showToast: (
+    message: string,
+    type?: ToastType,
+    options?: {
+      title?: string;
+      duration?: number;
+      action?: Toast["action"];
+    }
+  ) => void;
+  hideToast: (id: string) => void;
+  clearAllToasts: () => void;
+}
+
+// Auth Context Types
+export interface AuthContextType {
+  user: User | null;
+  loading: boolean;
+  login: (email: string, password: string) => Promise<void>;
+  register: (userData: RegisterRequest) => Promise<void>;
+  logout: () => Promise<void>;
+  refreshProfile: () => Promise<void>;
+  verifyEmail: (token: string) => Promise<void>;
+  resendVerification: (email: string) => Promise<void>;
+  forgotPassword: (email: string) => Promise<void>;
+  resetPasswordWithToken: (
+    token: string,
+    newPassword: string,
+    confirmPassword: string
+  ) => Promise<void>;
+  requiresVerification: boolean;
+  unverifiedEmail: string | null;
+  isAuthenticated: boolean;
+}
+
+// Component Props Types
+export interface SignUpFormData {
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  company_name: string;
+  agreeToTerms?: boolean;
+}
+
+export interface LoginFormData {
+  email: string;
+  password: string;
+  rememberMe?: boolean;
+}
+
+export interface ExtendedAxiosRequestConfig {
+  _retry?: boolean;
+}
+
+// Component types export
+export * from "./components";

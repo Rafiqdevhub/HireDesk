@@ -1,4 +1,5 @@
 import React from "react";
+import type { ResumeAnalysisDisplayProps } from "../../../types/components";
 import { PersonalInfoCard } from "./PersonalInfoCard";
 import { WorkExperienceCard } from "./WorkExperienceCard";
 import { SkillsCard } from "./SkillsCard";
@@ -7,26 +8,6 @@ import { InterviewQuestionsCard } from "./InterviewQuestionsCard";
 import { AnalysisOverview } from "./AnalysisOverview";
 import { EducationCard } from "./EducationCard";
 import { AdvancedAnalytics } from "./AdvancedAnalytics";
-
-interface AnalysisData {
-  resumeData?: {
-    personalInfo?: any;
-    workExperience?: any[];
-    education?: any[];
-    skills?: string[];
-    highlights?: string[];
-  };
-  roleRecommendations?: any[];
-  questions?: any[];
-  resumeScore?: any;
-  personalityInsights?: any;
-  careerPath?: any;
-}
-
-interface ResumeAnalysisDisplayProps {
-  analysisData: AnalysisData;
-  isLoading?: boolean;
-}
 
 export const ResumeAnalysisDisplay: React.FC<ResumeAnalysisDisplayProps> = ({
   analysisData,
@@ -47,7 +28,6 @@ export const ResumeAnalysisDisplay: React.FC<ResumeAnalysisDisplayProps> = ({
 
   return (
     <div className="space-y-8 sm:space-y-12">
-      {/* Analysis Overview */}
       {(analysisData.resumeData ||
         analysisData.roleRecommendations ||
         analysisData.questions) && (
@@ -63,7 +43,6 @@ export const ResumeAnalysisDisplay: React.FC<ResumeAnalysisDisplayProps> = ({
         </section>
       )}
 
-      {/* Personal Information */}
       {analysisData.resumeData?.personalInfo && (
         <section className="relative">
           <PersonalInfoCard
@@ -72,7 +51,6 @@ export const ResumeAnalysisDisplay: React.FC<ResumeAnalysisDisplayProps> = ({
         </section>
       )}
 
-      {/* Work Experience */}
       {analysisData.resumeData?.workExperience &&
         analysisData.resumeData.workExperience.length > 0 && (
           <section className="relative">
@@ -82,7 +60,6 @@ export const ResumeAnalysisDisplay: React.FC<ResumeAnalysisDisplayProps> = ({
           </section>
         )}
 
-      {/* Education & Highlights */}
       {(analysisData.resumeData?.education || []).length > 0 ||
       (analysisData.resumeData?.highlights || []).length > 0 ? (
         <section className="relative">
@@ -93,7 +70,6 @@ export const ResumeAnalysisDisplay: React.FC<ResumeAnalysisDisplayProps> = ({
         </section>
       ) : null}
 
-      {/* Skills */}
       {analysisData.resumeData?.skills &&
         analysisData.resumeData.skills.length > 0 && (
           <section className="relative">
@@ -101,7 +77,6 @@ export const ResumeAnalysisDisplay: React.FC<ResumeAnalysisDisplayProps> = ({
           </section>
         )}
 
-      {/* Role Recommendations */}
       {analysisData.roleRecommendations &&
         analysisData.roleRecommendations.length > 0 && (
           <section className="relative">
@@ -111,14 +86,12 @@ export const ResumeAnalysisDisplay: React.FC<ResumeAnalysisDisplayProps> = ({
           </section>
         )}
 
-      {/* Interview Questions */}
       {analysisData.questions && analysisData.questions.length > 0 && (
         <section className="relative">
           <InterviewQuestionsCard questions={analysisData.questions} />
         </section>
       )}
 
-      {/* Advanced Analytics */}
       {(analysisData.resumeScore ||
         analysisData.personalityInsights ||
         analysisData.careerPath) && (

@@ -1,29 +1,5 @@
 import api from "./authService";
-
-export interface FileUploadResponse {
-  success: boolean;
-  message: string;
-  data: {
-    originalName: string;
-    size: number;
-    totalFilesUploaded: number;
-  };
-  error?: string;
-}
-
-export interface FileStatsResponse {
-  success: boolean;
-  message: string;
-  data: {
-    totalFilesUploaded: number;
-    user: {
-      id: string;
-      name: string;
-      email: string;
-    };
-  };
-  error?: string;
-}
+import type { FileUploadResponse, FileStatsResponse } from "../../types";
 
 // Helper function to extract error messages from file service errors
 const extractFileErrorMessage = (
