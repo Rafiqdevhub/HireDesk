@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import type { SkillsProps } from "../../../types/components";
+import type { SkillsProps } from "@app-types/components";
 
 export const SkillsCard: React.FC<SkillsProps> = ({ skills }) => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);

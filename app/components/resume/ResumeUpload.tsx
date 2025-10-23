@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import type { IconProps, ResumeUploadProps } from "../../../types/components";
+import type { IconProps, ResumeUploadProps } from "@app-types/components";
 
 const CloudArrowUpIcon = ({ className, ...props }: IconProps) => (
   <svg

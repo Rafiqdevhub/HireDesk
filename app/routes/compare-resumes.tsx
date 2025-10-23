@@ -1,14 +1,14 @@
 import { Link } from "react-router";
 import type { Route } from "./+types/compare-resumes";
-import ProtectedRoute from "@components/auth/ProtectedRoute";
-import { useAuth } from "../contexts/AuthContext";
+import ProtectedRoute from "@auth/ProtectedRoute";
+import { useAuth } from "@contexts/AuthContext";
 import { useState, useEffect, useRef } from "react";
-import { getErrorCategory, formatErrorMessage } from "../utils/errorHandler";
-import { AI_API } from "~/utils/api";
-import Toast from "@components/toast/Toast";
-import RateLimitModal from "@components/ui/RateLimitModal";
-import { ComparisonResultsDisplay } from "@components/comparison/ComparisonResultsDisplay";
-import type { CompareResumesResponse } from "../../types/index";
+import { getErrorCategory, formatErrorMessage } from "@utils/errorHandler";
+import { AI_API } from "@utils/api";
+import Toast from "@toast/Toast";
+import RateLimitModal from "@ui/RateLimitModal";
+import { ComparisonResultsDisplay } from "@comparison/ComparisonResultsDisplay";
+import type { CompareResumesResponse } from "@app-types";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -141,7 +141,6 @@ const CompareResumes = () => {
       return;
     }
 
-    // Validate file types and sizes
     for (const file of files) {
       if (!file.type.match(/pdf|msword|officedocument/)) {
         setError({
@@ -155,7 +154,6 @@ const CompareResumes = () => {
       }
 
       if (file.size > 10 * 1024 * 1024) {
-        // 10MB
         setError({
           show: true,
           message: `File "${file.name}" exceeds 10MB limit.`,
@@ -280,7 +278,6 @@ const CompareResumes = () => {
       }
 
       if (file.size > 10 * 1024 * 1024) {
-        // 10MB
         setError({
           show: true,
           message: `File "${file.name}" exceeds 10MB limit.`,
@@ -291,7 +288,6 @@ const CompareResumes = () => {
         return;
       }
 
-      // Check for duplicates
       if (
         currentFiles.some(
           (existingFile) =>
@@ -309,7 +305,6 @@ const CompareResumes = () => {
       }
     }
 
-    // Check total limit
     if (currentFiles.length + newFiles.length > 5) {
       setError({
         show: true,

@@ -1,6 +1,6 @@
 import { Navigate } from "react-router";
-import { useAuth } from "../../contexts/AuthContext";
-import type { RedirectIfAuthenticatedProps } from "../../../types/components";
+import { useAuth } from "@contexts/AuthContext";
+import type { RedirectIfAuthenticatedProps } from "@app-types/components";
 
 const RedirectIfAuthenticated = ({
   children,

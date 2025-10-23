@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import type { RoleRecommendationsProps } from "../../../types/components";
+import type { RoleRecommendationsProps } from "@app-types/components";
 
 export const RoleRecommendationsCard: React.FC<RoleRecommendationsProps> = ({
   recommendations,

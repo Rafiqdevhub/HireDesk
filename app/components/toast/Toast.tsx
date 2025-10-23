@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import type { ToastComponentProps } from "../../../types/components";
+import type { ToastComponentProps } from "@app-types/components";
 
 const Toast: React.FC<ToastComponentProps> = ({
   type,
@@ -10,7 +10,6 @@ const Toast: React.FC<ToastComponentProps> = ({
   duration = 5000,
   action,
   actions,
-  errorData,
 }) => {
   useEffect(() => {
     if (show && duration > 0) {

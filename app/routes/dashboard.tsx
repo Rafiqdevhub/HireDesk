@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 import type { Route } from "./+types/dashboard";
-import ProtectedRoute from "@components/auth/ProtectedRoute";
-import { useAuth } from "../contexts/AuthContext";
+import ProtectedRoute from "@auth/ProtectedRoute";
+import { useAuth } from "@contexts/AuthContext";
 import { useState, useEffect, useRef } from "react";
 
 export function meta({}: Route.MetaArgs) {
@@ -229,7 +229,6 @@ const Dashboard = () => {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 sm:gap-10 lg:gap-12">
-            {/* Smart Review Card */}
             <Link
               to="/hiredesk-analyze"
               className="group relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl border border-slate-700/50 hover:border-blue-500/50 transition-all duration-500 hover:-translate-y-2 shadow-2xl hover:shadow-blue-500/25"
@@ -305,7 +304,6 @@ const Dashboard = () => {
               </div>
             </Link>
 
-            {/* Smart Screening Card */}
             <Link
               to="/batch-analyze"
               className="group relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl border border-slate-700/50 hover:border-green-500/50 transition-all duration-500 hover:-translate-y-2 shadow-2xl hover:shadow-green-500/25"
@@ -381,7 +379,6 @@ const Dashboard = () => {
               </div>
             </Link>
 
-            {/* Find Best Fit Card */}
             <Link
               to="/compare-resumes"
               className="group relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl border border-slate-700/50 hover:border-purple-500/50 transition-all duration-500 hover:-translate-y-2 shadow-2xl hover:shadow-purple-500/25"

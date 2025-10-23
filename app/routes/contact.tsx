@@ -1,9 +1,9 @@
 import { useState } from "react";
-import Navbar from "@components/layout/Navbar";
-import Footer from "@components/layout/Footer";
+import Navbar from "@layout/Navbar";
+import Footer from "@layout/Footer";
 import type { Route } from "./+types/contact";
 import emailjs from "@emailjs/browser";
-import { useToast } from "../contexts/ToastContext";
+import { useToast } from "@contexts/ToastContext";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -488,7 +488,6 @@ const Contact = () => {
                 </div>
               </div>
 
-              {/* Social Links */}
               <div className="relative">
                 <div className="absolute -inset-1 bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-pink-600/20 rounded-2xl blur-xl"></div>
                 <div className="relative bg-slate-800/90 backdrop-blur-xl rounded-2xl border border-slate-700/50 p-6">

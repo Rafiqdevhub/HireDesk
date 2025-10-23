@@ -1,5 +1,5 @@
 import React from "react";
-import type { ResumeDetailsWrapperProps } from "../../../types/components";
+import type { ResumeDetailsWrapperProps } from "@app-types/components";
 
 const ResumeDetailsWrapper: React.FC<ResumeDetailsWrapperProps> = ({
   resumeData,

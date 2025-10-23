@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createPortal } from "react-dom";
-import type { TipsModalProps } from "../../../types/components";
+import type { TipsModalProps } from "@app-types/components";
 
 const TipsModal = ({ isOpen, onClose }: TipsModalProps) => {
   const [currentTip, setCurrentTip] = useState(0);

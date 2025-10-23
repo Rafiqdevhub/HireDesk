@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router";
-import Navbar from "@components/layout/Navbar";
-import { useAuth } from "../contexts/AuthContext";
-import { authService } from "../services/authService";
-import { API_AUTH_URL } from "../utils/api";
+import Navbar from "@layout/Navbar";
+import { useAuth } from "@contexts/AuthContext";
+import { authService } from "@services/authService";
+import { API_AUTH_URL } from "@utils/api";
 import type { Route } from "./+types/profile";
 
 export function meta({}: Route.MetaArgs) {
@@ -165,7 +165,6 @@ const Profile = () => {
         name: newName.trim(),
       });
 
-      // Update local state
       setProfile((prev: any) =>
         prev ? { ...prev, name: updatedUser.name } : null
       );

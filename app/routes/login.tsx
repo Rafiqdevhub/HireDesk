@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
-import Navbar from "@components/layout/Navbar";
-import RedirectIfAuthenticated from "@components/auth/RedirectIfAuthenticated";
-import { useAuth } from "../contexts/AuthContext";
-import { useForm } from "../hooks/useForm";
+import Navbar from "@layout/Navbar";
+import RedirectIfAuthenticated from "@auth/RedirectIfAuthenticated";
+import { useAuth } from "@contexts/AuthContext";
+import { useForm } from "@hooks/useForm";
 import type { Route } from "../+types/root";
-import type { LoginFormData } from "../../types";
+import type { LoginFormData } from "@app-types";
 
 export function meta({}: Route.MetaArgs) {
   return [

@@ -1,6 +1,6 @@
 import { useState } from "react";
-import type { BatchResultCardProps } from "../../../types/components";
-import type { RoleRecommendation } from "../../../types/index";
+import type { BatchResultCardProps } from "@app-types/components";
+import type { RoleRecommendation } from "@app-types/index";
 import "./batch-result.css";
 
 export const BatchResultCard = ({ result, index }: BatchResultCardProps) => {

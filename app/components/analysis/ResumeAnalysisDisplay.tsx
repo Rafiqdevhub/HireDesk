@@ -1,5 +1,5 @@
 import React from "react";
-import type { ResumeAnalysisDisplayProps } from "../../../types/components";
+import type { ResumeAnalysisDisplayProps } from "@app-types/components";
 import { PersonalInfoCard } from "./PersonalInfoCard";
 import { WorkExperienceCard } from "./WorkExperienceCard";
 import { SkillsCard } from "./SkillsCard";

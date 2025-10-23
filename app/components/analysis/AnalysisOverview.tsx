@@ -1,5 +1,5 @@
 import React from "react";
-import type { AnalysisOverviewProps } from "../../../types/components";
+import type { AnalysisOverviewProps } from "@app-types/components";
 
 export const AnalysisOverview: React.FC<AnalysisOverviewProps> = ({
   analysis,

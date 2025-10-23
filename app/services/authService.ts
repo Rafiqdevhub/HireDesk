@@ -4,7 +4,7 @@ import type {
   AxiosError,
   InternalAxiosRequestConfig,
 } from "axios";
-import { API_AUTH_URL } from "~/utils/api";
+import { API_AUTH_URL } from "@utils/api";
 import type {
   User,
   ProfileResponse,
@@ -13,11 +13,9 @@ import type {
   RegisterRequest,
   LoginRequest,
   ResetPasswordRequest,
-  ForgotPasswordRequest,
-  ResetPasswordWithTokenRequest,
   UpdateProfileRequest,
   ExtendedAxiosRequestConfig as AxiosRequestConfig,
-} from "../../types";
+} from "@app-types";
 
 type ExtendedAxiosRequestConfig = AxiosRequestConfig &
   InternalAxiosRequestConfig;

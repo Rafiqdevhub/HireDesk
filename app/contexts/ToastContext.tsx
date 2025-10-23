@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useCallback } from "react";
 import type { ReactNode } from "react";
-import type { Toast, ToastType, ToastContextType } from "../../types";
+import type { Toast, ToastType, ToastContextType } from "@app-types";
 
 const ToastContext = createContext<ToastContextType | undefined>(undefined);
 
@@ -43,7 +43,6 @@ export const ToastProvider = ({ children }: ToastProviderProps) => {
 
       setToasts((prev) => [...prev, newToast]);
 
-      // Auto remove toast after duration
       if (duration > 0) {
         setTimeout(() => {
           hideToast(id);

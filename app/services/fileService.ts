@@ -1,5 +1,5 @@
 import api from "./authService";
-import type { FileUploadResponse, FileStatsResponse } from "../../types";
+import type { FileUploadResponse, FileStatsResponse } from "@app-types";
 
 // Helper function to extract error messages from file service errors
 const extractFileErrorMessage = (

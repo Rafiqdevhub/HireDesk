@@ -1,20 +1,20 @@
 import { Link } from "react-router";
 import type { Route } from "./+types/batch-analyze";
-import ProtectedRoute from "@components/auth/ProtectedRoute";
-import { useAuth } from "../contexts/AuthContext";
+import ProtectedRoute from "@auth/ProtectedRoute";
+import { useAuth } from "@contexts/AuthContext";
 import { useState, useEffect, useRef } from "react";
-import { getErrorCategory, formatErrorMessage } from "../utils/errorHandler";
-import { AI_API } from "~/utils/api";
-import Toast from "../components/toast/Toast";
-import RateLimitModal from "../components/ui/RateLimitModal";
-import { batchFeatures } from "../data/BatchFeatures";
-import BatchResultCard from "../components/batch/BatchResultCard";
+import { getErrorCategory, formatErrorMessage } from "@utils/errorHandler";
+import { AI_API } from "@utils/api";
+import Toast from "@toast/Toast";
+import RateLimitModal from "@ui/RateLimitModal";
+import { batchFeatures } from "@data/BatchFeatures";
+import BatchResultCard from "@batch/BatchResultCard";
 import type {
   UsageStats,
   UpgradePrompt,
   BatchAnalysisResult,
   BatchAnalysisResponse,
-} from "../../types/index";
+} from "@app-types/index";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -80,7 +80,6 @@ const BatchAnalyze = () => {
     };
   }, [showProfileDropdown]);
 
-  // Load persisted batch results on component mount
   useEffect(() => {
     try {
       const persistedResults = localStorage.getItem("batch-analyze-results");
@@ -96,7 +95,6 @@ const BatchAnalyze = () => {
     }
   }, []);
 
-  // Save batch results to localStorage whenever they change
   useEffect(() => {
     if (batchResults.length > 0) {
       try {
@@ -106,7 +104,6 @@ const BatchAnalyze = () => {
         );
       } catch (error) {
         console.warn("Failed to persist batch results:", error);
-        // If storage is full, try to clear old data and retry
         try {
           localStorage.removeItem("batch-analyze-results");
           localStorage.setItem(
@@ -121,13 +118,11 @@ const BatchAnalyze = () => {
         }
       }
     } else {
-      // Clear persisted data when results are reset
       localStorage.removeItem("batch-analyze-results");
     }
   }, [batchResults]);
 
   const handleFileUpload = async (files: File[]) => {
-    // Check batch limits (2-5 files as per API spec)
     if (files.length < 2) {
       setError({
         show: true,
@@ -150,13 +145,11 @@ const BatchAnalyze = () => {
       return;
     }
 
-    // Check batch analysis quota before uploading
     if (usageStats && usageStats.batches_processed >= 10) {
       setShowRateLimitModal(true);
       return;
     }
 
-    // Validate file types and sizes
     for (const file of files) {
       if (!file.type.match(/pdf|msword|officedocument/)) {
         setError({
@@ -170,7 +163,6 @@ const BatchAnalyze = () => {
       }
 
       if (file.size > 10 * 1024 * 1024) {
-        // 10MB
         setError({
           show: true,
           message: `File "${file.name}" exceeds 10MB limit.`,
@@ -209,7 +201,6 @@ const BatchAnalyze = () => {
 
       const formData = new FormData();
 
-      // Add all files to form data
       files.forEach((file) => {
         formData.append("files", file);
       });
@@ -225,7 +216,6 @@ const BatchAnalyze = () => {
         },
       });
 
-      // Handle 429 Rate Limit Error (Batch Analysis Only)
       if (response.status === 429) {
         const errorData: any = await response.json();
         const batchCount = errorData.batches_processed || 0;
@@ -245,7 +235,6 @@ const BatchAnalyze = () => {
         return;
       }
 
-      // Handle 401 Authentication Error
       if (response.status === 401) {
         localStorage.removeItem("accessToken");
         setError({
@@ -280,7 +269,6 @@ const BatchAnalyze = () => {
         );
       }
 
-      // Update usage stats from response (batch-analyze only tracks batches_processed)
       if (responseData.usage_stats) {
         const batchCount = responseData.usage_stats.batches_processed || 0;
         setUsageStats({
@@ -295,18 +283,15 @@ const BatchAnalyze = () => {
         });
       }
 
-      // Check if upgrade prompt should be shown
       if (responseData.upgrade_prompt && responseData.upgrade_prompt.show) {
         setUpgradePrompt(responseData.upgrade_prompt);
         setShowUpgradeModal(true);
       }
 
-      // Update batch results
       if (responseData.results && Array.isArray(responseData.results)) {
         setBatchResults(responseData.results);
       }
 
-      // Show success toast with detailed message
       const toastMsg =
         responseData.message ||
         `Successfully analyzed ${files.length} resumes!`;
@@ -333,7 +318,6 @@ const BatchAnalyze = () => {
   };
 
   const handleAddFiles = (newFiles: File[]) => {
-    // Validate each new file
     for (const file of newFiles) {
       if (!file.type.match(/pdf|msword|officedocument/)) {
         setError({
@@ -347,7 +331,6 @@ const BatchAnalyze = () => {
       }
 
       if (file.size > 10 * 1024 * 1024) {
-        // 10MB
         setError({
           show: true,
           message: `File "${file.name}" exceeds 10MB limit.`,
@@ -358,7 +341,6 @@ const BatchAnalyze = () => {
         return;
       }
 
-      // Check for duplicates
       if (
         currentFiles.some(
           (existingFile) =>
@@ -376,7 +358,6 @@ const BatchAnalyze = () => {
       }
     }
 
-    // Check total limit (2-5 files per batch as per API spec)
     if (currentFiles.length + newFiles.length > 5) {
       setError({
         show: true,
@@ -388,10 +369,8 @@ const BatchAnalyze = () => {
       return;
     }
 
-    // Add files to current files
     setCurrentFiles((prev) => [...prev, ...newFiles]);
 
-    // Clear any previous errors
     setError({
       show: false,
       message: "",
@@ -1041,7 +1020,6 @@ const BatchAnalyze = () => {
                       </div>
                     </div>
 
-                    {/* Usage Stats Widget - Batch Analysis Only */}
                     {usageStats && (
                       <div className="mt-8 sm:mt-12 mb-8">
                         <div className="relative overflow-hidden rounded-xl sm:rounded-2xl bg-gradient-to-r from-slate-800/80 to-slate-900/80 backdrop-blur-xl border border-slate-700/50 p-4 sm:p-6">
@@ -1113,7 +1091,6 @@ const BatchAnalyze = () => {
                       </div>
                     )}
 
-                    {/* Upgrade Modal */}
                     {showUpgradeModal && upgradePrompt && (
                       <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
                         <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 backdrop-blur-xl border border-slate-700/50 max-w-md w-full shadow-2xl">
@@ -1228,7 +1205,6 @@ const BatchAnalyze = () => {
 
                     {batchResults.length > 0 && (
                       <div className="mt-8 sm:mt-12">
-                        {/* Batch Summary */}
                         <div className="mb-8 p-4 sm:p-6 bg-gradient-to-r from-slate-800/80 to-slate-900/80 backdrop-blur-xl border border-slate-700/50 rounded-xl sm:rounded-2xl">
                           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                             <div>
@@ -1283,7 +1259,6 @@ const BatchAnalyze = () => {
                           </div>
                         </div>
 
-                        {/* Individual Results */}
                         <div className="text-center mb-6 sm:mb-8">
                           <h4 className="text-xl sm:text-2xl font-bold text-white mb-2">
                             Detailed Analysis

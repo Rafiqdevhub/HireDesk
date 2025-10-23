@@ -1,4 +1,4 @@
-import type { PasswordStrengthProps } from "../../../types/components";
+import type { PasswordStrengthProps } from "@app-types/components";
 
 const getStrengthWidthClass = (strength: number): string => {
   if (strength === 0) return "w-0";

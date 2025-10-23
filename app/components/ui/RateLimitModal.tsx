@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
-import type { RateLimitModalProps } from "../../../types/components";
+import type { RateLimitModalProps } from "@app-types/components";
 
 const RateLimitModal: React.FC<RateLimitModalProps> = ({
   isOpen,

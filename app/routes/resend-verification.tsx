@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import type { Route } from "../+types/root";
-import { useAuth } from "../contexts/AuthContext";
-import NavbarWithModal from "~/components/layout/Navbar";
+import { useAuth } from "@contexts/AuthContext";
+import NavbarWithModal from "@layout/Navbar";
 
 export function meta({}: Route.MetaArgs) {
   return [

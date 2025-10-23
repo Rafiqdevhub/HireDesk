@@ -1,5 +1,5 @@
 import React from "react";
-import type { ComparisonResultsDisplayProps } from "../../../types/components";
+import type { ComparisonResultsDisplayProps } from "@app-types/components";
 
 export const ComparisonResultsDisplay: React.FC<
   ComparisonResultsDisplayProps

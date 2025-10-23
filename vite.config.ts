@@ -23,6 +23,10 @@ export default defineConfig(({ command, mode }) => {
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "./app"),
+        "@app-types": path.resolve(__dirname, "./types"),
+        "@app-types/components": path.resolve(__dirname, "./types/components"),
+        "@app-types/index": path.resolve(__dirname, "./types/index"),
+        "@public": path.resolve(__dirname, "./public"),
         "@components": path.resolve(__dirname, "./app/components"),
         "@routes": path.resolve(__dirname, "./app/routes"),
         "@utils": path.resolve(__dirname, "./app/utils"),
@@ -30,7 +34,15 @@ export default defineConfig(({ command, mode }) => {
         "@contexts": path.resolve(__dirname, "./app/contexts"),
         "@data": path.resolve(__dirname, "./app/data"),
         "@services": path.resolve(__dirname, "./app/services"),
-        "@public": path.resolve(__dirname, "./public"),
+        "@analysis": path.resolve(__dirname, "./app/components/analysis"),
+        "@auth": path.resolve(__dirname, "./app/components/auth"),
+        "@batch": path.resolve(__dirname, "./app/components/batch"),
+        "@comparison": path.resolve(__dirname, "./app/components/comparison"),
+        "@layout": path.resolve(__dirname, "./app/components/layout"),
+        "@modals": path.resolve(__dirname, "./app/components/modals"),
+        "@resume": path.resolve(__dirname, "./app/components/resume"),
+        "@toast": path.resolve(__dirname, "./app/components/toast"),
+        "@ui": path.resolve(__dirname, "./app/components/ui"),
       },
     },
     test: {

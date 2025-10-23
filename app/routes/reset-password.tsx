@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router";
 import type { Route } from "../+types/root";
-import { useAuth } from "../contexts/AuthContext";
-import { useToast } from "../contexts/ToastContext";
-import { PasswordStrengthIndicator } from "~/components/ui/PasswordStrengthIndicator";
-import NavbarWithModal from "~/components/layout/Navbar";
+import { useAuth } from "@contexts/AuthContext";
+import { useToast } from "@contexts/ToastContext";
+import { PasswordStrengthIndicator } from "@ui/PasswordStrengthIndicator";
+import NavbarWithModal from "@layout/Navbar";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -30,7 +30,6 @@ export default function ResetPassword() {
   const [passwordStrength, setPasswordStrength] = useState(0);
   const [tokenError, setTokenError] = useState("");
 
-  // Extract token from URL on mount
   useEffect(() => {
     const tokenFromUrl = searchParams.get("token");
     if (!tokenFromUrl) {
@@ -40,7 +39,6 @@ export default function ResetPassword() {
     setToken(tokenFromUrl);
   }, [searchParams]);
 
-  // Calculate password strength in real-time
   useEffect(() => {
     if (!newPassword) {
       setPasswordStrength(0);

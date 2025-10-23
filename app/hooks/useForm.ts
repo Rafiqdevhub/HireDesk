@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { UseFormReturn } from "../../types";
+import type { UseFormReturn } from "@app-types";
 
 export const useForm = <T extends Record<string, any>>(
   initialState: T,
@@ -20,7 +20,6 @@ export const useForm = <T extends Record<string, any>>(
         type === "checkbox" ? (e.target as HTMLInputElement).checked : value,
     }));
 
-    // Clear error when user starts typing
     if (errors[name as keyof T]) {
       setErrors((prev) => ({
         ...prev,
@@ -50,10 +49,8 @@ export const useForm = <T extends Record<string, any>>(
     return async (e: React.FormEvent) => {
       e.preventDefault();
 
-      // Clear previous errors
       setErrors({});
 
-      // Run validation if provided
       if (validation) {
         const validationErrors = validation(values);
         if (Object.keys(validationErrors).length > 0) {
@@ -67,15 +64,12 @@ export const useForm = <T extends Record<string, any>>(
       try {
         await onSubmit(values);
       } catch (error: any) {
-        // Let the calling component handle the error via AuthContext toasts
-        // We only handle field-specific validation errors here
         if (error.response?.data?.field && error.response?.data?.message) {
           setError(
             error.response.data.field as keyof T,
             error.response.data.message
           );
         }
-        // Re-throw the error so the calling component can handle it
         throw error;
       } finally {
         setIsLoading(false);

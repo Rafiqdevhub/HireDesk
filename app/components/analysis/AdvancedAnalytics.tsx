@@ -1,5 +1,5 @@
 import React from "react";
-import type { AdvancedAnalyticsProps } from "../../../types/components";
+import type { AdvancedAnalyticsProps } from "@app-types/components";
 
 const ScoreGauge: React.FC<{ score: number; label: string }> = ({
   score,

@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router";
-import { useAuth } from "../../contexts/AuthContext";
-import TipsModal from "../ui/TipsModal";
-import type { NavbarProps } from "../../../types/components";
+import { useAuth } from "@contexts/AuthContext";
+import TipsModal from "@ui/TipsModal";
+import type { NavbarProps } from "@app-types/components";
 
 const Navbar = ({ onOpenTips }: NavbarProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

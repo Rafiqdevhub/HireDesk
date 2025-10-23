@@ -1,4 +1,4 @@
-import type { TermsOfServiceModalProps } from "../../../types/components";
+import type { TermsOfServiceModalProps } from "@app-types/components";
 
 export const TermsOfServiceModal = ({
   isOpen,

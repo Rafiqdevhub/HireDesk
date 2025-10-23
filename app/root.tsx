@@ -8,9 +8,9 @@ import {
 } from "react-router";
 
 import type { Route } from "./+types/root";
-import { AuthProvider } from "./contexts/AuthContext";
-import { ToastProvider } from "./contexts/ToastContext";
-import ToastContainer from "./components/ui/ToastContainer";
+import { AuthProvider } from "@contexts/AuthContext";
+import { ToastProvider } from "@contexts/ToastContext";
+import ToastContainer from "@ui/ToastContainer";
 import "./app.css";
 
 export const links: Route.LinksFunction = () => [

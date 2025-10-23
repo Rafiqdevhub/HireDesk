@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
-import Navbar from "@components/layout/Navbar";
-import RedirectIfAuthenticated from "@components/auth/RedirectIfAuthenticated";
-import { useAuth } from "../contexts/AuthContext";
+import Navbar from "@layout/Navbar";
+import RedirectIfAuthenticated from "@auth/RedirectIfAuthenticated";
+import { useAuth } from "@contexts/AuthContext";
 import { useForm } from "@hooks/useForm";
-import { TermsOfServiceModal } from "~/components/modals/TermsOfServiceModal";
-import { PrivacyPolicyModal } from "~/components/modals/PrivacyPolicyModal";
+import { TermsOfServiceModal } from "@modals/TermsOfServiceModal";
+import { PrivacyPolicyModal } from "@modals/PrivacyPolicyModal";
 import type { Route } from "./+types/signup";
-import type { SignUpFormData } from "../../types";
+import type { SignUpFormData } from "@app-types";
 
 export function meta({}: Route.MetaArgs) {
   return [

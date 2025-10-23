@@ -1,14 +1,14 @@
 import { useState, useEffect, useRef } from "react";
 import type { Route } from "./+types/hiredesk-analyze";
-import ProtectedRoute from "@components/auth/ProtectedRoute";
-import { useAuth } from "../contexts/AuthContext";
-import ResumeUpload from "@components/resume/ResumeUpload";
-import Toast from "@components/toast/Toast";
-import { getErrorCategory, formatErrorMessage } from "../utils/errorHandler";
-import { features } from "../data/features";
-import { AI_API } from "~/utils/api";
-import RateLimitModal from "@components/ui/RateLimitModal";
-import { ResumeAnalysisDisplay } from "@components/analysis/ResumeAnalysisDisplay";
+import ProtectedRoute from "@auth/ProtectedRoute";
+import { useAuth } from "@contexts/AuthContext";
+import ResumeUpload from "@resume/ResumeUpload";
+import Toast from "@toast/Toast";
+import { getErrorCategory, formatErrorMessage } from "@utils/errorHandler";
+import { features } from "@data/features";
+import { AI_API } from "@utils/api";
+import RateLimitModal from "@ui/RateLimitModal";
+import { ResumeAnalysisDisplay } from "@analysis/ResumeAnalysisDisplay";
 
 export function meta({}: Route.MetaArgs) {
   return [

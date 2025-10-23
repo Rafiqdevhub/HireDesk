@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import type { ReactNode } from "react";
-import { authService } from "../services/authService";
-import type { User, RegisterRequest, AuthContextType } from "../../types";
+import { authService } from "@services/authService";
+import type { User, RegisterRequest, AuthContextType } from "@app-types";
 import { useToast } from "./ToastContext";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -33,7 +33,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     if (authService.isAuthenticated()) {
       try {
         const profileResponse = await authService.getProfile();
-        // Convert ProfileResponse to User for context state
         const user: User = {
           id: profileResponse.id,
           name: profileResponse.name,
@@ -44,11 +43,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         setUser(user);
       } catch (error) {
         try {
-          // Try to refresh token and get profile again
           const { user: refreshedUser } = await authService.refreshToken();
           setUser(refreshedUser);
         } catch (refreshError) {
-          // Both profile and refresh failed, clear auth state
           localStorage.removeItem("accessToken");
           setUser(null);
         }
@@ -71,7 +68,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         }
       );
     } catch (error: any) {
-      // Check if email verification is required
       if (error.requiresVerification) {
         setRequiresVerification(true);
         setUnverifiedEmail(error.email || email);
@@ -83,7 +79,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         throw error;
       }
 
-      // Extract meaningful error message from backend
       let errorMessage = "Login failed. Please try again.";
 
       if (error.message) {
@@ -105,7 +100,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     try {
       const result = await authService.register(userData);
       setUser(result.user);
-      // Set verification pending state after registration
       setRequiresVerification(true);
       setUnverifiedEmail(userData.email);
       showToast(
@@ -116,7 +110,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         }
       );
     } catch (error: any) {
-      // Extract meaningful error message from backend
       let errorMessage = "Registration failed. Please try again.";
 
       if (error.message) {

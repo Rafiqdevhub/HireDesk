@@ -1,4 +1,4 @@
-import type { PrivacyPolicyModalProps } from "../../../types/components";
+import type { PrivacyPolicyModalProps } from "@app-types/components";
 
 export const PrivacyPolicyModal = ({
   isOpen,

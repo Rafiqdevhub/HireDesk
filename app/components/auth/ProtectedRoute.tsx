@@ -1,6 +1,6 @@
 import { Navigate } from "react-router";
-import { useAuth } from "../../contexts/AuthContext";
-import type { ProtectedRouteProps } from "../../../types/components";
+import { useAuth } from "@contexts/AuthContext";
+import type { ProtectedRouteProps } from "@app-types/components";
 
 const ProtectedRoute = ({
   children,

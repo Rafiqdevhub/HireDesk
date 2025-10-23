@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
-import type { ToastProps } from "../../../types/components";
+import type { ToastProps } from "@app-types/components";
 
 const Toast = ({ toast, onClose }: ToastProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isLeaving, setIsLeaving] = useState(false);
 
   useEffect(() => {
-    // Trigger entrance animation
     setTimeout(() => setIsVisible(true), 10);
   }, []);
 
