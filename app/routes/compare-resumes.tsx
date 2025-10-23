@@ -4,7 +4,7 @@ import ProtectedRoute from "@auth/ProtectedRoute";
 import { useAuth } from "@contexts/AuthContext";
 import { useState, useEffect, useRef } from "react";
 import { getErrorCategory, formatErrorMessage } from "@utils/errorHandler";
-import { AI_API } from "@utils/api";
+import { aiService } from "@services/aiService";
 import Toast from "@toast/Toast";
 import RateLimitModal from "@ui/RateLimitModal";
 import { ComparisonResultsDisplay } from "@comparison/ComparisonResultsDisplay";
@@ -176,35 +176,26 @@ const CompareResumes = () => {
     });
 
     try {
-      const formData = new FormData();
+      const responseData = await aiService.compareResumes(files);
 
-      files.forEach((file) => {
-        formData.append("files", file);
-      });
+      setComparisonResults(responseData);
 
-      const token = localStorage.getItem("accessToken");
+      setToastMessage(
+        `Successfully compared ${responseData.comparison_summary?.total_submitted || files.length} candidates!`
+      );
+      setToastType("success");
+      setShowToast(true);
 
-      if (!token) {
-        throw new Error("Authentication token not found. Please login again.");
-      }
-
-      const response = await fetch(`${AI_API}/compare-resumes`, {
-        method: "POST",
-        body: formData,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        mode: "cors",
-      });
-
-      if (response.status === 429) {
-        const errorData: any = await response.json();
+      setIsLoading(false);
+    } catch (error: any) {
+      // Handle specific error status codes
+      if (error.status === 429) {
         setShowRateLimitModal(true);
         setIsLoading(false);
         return;
       }
 
-      if (response.status === 401) {
+      if (error.status === 401) {
         localStorage.removeItem("accessToken");
         setError({
           show: true,
@@ -217,41 +208,6 @@ const CompareResumes = () => {
         return;
       }
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        let error;
-        try {
-          error = JSON.parse(errorText);
-        } catch {
-          error = { message: errorText || "Unknown error occurred" };
-        }
-        throw new Error(error.message || "Comparison failed");
-      }
-
-      let responseData;
-      try {
-        responseData = await response.json();
-      } catch (jsonError) {
-        throw new Error(
-          "Failed to parse API response. The server may have returned invalid data.",
-          { cause: jsonError }
-        );
-      }
-
-      if (!responseData) {
-        throw new Error("No data returned from API");
-      }
-
-      setComparisonResults(responseData);
-
-      setToastMessage(
-        `Successfully compared ${responseData.comparison_summary?.total_candidates || files.length} candidates!`
-      );
-      setToastType("success");
-      setShowToast(true);
-
-      setIsLoading(false);
-    } catch (error: any) {
       const errorCategory = getErrorCategory(error);
       setError({
         show: true,

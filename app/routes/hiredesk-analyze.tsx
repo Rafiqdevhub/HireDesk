@@ -6,7 +6,7 @@ import ResumeUpload from "@resume/ResumeUpload";
 import Toast from "@toast/Toast";
 import { getErrorCategory, formatErrorMessage } from "@utils/errorHandler";
 import { features } from "@data/features";
-import { AI_API } from "@utils/api";
+import { aiService } from "@services/aiService";
 import RateLimitModal from "@ui/RateLimitModal";
 import { ResumeAnalysisDisplay } from "@analysis/ResumeAnalysisDisplay";
 
@@ -274,50 +274,11 @@ const HireDeskAnalyze = () => {
     }
 
     try {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("target_role", targetRole);
-      formData.append("job_description", jobDescription);
-
-      const token = localStorage.getItem("accessToken");
-
-      if (!token) {
-        throw new Error("Authentication token not found. Please login again.");
-      }
-
-      const response = await fetch(`${AI_API}/hiredesk-analyze`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-        mode: "cors",
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        let error;
-        try {
-          error = JSON.parse(errorText);
-        } catch {
-          error = { message: errorText || "Unknown error occurred" };
-        }
-        throw new Error(error.message || "Failed to analyze resume");
-      }
-
-      let responseData;
-      try {
-        responseData = await response.json();
-      } catch (jsonError) {
-        throw new Error(
-          "Failed to parse API response. The server may have returned invalid data.",
-          { cause: jsonError }
-        );
-      }
-
-      if (!responseData) {
-        throw new Error("No data returned from API");
-      }
+      const responseData = await aiService.hireDeskAnalyze(
+        file,
+        targetRole,
+        jobDescription
+      );
 
       setFitStatus(responseData.fit_status || "");
       setReasoning(responseData.reasoning || "");

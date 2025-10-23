@@ -4,7 +4,7 @@ import ProtectedRoute from "@auth/ProtectedRoute";
 import { useAuth } from "@contexts/AuthContext";
 import { useState, useEffect, useRef } from "react";
 import { getErrorCategory, formatErrorMessage } from "@utils/errorHandler";
-import { AI_API } from "@utils/api";
+import { aiService } from "@services/aiService";
 import Toast from "@toast/Toast";
 import RateLimitModal from "@ui/RateLimitModal";
 import { batchFeatures } from "@data/BatchFeatures";
@@ -184,90 +184,26 @@ const BatchAnalyze = () => {
       originalError: null,
     });
 
+    const jwtToken = localStorage.getItem("accessToken");
+
+    if (!jwtToken) {
+      setError({
+        show: true,
+        message: "Authentication required. Please login first.",
+        type: "error",
+        category: "auth",
+        originalError: "No auth token",
+      });
+      setIsLoading(false);
+      return;
+    }
+
     try {
-      const jwtToken = localStorage.getItem("accessToken");
-
-      if (!jwtToken) {
-        setError({
-          show: true,
-          message: "Authentication required. Please login first.",
-          type: "error",
-          category: "auth",
-          originalError: "No auth token",
-        });
-        setIsLoading(false);
-        return;
-      }
-
-      const formData = new FormData();
-
-      files.forEach((file) => {
-        formData.append("files", file);
-      });
-
-      if (targetRole) formData.append("target_role", targetRole);
-      if (jobDescription) formData.append("job_description", jobDescription);
-
-      const response = await fetch(`${AI_API}/batch-analyze`, {
-        method: "POST",
-        body: formData,
-        headers: {
-          Authorization: `Bearer ${jwtToken}`,
-        },
-      });
-
-      if (response.status === 429) {
-        const errorData: any = await response.json();
-        const batchCount = errorData.batches_processed || 0;
-
-        setUsageStats({
-          files_uploaded: 0,
-          batches_processed: batchCount,
-          files_remaining: Math.max(0, 10 - batchCount),
-          files_limit: 10,
-          approaching_limit: errorData.approaching_limit ?? batchCount >= 8,
-          approaching_limit_threshold:
-            errorData.approaching_limit_threshold ?? 8,
-        });
-
-        setShowRateLimitModal(true);
-        setIsLoading(false);
-        return;
-      }
-
-      if (response.status === 401) {
-        localStorage.removeItem("accessToken");
-        setError({
-          show: true,
-          message: "Your session has expired. Please login again.",
-          type: "error",
-          category: "auth",
-          originalError: "Token expired",
-        });
-        setIsLoading(false);
-        return;
-      }
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        let errorData;
-        try {
-          errorData = JSON.parse(errorText);
-        } catch {
-          errorData = { message: errorText || "Unknown error occurred" };
-        }
-        throw new Error(errorData.message || "Batch analysis failed");
-      }
-
-      let responseData: BatchAnalysisResponse;
-      try {
-        responseData = await response.json();
-      } catch (jsonError) {
-        throw new Error(
-          "Failed to parse API response. The server may have returned invalid data.",
-          { cause: jsonError }
-        );
-      }
+      const responseData: BatchAnalysisResponse = await aiService.batchAnalyze(
+        files,
+        targetRole || undefined,
+        jobDescription || undefined
+      );
 
       if (responseData.usage_stats) {
         const batchCount = responseData.usage_stats.batches_processed || 0;
@@ -305,6 +241,37 @@ const BatchAnalyze = () => {
 
       setIsLoading(false);
     } catch (error: any) {
+      // Handle specific error status codes
+      if (error.status === 429) {
+        const batchCount = error.errorData?.batches_processed || 0;
+        setUsageStats({
+          files_uploaded: 0,
+          batches_processed: batchCount,
+          files_remaining: Math.max(0, 10 - batchCount),
+          files_limit: 10,
+          approaching_limit:
+            error.errorData?.approaching_limit ?? batchCount >= 8,
+          approaching_limit_threshold:
+            error.errorData?.approaching_limit_threshold ?? 8,
+        });
+        setShowRateLimitModal(true);
+        setIsLoading(false);
+        return;
+      }
+
+      if (error.status === 401) {
+        localStorage.removeItem("accessToken");
+        setError({
+          show: true,
+          message: "Your session has expired. Please login again.",
+          type: "error",
+          category: "auth",
+          originalError: "Token expired",
+        });
+        setIsLoading(false);
+        return;
+      }
+
       const errorCategory = getErrorCategory(error);
       setError({
         show: true,
