@@ -269,4 +269,67 @@ export const aiService = {
       throw structuredError;
     }
   },
+
+  /**
+   * Select candidates based on job title and keywords
+   * Evaluates resumes and returns FIT/REJECT decisions
+   * @param files - Array of resume files (1-5 files)
+   * @param jobTitle - Job position title
+   * @param keywords - Comma-separated keywords/requirements
+   * @returns Selection results with FIT/REJECT status for each candidate
+   */
+  async selectCandidates(
+    files: File[],
+    jobTitle: string,
+    keywords: string
+  ): Promise<{
+    job_title: string;
+    keywords: string[];
+    total_candidates: number;
+    fit_count: number;
+    reject_count: number;
+    results: Array<{
+      candidate: string;
+      status: "FIT" | "REJECT";
+      message: string;
+    }>;
+  }> {
+    try {
+      const formData = new FormData();
+
+      files.forEach((file) => {
+        formData.append("files", file);
+      });
+
+      formData.append("job_title", jobTitle);
+      formData.append("keywords", keywords);
+
+      const response = await aiApi.post("/selection-candidate", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      if (!response.data) {
+        throw new Error("No data returned from API");
+      }
+
+      return response.data;
+    } catch (error: any) {
+      const errorMessage = extractErrorMessage(
+        error,
+        "Candidate selection failed"
+      );
+
+      // Create structured error response
+      const structuredError = {
+        success: false,
+        message: errorMessage,
+        status: error.response?.status,
+        errorData: error.response?.data,
+      };
+
+      throw structuredError;
+    }
+  },
 };

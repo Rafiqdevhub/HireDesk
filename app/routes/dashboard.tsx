@@ -175,47 +175,74 @@ const Dashboard = () => {
             </div>
           </div>
         </nav>
-        <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
-          <div className="mb-16 sm:mb-20">
-            <div className="max-w-3xl">
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold text-white mb-4 tracking-tight">
-                Select Your Tool
+        <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
+          <div className="mb-12 sm:mb-16">
+            <div className="max-w-4xl">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="h-1 w-12 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full"></div>
+                <span className="text-sm font-semibold text-blue-400 tracking-wider">
+                  HIRING INTELLIGENCE
+                </span>
+              </div>
+              <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-4 tracking-tight leading-tight">
+                Power Your Hiring
               </h2>
-              <p className="text-base sm:text-lg text-slate-400 leading-relaxed">
-                Choose the perfect hiring solution for your needs. Each tool is
-                powered by advanced AI to help you make confident hiring
-                decisions.
+              <p className="text-base sm:text-lg text-slate-300 leading-relaxed max-w-2xl">
+                Advanced AI-driven tools designed specifically for HR
+                professionals. Screen, analyze, compare, and select top talent
+                with confidence. All powered by cutting-edge technology.
               </p>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-12">
             <Link
               to="/hiredesk-analyze"
-              className="group relative px-6 py-8 rounded-2xl bg-slate-900/50 border border-slate-800 hover:border-slate-700 transition-all duration-300 hover:bg-slate-900/80 cursor-pointer"
+              className="group relative px-6 py-8 rounded-2xl bg-gradient-to-br from-slate-900/80 to-slate-900/40 border border-slate-700/50 hover:border-blue-500/50 transition-all duration-300 hover:bg-gradient-to-br hover:from-slate-900/90 hover:to-blue-950/30 cursor-pointer overflow-hidden"
             >
-              <div className="space-y-4">
-                <div>
-                  <h3 className="text-lg font-semibold text-white mb-2">
-                    Smart Review
-                  </h3>
-                  <p className="text-sm text-slate-400 leading-relaxed">
-                    Analyze individual resumes with AI-powered insights and
-                    personalized interview questions.
-                  </p>
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-600/0 to-blue-600/0 group-hover:from-blue-600/5 group-hover:to-blue-600/10 transition-all duration-300 pointer-events-none"></div>
+              <div className="absolute -top-20 -right-20 w-40 h-40 bg-blue-500/10 rounded-full blur-3xl group-hover:bg-blue-500/20 transition-all duration-300"></div>
+
+              <div className="relative space-y-4">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <h3 className="text-lg font-bold text-white mb-2 group-hover:text-blue-200 transition-colors">
+                      Smart Review
+                    </h3>
+                    <p className="text-sm text-slate-300 leading-relaxed">
+                      Deep dive analysis of individual resumes with AI-powered
+                      insights, skill assessment, and personalized interview
+                      questions.
+                    </p>
+                  </div>
+                  <div className="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center flex-shrink-0 group-hover:bg-blue-500/40 transition-all">
+                    <svg
+                      className="w-5 h-5 text-blue-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                  </div>
                 </div>
 
-                <div className="flex flex-wrap gap-2 pt-4">
-                  <span className="px-3 py-1 text-xs font-medium text-slate-300 bg-slate-800/50 rounded-full">
-                    Single Resume
+                <div className="flex flex-wrap gap-2 pt-2">
+                  <span className="px-3 py-1 text-xs font-semibold text-blue-300 bg-blue-500/20 rounded-full border border-blue-500/30">
+                    Detailed Analysis
                   </span>
-                  <span className="px-3 py-1 text-xs font-medium text-slate-300 bg-slate-800/50 rounded-full">
-                    Analysis
+                  <span className="px-3 py-1 text-xs font-semibold text-slate-300 bg-slate-700/50 rounded-full">
+                    Q&A Ready
                   </span>
                 </div>
 
-                <div className="flex items-center text-slate-400 group-hover:text-slate-200 transition-colors duration-300 pt-2">
-                  <span className="text-sm font-medium">Explore</span>
+                <div className="flex items-center text-slate-400 group-hover:text-blue-300 transition-colors duration-300 pt-3">
+                  <span className="text-sm font-semibold">Start Analyzing</span>
                   <svg
                     className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-300"
                     fill="none"
@@ -235,30 +262,51 @@ const Dashboard = () => {
 
             <Link
               to="/batch-analyze"
-              className="group relative px-6 py-8 rounded-2xl bg-slate-900/50 border border-slate-800 hover:border-slate-700 transition-all duration-300 hover:bg-slate-900/80 cursor-pointer"
+              className="group relative px-6 py-8 rounded-2xl bg-gradient-to-br from-slate-900/80 to-slate-900/40 border border-slate-700/50 hover:border-purple-500/50 transition-all duration-300 hover:bg-gradient-to-br hover:from-slate-900/90 hover:to-purple-950/30 cursor-pointer overflow-hidden"
             >
-              <div className="space-y-4">
-                <div>
-                  <h3 className="text-lg font-semibold text-white mb-2">
-                    Smart Screening
-                  </h3>
-                  <p className="text-sm text-slate-400 leading-relaxed">
-                    Process multiple resumes at once. Quickly filter and
-                    identify top candidates efficiently.
-                  </p>
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-600/0 to-purple-600/0 group-hover:from-purple-600/5 group-hover:to-purple-600/10 transition-all duration-300 pointer-events-none"></div>
+              <div className="absolute -top-20 -right-20 w-40 h-40 bg-purple-500/10 rounded-full blur-3xl group-hover:bg-purple-500/20 transition-all duration-300"></div>
+
+              <div className="relative space-y-4">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <h3 className="text-lg font-bold text-white mb-2 group-hover:text-purple-200 transition-colors">
+                      Smart Screening
+                    </h3>
+                    <p className="text-sm text-slate-300 leading-relaxed">
+                      Efficiently process multiple resumes at once. Quickly
+                      filter and identify your top candidates with batch
+                      analysis.
+                    </p>
+                  </div>
+                  <div className="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center flex-shrink-0 group-hover:bg-purple-500/40 transition-all">
+                    <svg
+                      className="w-5 h-5 text-purple-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M13 10V3L4 14h7v7l9-11h-7z"
+                      />
+                    </svg>
+                  </div>
                 </div>
 
-                <div className="flex flex-wrap gap-2 pt-4">
-                  <span className="px-3 py-1 text-xs font-medium text-slate-300 bg-slate-800/50 rounded-full">
-                    Batch
+                <div className="flex flex-wrap gap-2 pt-2">
+                  <span className="px-3 py-1 text-xs font-semibold text-purple-300 bg-purple-500/20 rounded-full border border-purple-500/30">
+                    Batch Process
                   </span>
-                  <span className="px-3 py-1 text-xs font-medium text-slate-300 bg-slate-800/50 rounded-full">
-                    Filtering
+                  <span className="px-3 py-1 text-xs font-semibold text-slate-300 bg-slate-700/50 rounded-full">
+                    Fast & Efficient
                   </span>
                 </div>
 
-                <div className="flex items-center text-slate-400 group-hover:text-slate-200 transition-colors duration-300 pt-2">
-                  <span className="text-sm font-medium">Explore</span>
+                <div className="flex items-center text-slate-400 group-hover:text-purple-300 transition-colors duration-300 pt-3">
+                  <span className="text-sm font-semibold">Screen Now</span>
                   <svg
                     className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-300"
                     fill="none"
@@ -278,30 +326,50 @@ const Dashboard = () => {
 
             <Link
               to="/compare-resumes"
-              className="group relative px-6 py-8 rounded-2xl bg-slate-900/50 border border-slate-800 hover:border-slate-700 transition-all duration-300 hover:bg-slate-900/80 cursor-pointer"
+              className="group relative px-6 py-8 rounded-2xl bg-gradient-to-br from-slate-900/80 to-slate-900/40 border border-slate-700/50 hover:border-amber-500/50 transition-all duration-300 hover:bg-gradient-to-br hover:from-slate-900/90 hover:to-amber-950/30 cursor-pointer overflow-hidden"
             >
-              <div className="space-y-4">
-                <div>
-                  <h3 className="text-lg font-semibold text-white mb-2">
-                    Find Best Fit
-                  </h3>
-                  <p className="text-sm text-slate-400 leading-relaxed">
-                    Compare candidates side-by-side and rank them with advanced
-                    algorithms for perfect matches.
-                  </p>
+              <div className="absolute inset-0 bg-gradient-to-br from-amber-600/0 to-amber-600/0 group-hover:from-amber-600/5 group-hover:to-amber-600/10 transition-all duration-300 pointer-events-none"></div>
+              <div className="absolute -top-20 -right-20 w-40 h-40 bg-amber-500/10 rounded-full blur-3xl group-hover:bg-amber-500/20 transition-all duration-300"></div>
+
+              <div className="relative space-y-4">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <h3 className="text-lg font-bold text-white mb-2 group-hover:text-amber-200 transition-colors">
+                      Find Best Fit
+                    </h3>
+                    <p className="text-sm text-slate-300 leading-relaxed">
+                      Compare candidates side-by-side with advanced scoring.
+                      Identify perfect matches using intelligent algorithms.
+                    </p>
+                  </div>
+                  <div className="w-10 h-10 rounded-lg bg-amber-500/20 flex items-center justify-center flex-shrink-0 group-hover:bg-amber-500/40 transition-all">
+                    <svg
+                      className="w-5 h-5 text-amber-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                      />
+                    </svg>
+                  </div>
                 </div>
 
-                <div className="flex flex-wrap gap-2 pt-4">
-                  <span className="px-3 py-1 text-xs font-medium text-slate-300 bg-slate-800/50 rounded-full">
-                    Comparison
+                <div className="flex flex-wrap gap-2 pt-2">
+                  <span className="px-3 py-1 text-xs font-semibold text-amber-300 bg-amber-500/20 rounded-full border border-amber-500/30">
+                    Smart Ranking
                   </span>
-                  <span className="px-3 py-1 text-xs font-medium text-slate-300 bg-slate-800/50 rounded-full">
-                    Ranking
+                  <span className="px-3 py-1 text-xs font-semibold text-slate-300 bg-slate-700/50 rounded-full">
+                    Scoring Engine
                   </span>
                 </div>
 
-                <div className="flex items-center text-slate-400 group-hover:text-slate-200 transition-colors duration-300 pt-2">
-                  <span className="text-sm font-medium">Explore</span>
+                <div className="flex items-center text-slate-400 group-hover:text-amber-300 transition-colors duration-300 pt-3">
+                  <span className="text-sm font-semibold">Compare Now</span>
                   <svg
                     className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-300"
                     fill="none"
@@ -321,30 +389,50 @@ const Dashboard = () => {
 
             <Link
               to="/selection-candidates"
-              className="group relative px-6 py-8 rounded-2xl bg-slate-900/50 border border-slate-800 hover:border-slate-700 transition-all duration-300 hover:bg-slate-900/80 cursor-pointer"
+              className="group relative px-6 py-8 rounded-2xl bg-gradient-to-br from-slate-900/80 to-slate-900/40 border border-slate-700/50 hover:border-emerald-500/50 transition-all duration-300 hover:bg-gradient-to-br hover:from-slate-900/90 hover:to-emerald-950/30 cursor-pointer overflow-hidden"
             >
-              <div className="space-y-4">
-                <div>
-                  <h3 className="text-lg font-semibold text-white mb-2">
-                    Selection & Team
-                  </h3>
-                  <p className="text-sm text-slate-400 leading-relaxed">
-                    Build balanced teams with skill mapping and team dynamics
-                    analysis. Coming soon!
-                  </p>
+              <div className="absolute inset-0 bg-gradient-to-br from-emerald-600/0 to-emerald-600/0 group-hover:from-emerald-600/5 group-hover:to-emerald-600/10 transition-all duration-300 pointer-events-none"></div>
+              <div className="absolute -top-20 -right-20 w-40 h-40 bg-emerald-500/10 rounded-full blur-3xl group-hover:bg-emerald-500/20 transition-all duration-300"></div>
+
+              <div className="relative space-y-4">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <h3 className="text-lg font-bold text-white mb-2 group-hover:text-emerald-200 transition-colors">
+                      Quick Screen
+                    </h3>
+                    <p className="text-sm text-slate-300 leading-relaxed">
+                      Binary FIT/REJECT screening with AI keyword matching.
+                      Instantly identify job-ready candidates from your pool.
+                    </p>
+                  </div>
+                  <div className="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center flex-shrink-0 group-hover:bg-emerald-500/40 transition-all">
+                    <svg
+                      className="w-5 h-5 text-emerald-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                  </div>
                 </div>
 
-                <div className="flex flex-wrap gap-2 pt-4">
-                  <span className="px-3 py-1 text-xs font-medium text-amber-400 bg-amber-500/10 rounded-full border border-amber-500/20">
-                    Coming Soon
+                <div className="flex flex-wrap gap-2 pt-2">
+                  <span className="px-3 py-1 text-xs font-semibold text-emerald-300 bg-emerald-500/20 rounded-full border border-emerald-500/30">
+                    Live Now
                   </span>
-                  <span className="px-3 py-1 text-xs font-medium text-slate-300 bg-slate-800/50 rounded-full">
-                    Q4 2025
+                  <span className="px-3 py-1 text-xs font-semibold text-slate-300 bg-slate-700/50 rounded-full">
+                    Instant Results
                   </span>
                 </div>
 
-                <div className="flex items-center text-slate-400 group-hover:text-slate-200 transition-colors duration-300 pt-2">
-                  <span className="text-sm font-medium">Learn More</span>
+                <div className="flex items-center text-slate-400 group-hover:text-emerald-300 transition-colors duration-300 pt-3">
+                  <span className="text-sm font-semibold">Screen Now</span>
                   <svg
                     className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-300"
                     fill="none"
@@ -361,14 +449,6 @@ const Dashboard = () => {
                 </div>
               </div>
             </Link>
-          </div>
-
-          <div className="mt-16 sm:mt-20 pt-12 border-t border-slate-800">
-            <p className="text-sm text-slate-400 text-center max-w-2xl mx-auto">
-              All tools are powered by the same advanced AI technology, ensuring
-              consistent and reliable analysis across your entire hiring
-              pipeline.
-            </p>
           </div>
         </main>
       </div>
