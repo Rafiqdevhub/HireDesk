@@ -39,6 +39,24 @@ const Navbar = ({ onOpenTips }: NavbarProps) => {
     return "bg-green-500";
   };
 
+  const getProgressBarWidthClass = (): string => {
+    const percentage = Math.round(uploadPercentage / 10) * 10;
+    const widthMap: { [key: number]: string } = {
+      0: "w-0",
+      10: "w-1/12",
+      20: "w-1/6",
+      30: "w-3/12",
+      40: "w-2/5",
+      50: "w-1/2",
+      60: "w-3/5",
+      70: "w-7/12",
+      80: "w-4/5",
+      90: "w-11/12",
+      100: "w-full",
+    };
+    return widthMap[percentage] || "w-full";
+  };
+
   const handleRefreshStats = async () => {
     setIsRefreshing(true);
     await refreshProfile();
@@ -63,48 +81,44 @@ const Navbar = ({ onOpenTips }: NavbarProps) => {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-gray-900/80 backdrop-blur-md border-b border-gray-700/20 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <div className="flex items-center space-x-3">
-            <a
-              href="https://jobpsych.vercel.app/"
-              rel="noopener noreferrer"
-              className="px-3 py-1 text-sm font-semibold text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105"
-              title="Visit JobPsych"
+          <div className="flex items-center gap-3">
+            <Link
+              to="/"
+              className="group flex items-center gap-2.5 px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-blue-500/50 border border-blue-400/30 hover:border-blue-300/50"
             >
-              JobPsych
-            </a>
-            <Link to="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center">
+              <div className="w-7 h-7 rounded-lg bg-white/10 backdrop-blur-sm flex items-center justify-center group-hover:bg-white/20 transition-all duration-300 border border-white/20 group-hover:border-white/30">
                 <img
                   src="/logo/logo.png"
                   alt="HireDesk Logo"
-                  className="w-8 h-8 object-contain"
+                  className="w-5 h-5 object-contain filter brightness-0 invert"
                 />
               </div>
-              <span className="text-xl font-bold text-white">
-                Hire<span className="text-blue-400">Desk</span>
-              </span>
+              <div className="flex flex-col">
+                <span className="text-sm font-bold text-white leading-tight">
+                  Hire<span className="text-blue-200">Desk</span>
+                </span>
+                <span className="text-xs font-medium text-blue-100 opacity-90 leading-tight">
+                  AI Hiring
+                </span>
+              </div>
+              <div className="hidden sm:block ml-1 w-1.5 h-1.5 rounded-full bg-blue-300 group-hover:bg-white transition-colors animate-pulse group-hover:animate-bounce"></div>
             </Link>
           </div>
 
           <div className="hidden md:flex items-center space-x-8">
             <Link
-              to="/contact"
-              className="text-gray-300 hover:text-blue-400 transition-colors duration-200 font-medium flex items-center gap-2"
+              to="/about"
+              className="text-gray-300 hover:text-blue-400 transition-colors duration-200 font-medium flex items-center gap-2 relative group"
             >
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                />
-              </svg>
-              Contact
+              <span>About</span>
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-400 to-purple-400 group-hover:w-full transition-all duration-300"></span>
+            </Link>
+            <Link
+              to="/contact"
+              className="text-gray-300 hover:text-emerald-400 transition-colors duration-200 font-medium flex items-center gap-2 relative group"
+            >
+              <span>Contact</span>
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-emerald-400 to-teal-400 group-hover:w-full transition-all duration-300"></span>
             </Link>
           </div>
 
@@ -163,7 +177,7 @@ const Navbar = ({ onOpenTips }: NavbarProps) => {
                     </Link>
                     <button
                       onClick={handleLogout}
-                      className="block w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-gray-700 transition-colors cursor-pointer"
+                      className="block w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-gray-700 transition-colors cursor-pointer border-t border-gray-700"
                     >
                       Sign out
                     </button>
@@ -223,21 +237,39 @@ const Navbar = ({ onOpenTips }: NavbarProps) => {
         {isMenuOpen && (
           <div className="md:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 bg-gray-800/90 backdrop-blur-md rounded-lg mt-2 shadow-lg">
+              <Link
+                to="/about"
+                className="flex items-center gap-2 px-3 py-2 text-gray-300 hover:text-blue-400 hover:bg-gray-700 rounded-md transition-colors duration-200 font-medium"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <span className="text-base">ℹ️</span>
+                About
+              </Link>
+              <Link
+                to="/contact"
+                className="flex items-center gap-2 px-3 py-2 text-gray-300 hover:text-emerald-400 hover:bg-gray-700 rounded-md transition-colors duration-200 font-medium"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <span className="text-base">✉️</span>
+                Contact Us
+              </Link>
               <div className="border-t border-gray-600 pt-4">
                 {isAuthenticated ? (
                   <>
                     <div className="px-3 py-3 border-b border-gray-700">
                       <div className="flex items-center space-x-3 mb-3">
-                        <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center">
+                        <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
                           <span className="text-white text-sm font-medium">
                             {user?.name.charAt(0).toUpperCase()}
                           </span>
                         </div>
-                        <div className="flex-1">
-                          <p className="text-sm font-medium text-white">
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-white truncate">
                             {user?.name}
                           </p>
-                          <p className="text-xs text-gray-400">{user?.email}</p>
+                          <p className="text-xs text-gray-400 truncate">
+                            {user?.email}
+                          </p>
                         </div>
                       </div>
                       <div className="space-y-2 bg-gray-900/50 p-2 rounded-lg">
@@ -249,8 +281,7 @@ const Navbar = ({ onOpenTips }: NavbarProps) => {
                             <button
                               onClick={handleRefreshStats}
                               className="text-gray-400 hover:text-blue-400 transition-colors"
-                              aria-label="Refresh upload statistics"
-                              title="Refresh stats"
+                              title="Refresh upload statistics"
                             >
                               <svg
                                 className={`w-3 h-3 ${isRefreshing ? "animate-spin" : ""}`}
@@ -275,39 +306,18 @@ const Navbar = ({ onOpenTips }: NavbarProps) => {
                         </div>
                         <div className="relative w-full h-2 bg-gray-700 rounded-full overflow-hidden">
                           <div
-                            className={`absolute top-0 left-0 h-full ${getProgressBarColor()} transition-all duration-500`}
-                            style={{ width: `${uploadPercentage}%` }}
+                            className={`${getProgressBarWidthClass()} h-full ${getProgressBarColor()} transition-all duration-500`}
                           />
                         </div>
                         <p
                           className={`text-xs ${remainingUploads === 0 ? "text-red-400 font-semibold" : "text-gray-500"}`}
                         >
                           {remainingUploads === 0
-                            ? "⚠️ Upload limit reached"
+                            ? " Upload limit reached"
                             : `${remainingUploads} remaining`}
                         </p>
                       </div>
                     </div>
-                    <Link
-                      to="/contact"
-                      className="flex items-center gap-2 px-3 py-2 text-gray-300 hover:text-blue-400 hover:bg-gray-700 rounded-md transition-colors duration-200 font-medium"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                        />
-                      </svg>
-                      Contact Us
-                    </Link>
                     <button
                       onClick={() => {
                         onOpenTips();
@@ -315,47 +325,27 @@ const Navbar = ({ onOpenTips }: NavbarProps) => {
                       }}
                       className="block w-full text-left px-3 py-2 text-gray-300 hover:text-blue-400 hover:bg-gray-700 rounded-md transition-colors duration-200 font-medium"
                     >
-                      💡 Hiring Tips
+                      Hiring Tips
                     </button>
                     <Link
                       to="/profile"
                       className="block px-3 py-2 text-gray-300 hover:text-blue-400 hover:bg-gray-700 rounded-md transition-colors duration-200 font-medium"
                       onClick={() => setIsMenuOpen(false)}
                     >
-                      Profile
+                      👤 Profile
                     </Link>
                     <button
                       onClick={() => {
                         handleLogout();
                         setIsMenuOpen(false);
                       }}
-                      className="block w-full text-left px-3 py-2 text-red-400 hover:bg-gray-700 rounded-md transition-colors duration-200 font-medium"
+                      className="block w-full text-left px-3 py-2 text-red-400 hover:bg-gray-700 rounded-md transition-colors duration-200 font-medium border-t border-gray-700 mt-2 pt-3"
                     >
                       Sign out
                     </button>
                   </>
                 ) : (
                   <>
-                    <Link
-                      to="/contact"
-                      className="flex items-center gap-2 px-3 py-2 text-gray-300 hover:text-blue-400 hover:bg-gray-700 rounded-md transition-colors duration-200 font-medium"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                        />
-                      </svg>
-                      Contact Us
-                    </Link>
                     <Link
                       to="/login"
                       className="block px-3 py-2 text-gray-300 hover:text-blue-400 hover:bg-gray-700 rounded-md transition-colors duration-200 font-medium"
