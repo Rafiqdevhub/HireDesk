@@ -14,6 +14,7 @@ export default [
   route("/hiredesk-analyze", "routes/hiredesk-analyze.tsx"),
   route("/batch-analyze", "routes/batch-analyze.tsx"),
   route("/compare-resumes", "routes/compare-resumes.tsx"),
+  route("/selection-candidates", "routes/selection-candidates.tsx"),
   route("/profile", "routes/profile.tsx"),
   route("*", "routes/404.tsx"),
 ] satisfies RouteConfig;
