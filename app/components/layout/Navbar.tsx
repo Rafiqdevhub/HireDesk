@@ -11,20 +11,17 @@ const Navbar = ({ onOpenTips }: NavbarProps) => {
   const navigate = useNavigate();
   const [isRefreshing, setIsRefreshing] = useState(false);
 
-  // Refresh profile data when component mounts
   useEffect(() => {
     if (isAuthenticated) {
       refreshProfile();
     }
   }, [isAuthenticated]);
 
-  // Calculate rate limit status
   const uploadLimit = 10;
   const filesUploaded = user?.filesUploaded || 0;
   const remainingUploads = Math.max(0, uploadLimit - filesUploaded);
   const uploadPercentage = Math.min(100, (filesUploaded / uploadLimit) * 100);
 
-  // Get status color based on usage
   const getStatusColor = () => {
     if (uploadPercentage >= 100) return "text-red-400";
     if (uploadPercentage >= 80) return "text-orange-400";
