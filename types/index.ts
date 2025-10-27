@@ -194,6 +194,7 @@ export interface User {
   email: string;
   company_name: string;
   filesUploaded: number;
+  selected_candidate?: number;
   emailVerified?: boolean;
   createdAt?: string;
 }

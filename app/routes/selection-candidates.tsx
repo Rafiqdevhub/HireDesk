@@ -4,6 +4,9 @@ import ProtectedRoute from "@auth/ProtectedRoute";
 import { useAuth } from "@contexts/AuthContext";
 import { Link } from "react-router";
 import { aiService } from "@services/aiService";
+import { authService } from "@services/authService";
+import Toast from "@toast/Toast";
+import RateLimitModal from "@ui/RateLimitModal";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -48,6 +51,13 @@ const SelectionCandidates = () => {
     useState<SelectionResponse | null>(null);
   const [showResults, setShowResults] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastType, setToastType] = useState<
+    "success" | "error" | "warning" | "info"
+  >("success");
+  const [showRateLimitModal, setShowRateLimitModal] = useState(false);
+  const [selectedCandidateCount, setSelectedCandidateCount] = useState(0);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -75,7 +85,11 @@ const SelectionCandidates = () => {
       }
       setIsInitialized(true);
     }
-  }, []);
+
+    if (user?.selected_candidate) {
+      setSelectedCandidateCount(user.selected_candidate);
+    }
+  }, [user]);
 
   useEffect(() => {
     if (isInitialized && typeof window !== "undefined") {
@@ -139,12 +153,30 @@ const SelectionCandidates = () => {
     setShowProfileDropdown(!showProfileDropdown);
   };
 
+  const handleToastClose = () => {
+    setShowToast(false);
+  };
+
+  const refreshUserStats = async () => {
+    try {
+      const profile = await authService.getProfile();
+      setSelectedCandidateCount(profile.selected_candidate || 0);
+    } catch (error) {
+      console.error("Failed to refresh user stats:", error);
+      if (user) {
+        setSelectedCandidateCount(user.selected_candidate || 0);
+      }
+    }
+  };
+
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const files = Array.from(e.target.files);
 
       if (selectedFiles.length + files.length > 5) {
-        setError("Maximum 5 resumes allowed");
+        setToastMessage("Maximum 5 resumes allowed");
+        setToastType("warning");
+        setShowToast(true);
         return;
       }
 
@@ -156,11 +188,15 @@ const SelectionCandidates = () => {
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 
         if (!isValid) {
-          setError(`${file.name} is not a valid format (PDF or DOCX)`);
+          setToastMessage(`${file.name} is not a valid format (PDF or DOCX)`);
+          setToastType("warning");
+          setShowToast(true);
         }
 
         if (file.size > 10 * 1024 * 1024) {
-          setError(`${file.name} exceeds 10MB limit`);
+          setToastMessage(`${file.name} exceeds 10MB limit`);
+          setToastType("warning");
+          setShowToast(true);
           return false;
         }
 
@@ -168,7 +204,6 @@ const SelectionCandidates = () => {
       });
 
       setSelectedFiles((prev) => [...prev, ...validFiles]);
-      setError(null);
       e.target.value = "";
     }
   };
@@ -182,22 +217,30 @@ const SelectionCandidates = () => {
     setError(null);
 
     if (selectedFiles.length === 0) {
-      setError("Please upload at least 1 resume");
+      setToastMessage("Please upload at least 1 resume");
+      setToastType("warning");
+      setShowToast(true);
       return;
     }
 
     if (selectedFiles.length > 5) {
-      setError("Maximum 5 resumes allowed");
+      setToastMessage("Maximum 5 resumes allowed");
+      setToastType("warning");
+      setShowToast(true);
       return;
     }
 
     if (!jobTitle.trim()) {
-      setError("Job title is required");
+      setToastMessage("Job title is required");
+      setToastType("warning");
+      setShowToast(true);
       return;
     }
 
     if (!keywords.trim()) {
-      setError("Keywords are required");
+      setToastMessage("Keywords are required");
+      setToastType("warning");
+      setShowToast(true);
       return;
     }
 
@@ -212,14 +255,21 @@ const SelectionCandidates = () => {
 
       setSelectionResponse(response);
       setShowResults(true);
+      setToastMessage(
+        "Candidates evaluated successfully! View the results below."
+      );
+      setToastType("success");
+      setShowToast(true);
     } catch (err: any) {
       if (err.status === 429) {
-        const detail = err.errorData?.detail || err.message;
-        setError(
-          `Daily selection limit reached: ${detail}. Try again tomorrow.`
-        );
+        await refreshUserStats();
+        setShowRateLimitModal(true);
       } else {
-        setError(err.message || "Failed to analyze candidates. Try again.");
+        setToastMessage(
+          err.message || "Failed to analyze candidates. Try again."
+        );
+        setToastType("error");
+        setShowToast(true);
       }
       console.error("Selection error:", err);
     } finally {
@@ -233,7 +283,6 @@ const SelectionCandidates = () => {
     setJobTitle("");
     setKeywords("");
     setSelectionResponse(null);
-    setError(null);
 
     if (typeof window !== "undefined") {
       try {
@@ -391,27 +440,6 @@ const SelectionCandidates = () => {
                 onSubmit={handleSubmit}
                 className="bg-slate-900/40 border border-slate-800 rounded-2xl p-8"
               >
-                {error && (
-                  <div className="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-lg">
-                    <p className="text-red-400 text-sm flex items-start gap-2">
-                      <svg
-                        className="w-5 h-5 flex-shrink-0 mt-0.5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 8v4m0 4v.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                      {error}
-                    </p>
-                  </div>
-                )}
-
                 <div className="mb-8">
                   <label className="block text-sm font-semibold text-white mb-4">
                     📄 Upload Resumes (1-5 files)
@@ -490,7 +518,7 @@ const SelectionCandidates = () => {
                             onClick={() => removeFile(index)}
                             title="Remove file"
                             aria-label={`Remove ${file.name}`}
-                            className="p-1 hover:bg-slate-700 rounded transition-colors duration-200 flex-shrink-0 ml-2"
+                            className="p-1 hover:bg-slate-700 rounded transition-colors duration-200 flex-shrink-0 ml-2 cursor-pointer"
                           >
                             <svg
                               className="w-5 h-5 text-slate-400 hover:text-red-400"
@@ -560,7 +588,7 @@ const SelectionCandidates = () => {
                     !jobTitle.trim() ||
                     !keywords.trim()
                   }
-                  className="w-full px-6 py-3 bg-slate-700 hover:bg-slate-600 disabled:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
+                  className="w-full px-6 py-3 bg-slate-700 hover:bg-slate-600 disabled:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold rounded-lg transition-colors duration-200 flex items-center justify-center gap-2 cursor-pointer"
                 >
                   {isLoading ? (
                     <>
@@ -741,6 +769,25 @@ const SelectionCandidates = () => {
             </>
           ) : null}
         </main>
+
+        {showToast && (
+          <Toast
+            message={toastMessage}
+            type={toastType}
+            show={showToast}
+            onClose={handleToastClose}
+            duration={
+              toastType === "warning" || toastType === "error" ? 6000 : 4000
+            }
+          />
+        )}
+
+        <RateLimitModal
+          isOpen={showRateLimitModal}
+          onClose={() => setShowRateLimitModal(false)}
+          filesUploaded={selectedCandidateCount}
+          uploadLimit={10}
+        />
       </div>
     </ProtectedRoute>
   );
