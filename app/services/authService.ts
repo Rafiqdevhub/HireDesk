@@ -359,6 +359,46 @@ export const authService = {
     return !!localStorage.getItem("accessToken");
   },
 
+  // Fetch feature usage statistics
+  async getFeatureUsage(email: string): Promise<{
+    filesUploaded: number;
+    batch_analysis: number;
+    compare_resumes: number;
+    selected_candidate: number;
+  }> {
+    try {
+      const response = await api.get<any>(`/feature-usage/${email}`);
+
+      if (response.data) {
+        const data =
+          response.data.features || response.data.stats || response.data;
+
+        const result = {
+          filesUploaded: data.filesUploaded || 0,
+          batch_analysis: data.batch_analysis || 0,
+          compare_resumes: data.compare_resumes || 0,
+          selected_candidate: data.selected_candidate || 0,
+        };
+
+        return result;
+      }
+      return {
+        filesUploaded: 0,
+        batch_analysis: 0,
+        compare_resumes: 0,
+        selected_candidate: 0,
+      };
+    } catch (error: any) {
+      console.error(error.message);
+      return {
+        filesUploaded: 0,
+        batch_analysis: 0,
+        compare_resumes: 0,
+        selected_candidate: 0,
+      };
+    }
+  },
+
   // Refresh access token using HttpOnly cookie
   async refreshToken(): Promise<{ accessToken: string; user: User }> {
     try {

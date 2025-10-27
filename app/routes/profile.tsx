@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router";
 import Navbar from "@layout/Navbar";
 import { useAuth } from "@contexts/AuthContext";
 import { authService } from "@services/authService";
-import { API_AUTH_URL } from "@utils/api";
 import type { Route } from "./+types/profile";
 
 export function meta({}: Route.MetaArgs) {
@@ -52,28 +51,21 @@ const Profile = () => {
 
         if (profileData.email) {
           try {
-            const usageResponse = await fetch(
-              `${API_AUTH_URL}/feature-usage/${profileData.email}`,
-              {
-                method: "GET",
-                headers: {
-                  "Cache-Control": "no-cache",
-                },
-              }
+            // Fetch feature usage statistics
+            const featureUsage = await authService.getFeatureUsage(
+              profileData.email
             );
-            if (usageResponse.ok) {
-              const usageData = await usageResponse.json();
 
-              setFeatureUsage(usageData.features || usageData.stats);
-            } else {
-              console.error(
-                "Feature usage API error:",
-                usageResponse.status,
-                usageResponse.statusText
-              );
-            }
-          } catch (usageError) {
+            setFeatureUsage(featureUsage);
+          } catch (usageError: any) {
             console.error("Error fetching feature usage:", usageError);
+            // Set default values if fetch fails
+            setFeatureUsage({
+              filesUploaded: profileData.filesUploaded || 0,
+              batch_analysis: 0,
+              compare_resumes: 0,
+              selected_candidate: 0,
+            });
           }
         }
       } catch (err: any) {
@@ -623,6 +615,63 @@ const Profile = () => {
               </div>
 
               <div className="group relative">
+                <div className="absolute -inset-0.5 bg-gradient-to-br from-amber-500/30 to-orange-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="relative bg-gradient-to-br from-slate-800/60 via-slate-800/40 to-slate-900/50 backdrop-blur-xl rounded-2xl border border-amber-500/20 p-7 hover:border-amber-500/40 transition-all duration-300 group">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="p-3 bg-gradient-to-br from-amber-500/20 to-orange-500/20 rounded-xl group-hover:from-amber-500/30 group-hover:to-orange-500/30 transition-all">
+                      <svg
+                        className="w-6 h-6 text-amber-400"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M17 20h5v-2a3 3 0 00-5.856-1.487M15 10a3 3 0 11-6 0 3 3 0 016 0zM6 20h12a6 6 0 016-6H0a6 6 0 016 6z"
+                        />
+                      </svg>
+                    </div>
+                    <span
+                      className={`text-sm font-bold px-3 py-1 rounded-full ${(featureUsage?.selected_candidate || 0) >= 10 ? "text-red-400 bg-red-500/20 border border-red-500/30" : (featureUsage?.selected_candidate || 0) >= 8 ? "text-orange-400 bg-orange-500/20 border border-orange-500/30" : (featureUsage?.selected_candidate || 0) >= 5 ? "text-yellow-400 bg-yellow-500/20 border border-yellow-500/30" : "text-green-400 bg-green-500/20 border border-green-500/30"}`}
+                    >
+                      {featureUsage?.selected_candidate || 0}/10
+                    </span>
+                  </div>
+                  <h3 className="text-xl font-bold text-white mb-3">
+                    Candidate Selection
+                  </h3>
+                  <p className="text-sm text-slate-400 mb-5">
+                    Evaluations performed this month
+                  </p>
+                  <div className="w-full bg-white/5 rounded-full h-2.5 overflow-hidden border border-white/10 mb-4">
+                    <div
+                      className={`h-full rounded-full transition-all duration-500 ${(featureUsage?.selected_candidate || 0) >= 10 ? "bg-gradient-to-r from-red-500 to-red-600" : (featureUsage?.selected_candidate || 0) >= 8 ? "bg-gradient-to-r from-orange-500 to-orange-600" : (featureUsage?.selected_candidate || 0) >= 5 ? "bg-gradient-to-r from-yellow-500 to-yellow-600" : "bg-gradient-to-r from-amber-500 to-orange-500"}`}
+                      style={{
+                        width: `${Math.min(100, ((featureUsage?.selected_candidate || 0) / 10) * 100)}%`,
+                      }}
+                    ></div>
+                  </div>
+                  <div className="flex justify-between text-xs text-slate-400">
+                    <span>
+                      {Math.max(
+                        0,
+                        10 - (featureUsage?.selected_candidate || 0)
+                      )}{" "}
+                      remaining
+                    </span>
+                    <span className="text-amber-400 font-semibold">
+                      {Math.round(
+                        ((featureUsage?.selected_candidate || 0) / 10) * 100
+                      )}
+                      %
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="group relative">
                 <div className="absolute -inset-0.5 bg-gradient-to-br from-indigo-500/30 to-violet-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="relative bg-gradient-to-br from-slate-800/60 via-slate-800/40 to-slate-900/50 backdrop-blur-xl rounded-2xl border border-indigo-500/20 p-7 hover:border-indigo-500/40 transition-all duration-300">
                   <div className="flex items-center justify-between mb-4">
@@ -642,13 +691,10 @@ const Profile = () => {
                       </svg>
                     </div>
                     <span className="text-sm font-bold px-3 py-1 rounded-full text-indigo-400 bg-indigo-500/20 border border-indigo-500/30">
-                      {featureUsage?.filesUploaded &&
-                      featureUsage?.batch_analysis &&
-                      featureUsage?.compare_resumes
-                        ? featureUsage.filesUploaded +
-                          featureUsage.batch_analysis +
-                          featureUsage.compare_resumes
-                        : 0}
+                      {(featureUsage?.filesUploaded || 0) +
+                        (featureUsage?.batch_analysis || 0) +
+                        (featureUsage?.compare_resumes || 0) +
+                        (featureUsage?.selected_candidate || 0)}
                     </span>
                   </div>
                   <h3 className="text-xl font-bold text-white mb-3">
@@ -663,12 +709,13 @@ const Profile = () => {
                         Activity Status
                       </span>
                       <span
-                        className={`text-xs font-bold ${featureUsage && (featureUsage.filesUploaded > 0 || featureUsage.batch_analysis > 0 || featureUsage.compare_resumes > 0) ? "text-green-400" : "text-slate-400"}`}
+                        className={`text-xs font-bold ${featureUsage && ((featureUsage.filesUploaded || 0) > 0 || (featureUsage.batch_analysis || 0) > 0 || (featureUsage.compare_resumes || 0) > 0 || (featureUsage.selected_candidate || 0) > 0) ? "text-green-400" : "text-slate-400"}`}
                       >
                         {featureUsage &&
-                        (featureUsage.filesUploaded > 0 ||
-                          featureUsage.batch_analysis > 0 ||
-                          featureUsage.compare_resumes > 0)
+                        ((featureUsage.filesUploaded || 0) > 0 ||
+                          (featureUsage.batch_analysis || 0) > 0 ||
+                          (featureUsage.compare_resumes || 0) > 0 ||
+                          (featureUsage.selected_candidate || 0) > 0)
                           ? "●  Active"
                           : "● Idle"}
                       </span>
