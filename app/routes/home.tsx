@@ -22,30 +22,28 @@ const Home = () => {
     <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 relative overflow-hidden">
       <Navbar />
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-600 to-blue-400 rounded-full blur-3xl opacity-20 animate-pulse"></div>
-        <div className="absolute top-1/3 -left-32 w-96 h-96 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full blur-3xl opacity-15 animate-pulse delay-1000"></div>
-        <div className="absolute bottom-0 right-1/4 w-72 h-72 bg-gradient-to-t from-emerald-600 to-cyan-600 rounded-full blur-3xl opacity-10 animate-pulse delay-500"></div>
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-600 to-blue-400 rounded-full blur-3xl opacity-20"></div>
+        <div className="absolute top-1/3 -left-32 w-96 h-96 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full blur-3xl opacity-15"></div>
+        <div className="absolute bottom-0 right-1/4 w-72 h-72 bg-gradient-to-t from-emerald-600 to-cyan-600 rounded-full blur-3xl opacity-10"></div>
         <div className="absolute top-2/3 left-1/3 w-96 h-96 bg-blue-600/5 rounded-full blur-3xl opacity-30"></div>
       </div>
       <div className="absolute inset-0 bg-grid-white/[0.02] opacity-50"></div>
-
       {/* Hero Section */}
       <section className="pt-32 pb-32 px-4 sm:px-6 lg:px-8 relative z-10 overflow-hidden">
         <div className="absolute inset-0 -z-10">
-          <div className="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-blue-600 via-blue-500 to-transparent rounded-full blur-3xl opacity-30 animate-pulse"></div>
-          <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-80 h-80 bg-gradient-to-r from-purple-600 to-pink-500 rounded-full blur-3xl opacity-20 animate-pulse delay-1000"></div>
-          <div className="absolute -bottom-40 -right-32 w-96 h-96 bg-gradient-to-t from-cyan-500 to-blue-600 rounded-full blur-3xl opacity-15 animate-pulse delay-500"></div>
-          <div className="absolute top-1/4 right-1/4 w-32 h-32 bg-gradient-to-br from-emerald-400 to-cyan-500 rounded-full blur-2xl opacity-10 animate-float"></div>
-          <div className="absolute bottom-1/3 left-1/3 w-40 h-40 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full blur-2xl opacity-10 animate-float delay-1000"></div>
+          <div className="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-blue-600 via-blue-500 to-transparent rounded-full blur-3xl opacity-30"></div>
+          <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-80 h-80 bg-gradient-to-r from-purple-600 to-pink-500 rounded-full blur-3xl opacity-20"></div>
+          <div className="absolute -bottom-40 -right-32 w-96 h-96 bg-gradient-to-t from-cyan-500 to-blue-600 rounded-full blur-3xl opacity-15"></div>
+          <div className="absolute top-1/4 right-1/4 w-32 h-32 bg-gradient-to-br from-emerald-400 to-cyan-500 rounded-full blur-2xl opacity-10"></div>
+          <div className="absolute bottom-1/3 left-1/3 w-40 h-40 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full blur-2xl opacity-10"></div>
         </div>
 
         <div className="max-w-7xl mx-auto">
           <div className="text-center space-y-8">
-            {/* Premium Badge */}
-            <div className="inline-flex items-center justify-center gap-3 px-6 py-3 mb-8 rounded-full bg-gradient-to-r from-blue-500/15 to-purple-500/15 border border-blue-400/40 hover:border-blue-300/60 transition-all duration-500 backdrop-blur-xl hover:bg-gradient-to-r hover:from-blue-500/25 hover:to-purple-500/25 group cursor-default shadow-lg hover:shadow-blue-500/20">
+            <div className="inline-flex items-center justify-center gap-3 px-6 py-3 mb-8 rounded-full bg-gradient-to-r from-blue-500/15 to-purple-500/15 border border-blue-400/40 hover:border-blue-300/60 backdrop-blur-xl group cursor-default shadow-lg">
               <div className="flex items-center gap-2">
                 <div className="relative w-3 h-3">
-                  <div className="absolute inset-0 bg-blue-400 rounded-full animate-pulse"></div>
+                  <div className="absolute inset-0 bg-blue-400 rounded-full"></div>
                   <div className="absolute inset-1 bg-blue-300 rounded-full opacity-50"></div>
                 </div>
                 <span className="text-blue-200 text-sm font-bold tracking-wide">
@@ -54,14 +52,13 @@ const Home = () => {
               </div>
             </div>
 
-            {/* Main Heading with Premium Styling */}
             <div className="space-y-4">
               <h1 className="font-serif text-7xl md:text-9xl lg:text-10xl font-black text-white leading-none tracking-tighter">
                 <span className="inline-block">Your AI</span>
                 <br />
                 <span className="relative inline-block">
-                  <span className="absolute inset-0 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 blur-lg opacity-60 -z-10 animate-pulse"></span>
-                  <span className="relative bg-gradient-to-r from-blue-300 via-purple-300 to-pink-300 bg-clip-text text-transparent animate-pulse drop-shadow-2xl">
+                  <span className="absolute inset-0 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 blur-lg opacity-60 -z-10"></span>
+                  <span className="relative bg-gradient-to-r from-blue-300 via-purple-300 to-pink-300 bg-clip-text text-transparent drop-shadow-2xl">
                     Hiring Co-Pilot
                   </span>
                 </span>
@@ -73,7 +70,6 @@ const Home = () => {
               </div>
             </div>
 
-            {/* Premium Subheading */}
             <p className="text-lg md:text-xl lg:text-2xl text-gray-200 max-w-3xl mx-auto leading-relaxed font-light space-y-3">
               <span className="block">
                 Transform your entire hiring workflow with AI that actually
@@ -100,12 +96,12 @@ const Home = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
               <Link
                 to="/dashboard"
-                className="group relative px-12 py-5 md:px-14 md:py-6 font-bold text-lg text-white rounded-2xl overflow-hidden shadow-2xl transition-all duration-300 hover:shadow-blue-500/50 hover:-translate-y-2"
+                className="group relative px-12 py-5 md:px-14 md:py-6 font-bold text-lg text-white rounded-2xl overflow-hidden shadow-2xl"
               >
                 {" "}
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-blue-500 to-purple-600 transition-all duration-300"></div>
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-400 opacity-0 group-hover:opacity-30 transition-opacity duration-300"></div>
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-20 transition-all duration-300 group-hover:translate-x-full"></div>
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-blue-500 to-purple-600"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-400 opacity-0 group-hover:opacity-30"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-20 group-hover:translate-x-full"></div>
                 <span className="relative flex items-center justify-center gap-2">
                   <svg
                     className="w-5 h-5"
@@ -124,13 +120,9 @@ const Home = () => {
                 </span>
               </Link>
             </div>
-
-            {/* Trust indicators */}
           </div>
         </div>
       </section>
-
-      {/* Problem Section */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
@@ -152,8 +144,7 @@ const Home = () => {
               </p>
 
               <div className="space-y-5">
-                {/* Problem Item 1 */}
-                <div className="flex items-start gap-4 p-5 rounded-xl bg-gradient-to-r from-red-500/10 to-transparent border border-red-500/20 hover:border-red-500/40 transition-all duration-300">
+                <div className="flex items-start gap-4 p-5 rounded-xl bg-gradient-to-r from-red-500/10 to-transparent border border-red-500/20">
                   <div className="flex-shrink-0">
                     <div className="flex items-center justify-center h-10 w-10 rounded-lg bg-red-600/20 border border-red-500/30">
                       <svg
@@ -181,7 +172,7 @@ const Home = () => {
                     </p>
                   </div>
                 </div>
-                <div className="flex items-start gap-4 p-5 rounded-xl bg-gradient-to-r from-orange-500/10 to-transparent border border-orange-500/20 hover:border-orange-500/40 transition-all duration-300">
+                <div className="flex items-start gap-4 p-5 rounded-xl bg-gradient-to-r from-orange-500/10 to-transparent border border-orange-500/20">
                   <div className="flex-shrink-0">
                     <div className="flex items-center justify-center h-10 w-10 rounded-lg bg-orange-600/20 border border-orange-500/30">
                       <svg
@@ -211,8 +202,7 @@ const Home = () => {
                   </div>
                 </div>
 
-                {/* Problem Item 3 */}
-                <div className="flex items-start gap-4 p-5 rounded-xl bg-gradient-to-r from-yellow-500/10 to-transparent border border-yellow-500/20 hover:border-yellow-500/40 transition-all duration-300">
+                <div className="flex items-start gap-4 p-5 rounded-xl bg-gradient-to-r from-yellow-500/10 to-transparent border border-yellow-500/20">
                   <div className="flex-shrink-0">
                     <div className="flex items-center justify-center h-10 w-10 rounded-lg bg-yellow-600/20 border border-yellow-500/30">
                       <svg
@@ -242,12 +232,9 @@ const Home = () => {
                 </div>
               </div>
             </div>
-
-            {/* Right Side - Stat Box */}
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-br from-red-600/20 to-orange-600/10 rounded-3xl blur-2xl opacity-50"></div>
               <div className="relative bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl rounded-3xl p-8 md:p-12 border border-gray-700/50 overflow-hidden">
-                {/* Decorative elements */}
                 <div className="absolute -top-10 -right-10 w-40 h-40 bg-red-600/5 rounded-full blur-2xl"></div>
                 <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-orange-600/5 rounded-full blur-2xl"></div>
 
@@ -265,7 +252,6 @@ const Home = () => {
                   </div>
 
                   <div className="space-y-4">
-                    {/* Time breakdown item 1 */}
                     <div className="space-y-2">
                       <div className="flex justify-between items-center">
                         <span className="text-gray-300 font-medium">
@@ -280,7 +266,6 @@ const Home = () => {
                       </div>
                     </div>
 
-                    {/* Time breakdown item 2 */}
                     <div className="space-y-2">
                       <div className="flex justify-between items-center">
                         <span className="text-gray-300 font-medium">
@@ -295,7 +280,6 @@ const Home = () => {
                       </div>
                     </div>
 
-                    {/* Time breakdown item 3 */}
                     <div className="space-y-2">
                       <div className="flex justify-between items-center">
                         <span className="text-gray-300 font-medium">
@@ -337,8 +321,6 @@ const Home = () => {
           </div>
         </div>
       </section>
-
-      {/* Four Tools Section */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-20">
@@ -359,11 +341,10 @@ const Home = () => {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {/* Tool 1 - Smart Review */}
             <div className="group relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-purple-600/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              <div className="relative h-full bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl p-8 rounded-2xl border border-blue-500/20 group-hover:border-blue-400/40 transition-all duration-300 flex flex-col">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-purple-600/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-100"></div>
+              <div className="relative h-full bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl p-8 rounded-2xl border border-blue-500/20 flex flex-col">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mb-6">
                   <svg
                     className="w-6 h-6 text-white"
                     fill="none"
@@ -391,11 +372,10 @@ const Home = () => {
               </div>
             </div>
 
-            {/* Tool 2 - Smart Screening */}
             <div className="group relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-600/20 to-pink-600/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              <div className="relative h-full bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl p-8 rounded-2xl border border-purple-500/20 group-hover:border-purple-400/40 transition-all duration-300 flex flex-col">
-                <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-600/20 to-pink-600/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-100"></div>
+              <div className="relative h-full bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl p-8 rounded-2xl border border-purple-500/20 flex flex-col">
+                <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center mb-6">
                   <svg
                     className="w-6 h-6 text-white"
                     fill="none"
@@ -423,11 +403,10 @@ const Home = () => {
               </div>
             </div>
 
-            {/* Tool 3 - Find Best Fit */}
             <div className="group relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-amber-600/20 to-orange-600/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              <div className="relative h-full bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl p-8 rounded-2xl border border-amber-500/20 group-hover:border-amber-400/40 transition-all duration-300 flex flex-col">
-                <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+              <div className="absolute inset-0 bg-gradient-to-br from-amber-600/20 to-orange-600/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-100"></div>
+              <div className="relative h-full bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl p-8 rounded-2xl border border-amber-500/20 flex flex-col">
+                <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl flex items-center justify-center mb-6">
                   <svg
                     className="w-6 h-6 text-white"
                     fill="none"
@@ -455,11 +434,10 @@ const Home = () => {
               </div>
             </div>
 
-            {/* Tool 4 - Quick Screen */}
             <div className="group relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-emerald-600/20 to-cyan-600/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              <div className="relative h-full bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl p-8 rounded-2xl border border-emerald-500/20 group-hover:border-emerald-400/40 transition-all duration-300 flex flex-col">
-                <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+              <div className="absolute inset-0 bg-gradient-to-br from-emerald-600/20 to-cyan-600/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-100"></div>
+              <div className="relative h-full bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl p-8 rounded-2xl border border-emerald-500/20 flex flex-col">
+                <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center mb-6">
                   <svg
                     className="w-6 h-6 text-white"
                     fill="none"
@@ -490,7 +468,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Workflow Section */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-20">
@@ -511,7 +488,6 @@ const Home = () => {
           </div>
 
           <div className="space-y-6">
-            {/* Stage 1 */}
             <div className="group relative">
               <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl"></div>
               <div className="relative bg-gradient-to-r from-blue-500/10 to-blue-500/0 backdrop-blur-xl p-8 md:p-12 rounded-3xl border border-blue-400/20 group-hover:border-blue-400/40 transition-all duration-300 overflow-hidden">
@@ -559,7 +535,6 @@ const Home = () => {
               </div>
             </div>
 
-            {/* Stage 2 */}
             <div className="group relative">
               <div className="absolute inset-0 bg-gradient-to-r from-purple-600/10 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl"></div>
               <div className="relative bg-gradient-to-r from-purple-500/10 to-purple-500/0 backdrop-blur-xl p-8 md:p-12 rounded-3xl border border-purple-400/20 group-hover:border-purple-400/40 transition-all duration-300 overflow-hidden">
@@ -607,7 +582,6 @@ const Home = () => {
               </div>
             </div>
 
-            {/* Stage 3 */}
             <div className="group relative">
               <div className="absolute inset-0 bg-gradient-to-r from-amber-600/10 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl"></div>
               <div className="relative bg-gradient-to-r from-amber-500/10 to-amber-500/0 backdrop-blur-xl p-8 md:p-12 rounded-3xl border border-amber-400/20 group-hover:border-amber-400/40 transition-all duration-300 overflow-hidden">
@@ -655,7 +629,6 @@ const Home = () => {
               </div>
             </div>
 
-            {/* Stage 4 */}
             <div className="group relative">
               <div className="absolute inset-0 bg-gradient-to-r from-emerald-600/10 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl"></div>
               <div className="relative bg-gradient-to-r from-emerald-500/10 to-emerald-500/0 backdrop-blur-xl p-8 md:p-12 rounded-3xl border border-emerald-400/20 group-hover:border-emerald-400/40 transition-all duration-300 overflow-hidden">
@@ -706,7 +679,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Why HireDesk Wins Section */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-20">
@@ -726,7 +698,6 @@ const Home = () => {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Feature 1 */}
             <div className="group relative h-full">
               <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-blue-600/0 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div className="relative h-full bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl p-8 rounded-2xl border border-gray-700/50 group-hover:border-blue-400/40 transition-all duration-300 flex flex-col">
@@ -757,7 +728,6 @@ const Home = () => {
               </div>
             </div>
 
-            {/* Feature 2 */}
             <div className="group relative h-full">
               <div className="absolute inset-0 bg-gradient-to-br from-purple-600/20 to-purple-600/0 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div className="relative h-full bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl p-8 rounded-2xl border border-gray-700/50 group-hover:border-purple-400/40 transition-all duration-300 flex flex-col">
@@ -787,7 +757,6 @@ const Home = () => {
               </div>
             </div>
 
-            {/* Feature 3 */}
             <div className="group relative h-full">
               <div className="absolute inset-0 bg-gradient-to-br from-emerald-600/20 to-emerald-600/0 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div className="relative h-full bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl p-8 rounded-2xl border border-gray-700/50 group-hover:border-emerald-400/40 transition-all duration-300 flex flex-col">
@@ -817,7 +786,6 @@ const Home = () => {
               </div>
             </div>
 
-            {/* Feature 4 */}
             <div className="group relative h-full">
               <div className="absolute inset-0 bg-gradient-to-br from-pink-600/20 to-pink-600/0 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div className="relative h-full bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl p-8 rounded-2xl border border-gray-700/50 group-hover:border-pink-400/40 transition-all duration-300 flex flex-col">
@@ -847,7 +815,6 @@ const Home = () => {
               </div>
             </div>
 
-            {/* Feature 5 */}
             <div className="group relative h-full">
               <div className="absolute inset-0 bg-gradient-to-br from-orange-600/20 to-orange-600/0 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div className="relative h-full bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl p-8 rounded-2xl border border-gray-700/50 group-hover:border-orange-400/40 transition-all duration-300 flex flex-col">
@@ -877,7 +844,6 @@ const Home = () => {
               </div>
             </div>
 
-            {/* Feature 6 */}
             <div className="group relative h-full">
               <div className="absolute inset-0 bg-gradient-to-br from-cyan-600/20 to-cyan-600/0 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div className="relative h-full bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl p-8 rounded-2xl border border-gray-700/50 group-hover:border-cyan-400/40 transition-all duration-300 flex flex-col">
@@ -910,7 +876,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Testimonials Section */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-20">
@@ -930,7 +895,6 @@ const Home = () => {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8 mb-16">
-            {/* Testimonial 1 */}
             <div className="group relative">
               <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-blue-600/0 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div className="relative bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl p-8 rounded-2xl border border-gray-700/50 group-hover:border-blue-400/40 transition-all duration-300">
@@ -960,7 +924,6 @@ const Home = () => {
               </div>
             </div>
 
-            {/* Testimonial 2 */}
             <div className="group relative">
               <div className="absolute inset-0 bg-gradient-to-br from-purple-600/20 to-purple-600/0 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div className="relative bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl p-8 rounded-2xl border border-gray-700/50 group-hover:border-purple-400/40 transition-all duration-300">
@@ -989,7 +952,6 @@ const Home = () => {
               </div>
             </div>
 
-            {/* Testimonial 3 */}
             <div className="group relative">
               <div className="absolute inset-0 bg-gradient-to-br from-emerald-600/20 to-emerald-600/0 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div className="relative bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl p-8 rounded-2xl border border-gray-700/50 group-hover:border-emerald-400/40 transition-all duration-300">
@@ -1017,7 +979,6 @@ const Home = () => {
             </div>
           </div>
 
-          {/* Stats Grid */}
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-pink-600/20 rounded-3xl blur-2xl opacity-50"></div>
             <div className="relative bg-gradient-to-r from-blue-500/10 to-pink-500/10 backdrop-blur-xl rounded-3xl p-8 md:p-16 border border-gray-700/50 overflow-hidden">
@@ -1058,8 +1019,6 @@ const Home = () => {
           </div>
         </div>
       </section>
-
-      {/* Success Metrics & Case Studies Section */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-20">
@@ -1079,7 +1038,6 @@ const Home = () => {
             </p>
           </div>
 
-          {/* Key Metrics Grid */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
             <div className="group relative">
               <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-blue-600/0 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -1134,9 +1092,7 @@ const Home = () => {
             </div>
           </div>
 
-          {/* Case Study Cards */}
           <div className="grid md:grid-cols-2 gap-8">
-            {/* Case Study 1 */}
             <div className="group relative">
               <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-purple-600/10 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div className="relative bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl p-8 md:p-10 rounded-3xl border border-gray-700/50 group-hover:border-blue-400/40 transition-all duration-300 overflow-hidden">
@@ -1222,7 +1178,6 @@ const Home = () => {
               </div>
             </div>
 
-            {/* Case Study 2 */}
             <div className="group relative">
               <div className="absolute inset-0 bg-gradient-to-br from-emerald-600/20 to-cyan-600/10 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div className="relative bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl p-8 md:p-10 rounded-3xl border border-gray-700/50 group-hover:border-emerald-400/40 transition-all duration-300 overflow-hidden">
@@ -1310,7 +1265,6 @@ const Home = () => {
             </div>
           </div>
 
-          {/* Industry Applications */}
           <div className="mt-16 text-center">
             <h3 className="text-2xl font-bold text-white mb-8">
               Trusted Across Industries
@@ -1339,7 +1293,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Compatibility & Requirements Section */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-20">
@@ -1360,7 +1313,6 @@ const Home = () => {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-            {/* File Formats */}
             <div className="group relative">
               <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-blue-600/0 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div className="relative bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl p-8 rounded-2xl border border-gray-700/50 group-hover:border-blue-400/40 transition-all duration-300">
@@ -1405,7 +1357,6 @@ const Home = () => {
               </div>
             </div>
 
-            {/* Browser Support */}
             <div className="group relative">
               <div className="absolute inset-0 bg-gradient-to-br from-emerald-600/20 to-emerald-600/0 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div className="relative bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl p-8 rounded-2xl border border-gray-700/50 group-hover:border-emerald-400/40 transition-all duration-300">
@@ -1448,7 +1399,6 @@ const Home = () => {
               </div>
             </div>
 
-            {/* Device Support */}
             <div className="group relative">
               <div className="absolute inset-0 bg-gradient-to-br from-purple-600/20 to-purple-600/0 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div className="relative bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl p-8 rounded-2xl border border-gray-700/50 group-hover:border-purple-400/40 transition-all duration-300">
@@ -1494,7 +1444,6 @@ const Home = () => {
             </div>
           </div>
 
-          {/* System Requirements */}
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 via-purple-600/10 to-emerald-600/10 rounded-3xl blur-2xl opacity-50"></div>
             <div className="relative bg-gradient-to-r from-slate-800/80 to-slate-900/80 backdrop-blur-xl rounded-3xl p-8 md:p-12 border border-gray-700/50 overflow-hidden">
@@ -1537,7 +1486,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* FAQ Section */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-20">
@@ -1558,7 +1506,6 @@ const Home = () => {
           </div>
 
           <div className="grid md:grid-cols-2 gap-8">
-            {/* FAQ Item 1 */}
             <div className="group relative">
               <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-blue-600/0 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div className="relative bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl p-8 rounded-2xl border border-gray-700/50 group-hover:border-blue-400/40 transition-all duration-300">
@@ -1577,7 +1524,6 @@ const Home = () => {
               </div>
             </div>
 
-            {/* FAQ Item 2 */}
             <div className="group relative">
               <div className="absolute inset-0 bg-gradient-to-br from-purple-600/20 to-purple-600/0 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div className="relative bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl p-8 rounded-2xl border border-gray-700/50 group-hover:border-purple-400/40 transition-all duration-300">
@@ -1595,7 +1541,6 @@ const Home = () => {
               </div>
             </div>
 
-            {/* FAQ Item 3 */}
             <div className="group relative">
               <div className="absolute inset-0 bg-gradient-to-br from-emerald-600/20 to-emerald-600/0 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div className="relative bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl p-8 rounded-2xl border border-gray-700/50 group-hover:border-emerald-400/40 transition-all duration-300">
@@ -1614,7 +1559,6 @@ const Home = () => {
               </div>
             </div>
 
-            {/* FAQ Item 4 */}
             <div className="group relative">
               <div className="absolute inset-0 bg-gradient-to-br from-amber-600/20 to-amber-600/0 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div className="relative bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl p-8 rounded-2xl border border-gray-700/50 group-hover:border-amber-400/40 transition-all duration-300">
@@ -1633,7 +1577,6 @@ const Home = () => {
               </div>
             </div>
 
-            {/* FAQ Item 5 */}
             <div className="group relative">
               <div className="absolute inset-0 bg-gradient-to-br from-pink-600/20 to-pink-600/0 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div className="relative bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl p-8 rounded-2xl border border-gray-700/50 group-hover:border-pink-400/40 transition-all duration-300">
@@ -1651,7 +1594,6 @@ const Home = () => {
               </div>
             </div>
 
-            {/* FAQ Item 6 */}
             <div className="group relative">
               <div className="absolute inset-0 bg-gradient-to-br from-cyan-600/20 to-cyan-600/0 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div className="relative bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl p-8 rounded-2xl border border-gray-700/50 group-hover:border-cyan-400/40 transition-all duration-300">
@@ -1671,7 +1613,6 @@ const Home = () => {
             </div>
           </div>
 
-          {/* Contact CTA */}
           <div className="text-center mt-16">
             <p className="text-gray-300 mb-6">Still have questions?</p>
             <Link
@@ -1697,7 +1638,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Security & Privacy Section */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-20">
@@ -1718,7 +1658,6 @@ const Home = () => {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {/* Security Feature 1 */}
             <div className="group relative h-full">
               <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-blue-600/0 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div className="relative h-full bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl p-8 rounded-2xl border border-gray-700/50 group-hover:border-blue-400/40 transition-all duration-300 flex flex-col">
@@ -1748,7 +1687,6 @@ const Home = () => {
               </div>
             </div>
 
-            {/* Security Feature 2 */}
             <div className="group relative h-full">
               <div className="absolute inset-0 bg-gradient-to-br from-emerald-600/20 to-emerald-600/0 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div className="relative h-full bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl p-8 rounded-2xl border border-gray-700/50 group-hover:border-emerald-400/40 transition-all duration-300 flex flex-col">
@@ -1778,7 +1716,6 @@ const Home = () => {
               </div>
             </div>
 
-            {/* Security Feature 3 */}
             <div className="group relative h-full">
               <div className="absolute inset-0 bg-gradient-to-br from-purple-600/20 to-purple-600/0 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div className="relative h-full bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl p-8 rounded-2xl border border-gray-700/50 group-hover:border-purple-400/40 transition-all duration-300 flex flex-col">
@@ -1809,7 +1746,6 @@ const Home = () => {
             </div>
           </div>
 
-          {/* Trust Badges */}
           <div className="mt-16 text-center">
             <div className="flex flex-wrap justify-center items-center gap-8 opacity-60">
               <div className="flex items-center gap-2 text-gray-400">
@@ -1858,7 +1794,6 @@ const Home = () => {
           </div>
         </div>
       </section>
-
       <Footer />
     </div>
   );
