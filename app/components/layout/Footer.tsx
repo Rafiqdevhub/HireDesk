@@ -31,7 +31,6 @@ const Footer = () => {
               AI-powered hiring platform that transforms recruitment with
               intelligent resume analysis and candidate insights.
             </p>
-            {/* Social Links */}
             <div className="flex gap-3">
               <a
                 href="https://twitter.com"
@@ -72,7 +71,6 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Company Section */}
           <div>
             <h4 className="text-sm font-semibold text-white mb-4 flex items-center gap-2 uppercase tracking-wide">
               <span className="w-1.5 h-1.5 rounded-full bg-purple-400" />
@@ -128,7 +126,6 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Resources Section */}
           <div>
             <h4 className="text-sm font-semibold text-white mb-4 flex items-center gap-2 uppercase tracking-wide">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
