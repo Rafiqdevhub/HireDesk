@@ -343,7 +343,7 @@ const SelectionCandidates = () => {
                   onClick={toggleProfileDropdown}
                   className="flex items-center gap-2 sm:gap-3 px-2 sm:px-4 py-2 rounded-lg hover:bg-slate-800/50 transition-colors duration-200"
                 >
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-slate-700 flex items-center justify-center flex-shrink-0">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-slate-700 flex items-center justify-center shrink-0">
                     <span className="text-sm sm:text-base font-medium text-white">
                       {user?.name?.[0] || "U"}
                     </span>
@@ -378,7 +378,7 @@ const SelectionCandidates = () => {
                   >
                     <div className="px-4 py-4 border-b border-slate-800/50">
                       <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-lg bg-slate-700 flex items-center justify-center flex-shrink-0">
+                        <div className="w-12 h-12 rounded-lg bg-slate-700 flex items-center justify-center shrink-0">
                           <span className="text-lg font-medium text-white">
                             {user?.name?.[0] || "U"}
                           </span>
@@ -492,7 +492,7 @@ const SelectionCandidates = () => {
                         >
                           <div className="flex items-center gap-3 flex-1 min-w-0">
                             <svg
-                              className="w-5 h-5 text-slate-400 flex-shrink-0"
+                              className="w-5 h-5 text-slate-400 shrink-0"
                               fill="none"
                               stroke="currentColor"
                               viewBox="0 0 24 24"
@@ -518,7 +518,7 @@ const SelectionCandidates = () => {
                             onClick={() => removeFile(index)}
                             title="Remove file"
                             aria-label={`Remove ${file.name}`}
-                            className="p-1 hover:bg-slate-700 rounded transition-colors duration-200 flex-shrink-0 ml-2 cursor-pointer"
+                            className="p-1 hover:bg-slate-700 rounded transition-colors duration-200 shrink-0 ml-2 cursor-pointer"
                           >
                             <svg
                               className="w-5 h-5 text-slate-400 hover:text-red-400"
@@ -794,3 +794,4 @@ const SelectionCandidates = () => {
 };
 
 export default SelectionCandidates;
+

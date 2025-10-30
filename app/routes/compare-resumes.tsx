@@ -309,14 +309,14 @@ const CompareResumes = () => {
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative overflow-hidden">
+      <div className="min-h-screen bg-linear-to-br from-slate-900 via-slate-800 to-slate-900 relative overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -inset-10 opacity-50">
             <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/10 rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
             <div className="absolute top-3/4 right-1/4 w-96 h-96 bg-pink-500/10 rounded-full mix-blend-multiply filter blur-xl animate-pulse animation-delay-2s"></div>
             <div className="absolute bottom-1/4 left-1/3 w-96 h-96 bg-violet-500/10 rounded-full mix-blend-multiply filter blur-xl animate-pulse animation-delay-4s"></div>
           </div>
-          <div className="absolute inset-0 bg-grid-slate-700/[0.04] bg-[size:20px_20px]"></div>
+          <div className="absolute inset-0 bg-grid-slate-700/[0.04] bg-size-[20px_20px]"></div>
         </div>
 
         <nav className="relative z-50 backdrop-blur-xl bg-slate-900/80 border-b border-slate-700/50">
@@ -325,7 +325,7 @@ const CompareResumes = () => {
               <div className="flex items-center">
                 <Link
                   to="/dashboard"
-                  className="group flex items-center space-x-2 sm:space-x-3 px-3 sm:px-4 py-2 rounded-lg sm:rounded-xl bg-gradient-to-r from-indigo-500/20 to-purple-500/20 border border-indigo-500/30 hover:from-indigo-500/30 hover:to-purple-500/30 transition-all duration-300 cursor-pointer"
+                  className="group flex items-center space-x-2 sm:space-x-3 px-3 sm:px-4 py-2 rounded-lg sm:rounded-xl bg-linear-to-r from-indigo-500/20 to-purple-500/20 border border-indigo-500/30 hover:from-indigo-500/30 hover:to-purple-500/30 transition-all duration-300 cursor-pointer"
                 >
                   <div className="relative">
                     <svg
@@ -351,14 +351,14 @@ const CompareResumes = () => {
               </div>
 
               <div className="md:hidden flex-1 text-center">
-                <h1 className="text-lg font-bold bg-gradient-to-r from-indigo-300 via-purple-300 to-indigo-300 bg-clip-text text-transparent">
+                <h1 className="text-lg font-bold bg-linear-to-r from-indigo-300 via-purple-300 to-indigo-300 bg-clip-text text-transparent">
                   HireDesk
                 </h1>
               </div>
 
               <div className="hidden md:block">
                 <div className="text-center">
-                  <h1 className="text-xl font-bold bg-gradient-to-r from-indigo-300 via-purple-300 to-indigo-300 bg-clip-text text-transparent">
+                  <h1 className="text-xl font-bold bg-linear-to-r from-indigo-300 via-purple-300 to-indigo-300 bg-clip-text text-transparent">
                     HireDesk AI
                   </h1>
                   <p className="text-xs text-slate-400 mt-1">Find Best Fit</p>
@@ -371,7 +371,7 @@ const CompareResumes = () => {
                   className="group flex items-center space-x-2 sm:space-x-3 p-1.5 sm:p-2 rounded-lg sm:rounded-xl bg-slate-800/50 border border-slate-700/50 hover:bg-slate-700/50 hover:border-slate-600/50 transition-all duration-300 cursor-pointer"
                 >
                   <div className="relative">
-                    <div className="h-7 w-7 sm:h-8 sm:w-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg">
+                    <div className="h-7 w-7 sm:h-8 sm:w-8 rounded-lg bg-linear-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg">
                       <span className="text-white font-bold text-sm sm:text-base">
                         {user?.name?.[0] || "U"}
                       </span>
@@ -409,7 +409,7 @@ const CompareResumes = () => {
                     <div className="px-6 py-4 border-b border-slate-700/50">
                       <div className="flex items-center space-x-3">
                         <div className="relative">
-                          <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+                          <div className="h-12 w-12 rounded-xl bg-linear-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
                             <span className="text-white font-bold text-lg">
                               {user?.name?.[0] || "U"}
                             </span>
@@ -463,7 +463,7 @@ const CompareResumes = () => {
 
         <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
           <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl mb-8 sm:mb-12">
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-600 to-purple-800"></div>
+            <div className="absolute inset-0 bg-linear-to-r from-purple-600 via-pink-600 to-purple-800"></div>
             <div className="absolute inset-0 bg-black/20"></div>
             <div className="absolute inset-0 overflow-hidden">
               <div className="absolute -top-20 sm:-top-40 -right-20 sm:-right-40 w-40 h-40 sm:w-80 sm:h-80 bg-white/10 rounded-full blur-2xl sm:blur-3xl"></div>
@@ -494,7 +494,7 @@ const CompareResumes = () => {
                 <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 sm:mb-6 leading-tight">
                   Find Best
                   <br />
-                  <span className="bg-gradient-to-r from-purple-300 via-pink-300 to-violet-300 bg-clip-text text-transparent">
+                  <span className="bg-linear-to-r from-purple-300 via-pink-300 to-violet-300 bg-clip-text text-transparent">
                     Fit
                   </span>
                 </h1>
@@ -562,7 +562,7 @@ const CompareResumes = () => {
           <section className="mb-12 sm:mb-20">
             <div className="text-center mb-8 sm:mb-12">
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 sm:mb-4 px-4 sm:px-0">
-                <span className="bg-gradient-to-r from-cyan-300 via-blue-300 to-indigo-300 bg-clip-text text-transparent">
+                <span className="bg-linear-to-r from-cyan-300 via-blue-300 to-indigo-300 bg-clip-text text-transparent">
                   Upload & Compare
                 </span>
               </h2>
@@ -574,16 +574,16 @@ const CompareResumes = () => {
 
             <div className="relative">
               <div className="relative mx-auto max-w-5xl">
-                <div className="absolute -inset-2 sm:-inset-4 bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-violet-500/20 rounded-[1.5rem] sm:rounded-[2rem] blur-xl sm:blur-2xl"></div>
-                <div className="absolute -inset-1 sm:-inset-2 bg-gradient-to-r from-purple-600/10 via-pink-600/10 to-violet-600/10 rounded-[1.25rem] sm:rounded-[1.75rem] blur-lg sm:blur-xl"></div>
+                <div className="absolute -inset-2 sm:-inset-4 bg-linear-to-r from-purple-500/20 via-pink-500/20 to-violet-500/20 rounded-3xl sm:rounded-4xl blur-xl sm:blur-2xl"></div>
+                <div className="absolute -inset-1 sm:-inset-2 bg-linear-to-r from-purple-600/10 via-pink-600/10 to-violet-600/10 rounded-2xl sm:rounded-3xl blur-lg sm:blur-xl"></div>
 
-                <div className="relative bg-gradient-to-br from-slate-800/90 via-slate-800/95 to-slate-900/90 backdrop-blur-xl rounded-2xl sm:rounded-3xl border border-slate-700/50 overflow-hidden shadow-2xl">
-                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/5"></div>
+                <div className="relative bg-linear-to-br from-slate-800/90 via-slate-800/95 to-slate-900/90 backdrop-blur-xl rounded-2xl sm:rounded-3xl border border-slate-700/50 overflow-hidden shadow-2xl">
+                  <div className="absolute inset-0 bg-linear-to-br from-purple-500/5 to-pink-500/5"></div>
 
                   <div className="relative p-6 sm:p-8 md:p-12">
                     <div className="text-center mb-8 sm:mb-12">
                       <div className="relative inline-block mb-6 sm:mb-8">
-                        <div className="p-6 sm:p-8 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl sm:rounded-3xl shadow-lg">
+                        <div className="p-6 sm:p-8 bg-linear-to-br from-purple-500 to-pink-600 rounded-2xl sm:rounded-3xl shadow-lg">
                           <svg
                             className="h-16 w-16 sm:h-20 sm:w-20 text-white"
                             fill="none"
@@ -602,7 +602,7 @@ const CompareResumes = () => {
                       </div>
 
                       <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4 sm:mb-6">
-                        <span className="bg-gradient-to-r from-purple-300 via-pink-300 to-violet-300 bg-clip-text text-transparent">
+                        <span className="bg-linear-to-r from-purple-300 via-pink-300 to-violet-300 bg-clip-text text-transparent">
                           Candidate Comparison
                         </span>
                       </h3>
@@ -615,10 +615,10 @@ const CompareResumes = () => {
 
                     <div className="max-w-2xl mx-auto mb-8 sm:mb-12">
                       <div className="group relative">
-                        <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-500 to-pink-600 rounded-xl sm:rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm"></div>
+                        <div className="absolute -inset-0.5 bg-linear-to-r from-purple-500 to-pink-600 rounded-xl sm:rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm"></div>
                         <div className="relative bg-slate-800/80 rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-slate-600/50 hover:border-purple-500/50 transition-all duration-300">
                           <div className="flex items-center mb-3 sm:mb-4">
-                            <div className="p-2 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-lg mr-3">
+                            <div className="p-2 bg-linear-to-br from-purple-500/20 to-pink-500/20 rounded-lg mr-3">
                               <svg
                                 className="h-5 w-5 text-purple-400"
                                 fill="none"
@@ -672,7 +672,7 @@ const CompareResumes = () => {
                                   >
                                     <div className="flex items-center space-x-2 flex-1 min-w-0">
                                       <svg
-                                        className="h-4 w-4 text-purple-400 flex-shrink-0"
+                                        className="h-4 w-4 text-purple-400 shrink-0"
                                         fill="none"
                                         viewBox="0 0 24 24"
                                         stroke="currentColor"
@@ -687,14 +687,14 @@ const CompareResumes = () => {
                                       <span className="text-sm text-white truncate">
                                         {file.name}
                                       </span>
-                                      <span className="text-xs text-slate-400 flex-shrink-0">
+                                      <span className="text-xs text-slate-400 shrink-0">
                                         ({(file.size / 1024 / 1024).toFixed(1)}
                                         MB)
                                       </span>
                                     </div>
                                     <button
                                       onClick={() => handleRemoveFile(index)}
-                                      className="text-red-400 hover:text-red-300 transition-colors flex-shrink-0 ml-2"
+                                      className="text-red-400 hover:text-red-300 transition-colors shrink-0 ml-2"
                                       title="Remove file"
                                     >
                                       <svg
@@ -727,7 +727,7 @@ const CompareResumes = () => {
                             }
                           }}
                           disabled={isLoading || currentFiles.length === 0}
-                          className="group relative inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-purple-600 via-pink-600 to-violet-600 hover:from-purple-500 hover:via-pink-500 hover:to-violet-500 text-white font-semibold rounded-xl sm:rounded-2xl transition-all duration-300 shadow-lg hover:shadow-purple-500/25 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none cursor-pointer"
+                          className="group relative inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 bg-linear-to-r from-purple-600 via-pink-600 to-violet-600 hover:from-purple-500 hover:via-pink-500 hover:to-violet-500 text-white font-semibold rounded-xl sm:rounded-2xl transition-all duration-300 shadow-lg hover:shadow-purple-500/25 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none cursor-pointer"
                         >
                           {isLoading ? (
                             <>
@@ -787,7 +787,7 @@ const CompareResumes = () => {
                         <div className="text-center mt-8 sm:mt-12 flex flex-wrap justify-center gap-4 sm:gap-6">
                           <button
                             onClick={handleReset}
-                            className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-semibold rounded-xl transition-all duration-300 shadow-lg hover:shadow-red-500/25 transform hover:scale-105 cursor-pointer"
+                            className="inline-flex items-center px-6 py-3 bg-linear-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-semibold rounded-xl transition-all duration-300 shadow-lg hover:shadow-red-500/25 transform hover:scale-105 cursor-pointer"
                           >
                             <svg
                               className="h-5 w-5 mr-2"
@@ -876,3 +876,4 @@ const CompareResumes = () => {
 };
 
 export default CompareResumes;
+

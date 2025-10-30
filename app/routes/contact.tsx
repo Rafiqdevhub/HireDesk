@@ -78,15 +78,15 @@ const Contact = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+    <div className="min-h-screen bg-linear-to-br from-slate-900 via-slate-800 to-slate-900">
       <Navbar />
       <div className="pt-24 pb-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <div className="inline-flex items-center justify-center p-2 bg-blue-500/10 rounded-2xl mb-6">
               <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl blur opacity-75 animate-pulse"></div>
-                <div className="relative bg-gradient-to-r from-blue-500 to-purple-500 p-3 rounded-xl">
+                <div className="absolute inset-0 bg-linear-to-r from-blue-500 to-purple-500 rounded-xl blur opacity-75 animate-pulse"></div>
+                <div className="relative bg-linear-to-r from-blue-500 to-purple-500 p-3 rounded-xl">
                   <svg
                     className="w-8 h-8 text-white"
                     fill="none"
@@ -104,24 +104,24 @@ const Contact = () => {
               </div>
             </div>
             <h1 className="text-5xl md:text-6xl font-bold mb-6">
-              <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+              <span className="bg-linear-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
                 Get In Touch
               </span>
             </h1>
             <p className="text-xl text-slate-300 max-w-2xl mx-auto">
-              Questions about our three analysis methods? Need help choosing
-              between Individual Deep Analysis, Batch Processing, or
-              Side-by-Side Comparison? We're here to help you streamline your
-              hiring process with AI-powered insights.
+              Questions about our AI-powered analysis methods? Need help
+              choosing between Individual Deep Analysis, Batch Processing,
+              Side-by-Side Comparison, or Candidate Selection? We're here to
+              help you streamline your hiring process with intelligent insights.
             </p>
           </div>
 
           <div className="mb-12 relative">
-            <div className="absolute -inset-1 bg-gradient-to-r from-emerald-600/20 via-teal-600/20 to-cyan-600/20 rounded-2xl blur-xl"></div>
-            <div className="relative bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-cyan-500/10 backdrop-blur-xl rounded-2xl border border-emerald-500/30 p-6 md:p-8">
+            <div className="absolute -inset-1 bg-linear-to-r from-emerald-600/20 via-teal-600/20 to-cyan-600/20 rounded-2xl blur-xl"></div>
+            <div className="relative bg-linear-to-r from-emerald-500/10 via-teal-500/10 to-cyan-500/10 backdrop-blur-xl rounded-2xl border border-emerald-500/30 p-6 md:p-8">
               <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
-                <div className="flex-shrink-0">
-                  <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-2xl flex items-center justify-center shadow-lg">
+                <div className="shrink-0">
+                  <div className="w-16 h-16 bg-linear-to-br from-emerald-500 to-teal-500 rounded-2xl flex items-center justify-center shadow-lg">
                     <svg
                       className="w-8 h-8 text-white"
                       fill="none"
@@ -153,11 +153,11 @@ const Contact = () => {
           </div>
           <div className="mb-12">
             <h2 className="text-3xl font-bold text-white text-center mb-8">
-              Three Analysis Methods, One Powerful Platform
+              Four Analysis Methods, One Powerful Platform
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               <div className="relative group">
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl opacity-75 group-hover:opacity-100 blur transition duration-200"></div>
+                <div className="absolute -inset-0.5 bg-linear-to-r from-blue-500 to-cyan-500 rounded-2xl opacity-75 group-hover:opacity-100 blur transition duration-200"></div>
                 <div className="relative bg-slate-800 rounded-2xl p-6 h-full border border-slate-700">
                   <div className="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center mb-4">
                     <svg
@@ -175,12 +175,12 @@ const Contact = () => {
                     </svg>
                   </div>
                   <h3 className="text-lg font-bold text-white mb-2">
-                    Individual Deep Analysis
+                    Smart Review
                   </h3>
                   <p className="text-sm text-slate-400 mb-3">
                     Comprehensive AI analysis for single candidates with
-                    personality insights, career trajectory, and tailored
-                    interview questions.
+                    personality insights, career trajectory, resume scoring, and
+                    tailored interview questions.
                   </p>
                   <div className="text-xs text-blue-400 font-semibold">
                     Perfect for final candidate evaluation
@@ -188,7 +188,7 @@ const Contact = () => {
                 </div>
               </div>
               <div className="relative group">
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl opacity-75 group-hover:opacity-100 blur transition duration-200"></div>
+                <div className="absolute -inset-0.5 bg-linear-to-r from-green-500 to-emerald-500 rounded-2xl opacity-75 group-hover:opacity-100 blur transition duration-200"></div>
                 <div className="relative bg-slate-800 rounded-2xl p-6 h-full border border-slate-700">
                   <div className="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center mb-4">
                     <svg
@@ -206,7 +206,7 @@ const Contact = () => {
                     </svg>
                   </div>
                   <h3 className="text-lg font-bold text-white mb-2">
-                    Batch Processing (2-10)
+                    Smart Screening (2-10)
                   </h3>
                   <p className="text-sm text-slate-400 mb-3">
                     Process multiple resumes simultaneously with automated
@@ -219,7 +219,7 @@ const Contact = () => {
                 </div>
               </div>
               <div className="relative group">
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl opacity-75 group-hover:opacity-100 blur transition duration-200"></div>
+                <div className="absolute -inset-0.5 bg-linear-to-r from-purple-500 to-pink-500 rounded-2xl opacity-75 group-hover:opacity-100 blur transition duration-200"></div>
                 <div className="relative bg-slate-800 rounded-2xl p-6 h-full border border-slate-700">
                   <div className="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center mb-4">
                     <svg
@@ -237,15 +237,46 @@ const Contact = () => {
                     </svg>
                   </div>
                   <h3 className="text-lg font-bold text-white mb-2">
-                    Side-by-Side Comparison (2-5)
+                    Find Best Fit (2-5)
                   </h3>
                   <p className="text-sm text-slate-400 mb-3">
-                    Compare top candidates visually with intelligent ranking
+                    Compare top candidates side-by-side with intelligent ranking
                     algorithms for objective final decision-making between
                     similar candidates.
                   </p>
                   <div className="text-xs text-purple-400 font-semibold">
                     Perfect for final candidate selection
+                  </div>
+                </div>
+              </div>
+              <div className="relative group">
+                <div className="absolute -inset-0.5 bg-linear-to-r from-orange-500 to-red-500 rounded-2xl opacity-75 group-hover:opacity-100 blur transition duration-200"></div>
+                <div className="relative bg-slate-800 rounded-2xl p-6 h-full border border-slate-700">
+                  <div className="w-12 h-12 bg-orange-500/20 rounded-xl flex items-center justify-center mb-4">
+                    <svg
+                      className="w-6 h-6 text-orange-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                  </div>
+                  <h3 className="text-lg font-bold text-white mb-2">
+                    Selection & Team Building (1-5)
+                  </h3>
+                  <p className="text-sm text-slate-400 mb-3">
+                    Quick FIT/REJECT decisions based on job requirements and
+                    keywords with AI-powered evaluation for rapid candidate
+                    screening.
+                  </p>
+                  <div className="text-xs text-orange-400 font-semibold">
+                    Perfect for fast-paced hiring cycles
                   </div>
                 </div>
               </div>
@@ -255,17 +286,17 @@ const Contact = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2">
               <div className="relative">
-                <div className="absolute -inset-1 bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-pink-600/20 rounded-3xl blur-2xl"></div>
+                <div className="absolute -inset-1 bg-linear-to-r from-blue-600/20 via-purple-600/20 to-pink-600/20 rounded-3xl blur-2xl"></div>
                 <div className="relative bg-slate-800/90 backdrop-blur-xl rounded-3xl border border-slate-700/50 p-8 md:p-10">
                   <h2 className="text-3xl font-bold text-white mb-2">
                     Send us a message
                   </h2>
                   <p className="text-slate-400 mb-6">
-                    Questions about Individual Deep Analysis, Batch Processing,
-                    or Side-by-Side Comparison? Need help choosing the right
-                    method for your hiring workflow? We're here to help you get
-                    the most out of HireDesk's AI-powered resume analysis
-                    platform.
+                    Questions about Smart Review, Smart Screening, Find Best
+                    Fit, or Selection & Team Building? Need help choosing the
+                    right method for your hiring workflow? We're here to help
+                    you get the most out of HireDesk's AI-powered resume
+                    analysis platform.
                   </p>
 
                   <form onSubmit={handleSubmit} className="space-y-6">
@@ -330,7 +361,7 @@ const Contact = () => {
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-4 px-8 rounded-xl transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none shadow-lg hover:shadow-xl cursor-pointer"
+                      className="w-full bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-4 px-8 rounded-xl transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none shadow-lg hover:shadow-xl cursor-pointer"
                     >
                       {isSubmitting ? (
                         <div className="flex items-center justify-center gap-3">
@@ -363,10 +394,10 @@ const Contact = () => {
 
             <div className="space-y-6">
               <div className="relative">
-                <div className="absolute -inset-1 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-2xl blur-xl"></div>
+                <div className="absolute -inset-1 bg-linear-to-r from-blue-600/20 to-purple-600/20 rounded-2xl blur-xl"></div>
                 <div className="relative bg-slate-800/90 backdrop-blur-xl rounded-2xl border border-slate-700/50 p-6">
                   <div className="flex items-center gap-4 mb-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
+                    <div className="w-12 h-12 bg-linear-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
                       <svg
                         className="w-6 h-6 text-white"
                         fill="none"
@@ -399,10 +430,10 @@ const Contact = () => {
                 </div>
               </div>
               <div className="relative">
-                <div className="absolute -inset-1 bg-gradient-to-r from-emerald-600/20 to-teal-600/20 rounded-2xl blur-xl"></div>
+                <div className="absolute -inset-1 bg-linear-to-r from-emerald-600/20 to-teal-600/20 rounded-2xl blur-xl"></div>
                 <div className="relative bg-slate-800/90 backdrop-blur-xl rounded-2xl border border-slate-700/50 p-6">
                   <div className="flex items-center gap-4 mb-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg">
+                    <div className="w-12 h-12 bg-linear-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg">
                       <svg
                         className="w-6 h-6 text-white"
                         fill="none"
@@ -440,7 +471,7 @@ const Contact = () => {
                         10 resume uploads/user
                       </p>
                     </div>
-                    <div className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-lg p-3 border border-blue-500/30">
+                    <div className="bg-linear-to-r from-blue-500/10 to-purple-500/10 rounded-lg p-3 border border-blue-500/30">
                       <div className="flex items-center justify-between mb-1">
                         <span className="text-sm font-semibold text-blue-300">
                           Premium Plan
@@ -462,7 +493,7 @@ const Contact = () => {
                         Contact for Pricing
                       </button>
                     </div>
-                    <div className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-lg p-3 border border-purple-500/30">
+                    <div className="bg-linear-to-r from-purple-500/10 to-pink-500/10 rounded-lg p-3 border border-purple-500/30">
                       <div className="flex items-center justify-between mb-1">
                         <span className="text-sm font-semibold text-purple-300">
                           Enterprise
@@ -489,7 +520,7 @@ const Contact = () => {
               </div>
 
               <div className="relative">
-                <div className="absolute -inset-1 bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-pink-600/20 rounded-2xl blur-xl"></div>
+                <div className="absolute -inset-1 bg-linear-to-r from-blue-600/20 via-purple-600/20 to-pink-600/20 rounded-2xl blur-xl"></div>
                 <div className="relative bg-slate-800/90 backdrop-blur-xl rounded-2xl border border-slate-700/50 p-6">
                   <h3 className="text-lg font-semibold text-white mb-4">
                     Connect With Us
@@ -554,7 +585,7 @@ const Contact = () => {
                       href="https://www.instagram.com/rafiqdevhub/"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-10 h-10 bg-gradient-to-br from-purple-500/10 to-pink-500/10 hover:from-purple-500/20 hover:to-pink-500/20 border border-purple-500/30 rounded-xl flex items-center justify-center transition-all hover:scale-110"
+                      className="w-10 h-10 bg-linear-to-br from-purple-500/10 to-pink-500/10 hover:from-purple-500/20 hover:to-pink-500/20 border border-purple-500/30 rounded-xl flex items-center justify-center transition-all hover:scale-110"
                       aria-label="Instagram"
                     >
                       <svg
@@ -582,74 +613,112 @@ const Contact = () => {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="relative">
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-600/10 to-purple-600/10 rounded-2xl blur"></div>
+                <div className="absolute -inset-0.5 bg-linear-to-r from-blue-600/10 to-purple-600/10 rounded-2xl blur"></div>
                 <div className="relative bg-slate-800/90 backdrop-blur-xl rounded-2xl border border-slate-700/50 p-6">
                   <h3 className="text-lg font-semibold text-white mb-3 flex items-start gap-3">
-                    <span className="flex-shrink-0 w-6 h-6 bg-blue-500/20 rounded-lg flex items-center justify-center text-blue-400 text-sm">
+                    <span className="shrink-0 w-6 h-6 bg-blue-500/20 rounded-lg flex items-center justify-center text-blue-400 text-sm">
                       Q
                     </span>
-                    When should I use Individual Deep Analysis?
+                    When should I use Smart Review?
                   </h3>
                   <p className="text-slate-400 text-sm ml-9">
-                    Use Individual Deep Analysis for final-round candidates or
-                    key positions requiring comprehensive evaluation. It
-                    provides personality insights, leadership assessments,
-                    career trajectory analysis, and tailored interview
-                    questions.
+                    Use Smart Review (Individual Deep Analysis) for final-round
+                    candidates or key positions requiring comprehensive
+                    evaluation. It provides personality insights, leadership
+                    assessments, career trajectory analysis, resume scoring, and
+                    tailored interview questions.
                   </p>
                 </div>
               </div>
               <div className="relative">
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-green-600/10 to-emerald-600/10 rounded-2xl blur"></div>
+                <div className="absolute -inset-0.5 bg-linear-to-r from-green-600/10 to-emerald-600/10 rounded-2xl blur"></div>
                 <div className="relative bg-slate-800/90 backdrop-blur-xl rounded-2xl border border-slate-700/50 p-6">
                   <h3 className="text-lg font-semibold text-white mb-3 flex items-start gap-3">
-                    <span className="flex-shrink-0 w-6 h-6 bg-green-500/20 rounded-lg flex items-center justify-center text-green-400 text-sm">
+                    <span className="shrink-0 w-6 h-6 bg-green-500/20 rounded-lg flex items-center justify-center text-green-400 text-sm">
                       Q
                     </span>
                     What's the best way to handle large applicant pools?
                   </h3>
                   <p className="text-slate-400 text-sm ml-9">
-                    For large applicant pools (20+ candidates), start with Batch
-                    Processing to analyze 2-10 resumes simultaneously. This
-                    provides consistent evaluation criteria and automated
-                    ranking to quickly identify top candidates for further
-                    review.
+                    For large applicant pools (20+ candidates), start with Smart
+                    Screening (Batch Processing) to analyze 2-10 resumes
+                    simultaneously. This provides consistent evaluation criteria
+                    and automated ranking to quickly identify top candidates for
+                    further review.
                   </p>
                 </div>
               </div>
               <div className="relative">
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-600/10 to-pink-600/10 rounded-2xl blur"></div>
+                <div className="absolute -inset-0.5 bg-linear-to-r from-purple-600/10 to-pink-600/10 rounded-2xl blur"></div>
                 <div className="relative bg-slate-800/90 backdrop-blur-xl rounded-2xl border border-slate-700/50 p-6">
                   <h3 className="text-lg font-semibold text-white mb-3 flex items-start gap-3">
-                    <span className="flex-shrink-0 w-6 h-6 bg-purple-500/20 rounded-lg flex items-center justify-center text-purple-400 text-sm">
+                    <span className="shrink-0 w-6 h-6 bg-purple-500/20 rounded-lg flex items-center justify-center text-purple-400 text-sm">
                       Q
                     </span>
-                    How does Side-by-Side Comparison help with final decisions?
+                    How does Find Best Fit help with final decisions?
                   </h3>
                   <p className="text-slate-400 text-sm ml-9">
-                    Side-by-Side Comparison allows you to visually compare 2-5
-                    top candidates using intelligent ranking algorithms. Perfect
-                    for making objective final decisions when you have multiple
-                    strong applicants with similar qualifications.
+                    Find Best Fit (Side-by-Side Comparison) allows you to
+                    visually compare 2-5 top candidates using intelligent
+                    ranking algorithms. Perfect for making objective final
+                    decisions when you have multiple strong applicants with
+                    similar qualifications.
                   </p>
                 </div>
               </div>
               <div className="relative">
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-orange-600/10 to-red-600/10 rounded-2xl blur"></div>
+                <div className="absolute -inset-0.5 bg-linear-to-r from-orange-600/10 to-red-600/10 rounded-2xl blur"></div>
                 <div className="relative bg-slate-800/90 backdrop-blur-xl rounded-2xl border border-slate-700/50 p-6">
                   <h3 className="text-lg font-semibold text-white mb-3 flex items-start gap-3">
-                    <span className="flex-shrink-0 w-6 h-6 bg-orange-500/20 rounded-lg flex items-center justify-center text-orange-400 text-sm">
+                    <span className="shrink-0 w-6 h-6 bg-orange-500/20 rounded-lg flex items-center justify-center text-orange-400 text-sm">
+                      Q
+                    </span>
+                    When should I use Selection & Team Building?
+                  </h3>
+                  <p className="text-slate-400 text-sm ml-9">
+                    Use Selection & Team Building for rapid candidate screening
+                    (1-5 resumes). It provides quick FIT/REJECT decisions based
+                    on job title and required keywords, perfect for fast-paced
+                    hiring cycles where you need immediate decisions on
+                    candidate suitability.
+                  </p>
+                </div>
+              </div>
+              <div className="relative">
+                <div className="absolute -inset-0.5 bg-linear-to-r from-teal-600/10 to-cyan-600/10 rounded-2xl blur"></div>
+                <div className="relative bg-slate-800/90 backdrop-blur-xl rounded-2xl border border-slate-700/50 p-6">
+                  <h3 className="text-lg font-semibold text-white mb-3 flex items-start gap-3">
+                    <span className="shrink-0 w-6 h-6 bg-teal-500/20 rounded-lg flex items-center justify-center text-teal-400 text-sm">
                       Q
                     </span>
                     Can I combine different analysis methods in my hiring
                     process?
                   </h3>
                   <p className="text-slate-400 text-sm ml-9">
-                    Absolutely! Many recruiters use Batch Processing for initial
-                    screening, Individual Deep Analysis for final candidates,
-                    and Side-by-Side Comparison for the final selection. This
+                    Absolutely! Many recruiters use Selection & Team Building
+                    for rapid pre-screening, Smart Screening for initial
+                    evaluation, Find Best Fit for comparing finalists, and Smart
+                    Review for deep analysis of selected candidates. This
                     multi-stage approach ensures thorough evaluation at each
                     hiring phase.
+                  </p>
+                </div>
+              </div>
+              <div className="relative">
+                <div className="absolute -inset-0.5 bg-linear-to-r from-pink-600/10 to-rose-600/10 rounded-2xl blur"></div>
+                <div className="relative bg-slate-800/90 backdrop-blur-xl rounded-2xl border border-slate-700/50 p-6">
+                  <h3 className="text-lg font-semibold text-white mb-3 flex items-start gap-3">
+                    <span className="shrink-0 w-6 h-6 bg-pink-500/20 rounded-lg flex items-center justify-center text-pink-400 text-sm">
+                      Q
+                    </span>
+                    What's the difference between the four analysis methods?
+                  </h3>
+                  <p className="text-slate-400 text-sm ml-9">
+                    Smart Review provides comprehensive individual analysis,
+                    Smart Screening handles bulk processing (2-10 resumes), Find
+                    Best Fit compares candidates side-by-side (2-5), and
+                    Selection & Team Building offers quick FIT/REJECT decisions
+                    (1-5). Each serves different stages of your hiring funnel.
                   </p>
                 </div>
               </div>
@@ -663,3 +732,4 @@ const Contact = () => {
 };
 
 export default Contact;
+
