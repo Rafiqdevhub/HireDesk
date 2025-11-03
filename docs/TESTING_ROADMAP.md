@@ -324,187 +324,807 @@ jobs:
 
 ---
 
-## Phase 2: Integration Testing (Weeks 4-6)
+## Phase 2: Integration Testing (Weeks 3-5)
 
-### Goals
+**Status: 🟡 READY TO START**  
+**Dependencies: ✅ Phase 1 Complete (Unit Tests - 90 tests, 80.78% coverage)**  
+**Estimated Duration: 3 weeks**  
+**Team Size: 1-2 developers**
 
-- Test component integration
-- Validate context providers
-- Test API integration flows
-- Mock external API responses
+### 📋 Phase 2 Overview
 
-### 2.1 Context Provider Tests (Priority: HIGH)
+Integration testing validates how components, contexts, and services work together. This phase focuses on testing user workflows, API integration, and component interaction patterns rather than isolated unit functionality.
+
+### 🎯 Primary Goals
+
+1. **Component Integration** - Test how UI components interact with contexts and services
+2. **Context Provider Validation** - Ensure AuthContext and ToastContext work correctly
+3. **API Flow Testing** - Validate complete request-response cycles with MSW
+4. **User Journey Testing** - Test critical paths users take through the app
+5. **Error Handling Integration** - Verify error boundaries and user feedback work together
+
+---
+
+## 🗓️ Week-by-Week Breakdown
+
+### **Week 3: Foundation & Context Integration**
+
+- ✅ **Day 1-2**: MSW setup and API mocking infrastructure
+- ✅ **Day 3-4**: AuthContext integration tests (8 test scenarios)
+- ✅ **Day 5**: ToastContext integration tests (7 test scenarios)
+
+### **Week 4: Component Integration**
+
+- ✅ **Day 1-2**: Authentication flow tests (Login, Register, Password Reset)
+- ✅ **Day 3-4**: Resume analysis flow tests (Upload, Analysis, Results)
+- ✅ **Day 5**: Protected route and navigation tests
+
+### **Week 5: Advanced Flows & Error Handling**
+
+- ✅ **Day 1-2**: Batch analysis integration tests
+- ✅ **Day 3-4**: Candidate selection integration tests
+- ✅ **Day 5**: Error boundary and edge case testing
+
+---
+
+## 🏗️ Integration Testing Architecture
+
+### Test Structure
+
+```bash
+__tests__/
+├── integration/
+│   ├── contexts/
+│   │   ├── AuthContext.integration.test.tsx
+│   │   └── ToastContext.integration.test.tsx
+│   ├── flows/
+│   │   ├── AuthenticationFlow.test.tsx
+│   │   ├── ResumeAnalysisFlow.test.tsx
+│   │   ├── BatchAnalysisFlow.test.tsx
+│   │   └── CandidateSelectionFlow.test.tsx
+│   ├── components/
+│   │   ├── auth/
+│   │   ├── resume/
+│   │   ├── batch/
+│   │   └── ui/
+│   └── routes/
+│       ├── ProtectedRoute.test.tsx
+│       └── NavigationFlow.test.tsx
+├── mocks/
+│   ├── handlers/
+│   │   ├── auth.handlers.ts
+│   │   ├── ai.handlers.ts
+│   │   └── file.handlers.ts
+│   ├── data/
+│   │   ├── mockUsers.ts
+│   │   ├── mockAnalysis.ts
+│   │   └── mockFiles.ts
+│   └── server.ts
+└── utils/
+    ├── test-helpers.tsx
+    └── integration-utils.ts
+```
+
+### Integration Test Setup Pattern
+
+```typescript
+// __tests__/utils/integration-utils.ts
+export const createIntegrationWrapper = ({
+  initialAuth = null,
+  mockHandlers = []
+}) => {
+  const AllProviders = ({ children }: { children: ReactNode }) => (
+    <MemoryRouter>
+      <AuthProvider initialUser={initialAuth}>
+        <ToastProvider>
+          {children}
+        </ToastProvider>
+      </AuthProvider>
+    </MemoryRouter>
+  );
+
+  return AllProviders;
+};
+
+export const waitForLoadingToFinish = () =>
+  waitForElementToBeRemoved(() => screen.queryByTestId('loading-spinner'));
+
+export const mockFileUpload = (fileName = 'test-resume.pdf') =>
+  new File(['mock content'], fileName, { type: 'application/pdf' });
+```
+
+---
+
+## 🧪 Detailed Test Implementation
+
+### 2.1 Context Integration Tests (Priority: HIGH)
 
 #### AuthContext Integration Tests
 
 ```typescript
-// __tests__/integration/contexts/AuthContext.test.tsx
+// __tests__/integration/contexts/AuthContext.integration.test.tsx
 
 describe('AuthContext Integration', () => {
-  ✓ Initializes with null user when not authenticated
-  ✓ Loads user from localStorage on mount
-  ✓ Updates user state on successful login
-  ✓ Clears user state on logout
-  ✓ Handles token refresh on 401
-  ✓ Redirects to login when refresh fails
-  ✓ Persists user across page refresh
-  ✓ Shows verification modal for unverified users
+  let server: SetupServer;
+
+  beforeAll(() => {
+    server = setupServer(...authHandlers);
+    server.listen();
+  });
+
+  afterEach(() => {
+    server.resetHandlers();
+    localStorage.clear();
+  });
+
+  afterAll(() => {
+    server.close();
+  });
+
+  describe('Authentication State Management', () => {
+    test('initializes with null user when not authenticated', () => {
+      const TestComponent = () => {
+        const { user, isAuthenticated } = useAuth();
+        return (
+          <div>
+            <span data-testid="user-status">{isAuthenticated ? 'authenticated' : 'not-authenticated'}</span>
+            <span data-testid="user-data">{user ? user.name : 'no-user'}</span>
+          </div>
+        );
+      };
+
+      render(<TestComponent />, { wrapper: createIntegrationWrapper() });
+
+      expect(screen.getByTestId('user-status')).toHaveTextContent('not-authenticated');
+      expect(screen.getByTestId('user-data')).toHaveTextContent('no-user');
+    });
+
+    test('loads user from localStorage on mount', () => {
+      // Pre-populate localStorage
+      localStorage.setItem('accessToken', 'valid-token');
+      localStorage.setItem('user', JSON.stringify(createMockUser()));
+
+      const TestComponent = () => {
+        const { user, isAuthenticated } = useAuth();
+        return (
+          <div>
+            <span data-testid="user-status">{isAuthenticated ? 'authenticated' : 'not-authenticated'}</span>
+            <span data-testid="user-name">{user?.name || 'no-name'}</span>
+          </div>
+        );
+      };
+
+      render(<TestComponent />, { wrapper: createIntegrationWrapper() });
+
+      expect(screen.getByTestId('user-status')).toHaveTextContent('authenticated');
+      expect(screen.getByTestId('user-name')).toHaveTextContent('John Doe');
+    });
+
+    test('updates user state on successful login', async () => {
+      const TestComponent = () => {
+        const { login, user, isAuthenticated } = useAuth();
+
+        const handleLogin = () => {
+          login({ email: 'test@example.com', password: 'Test123!' });
+        };
+
+        return (
+          <div>
+            <button onClick={handleLogin} data-testid="login-btn">Login</button>
+            <span data-testid="user-status">{isAuthenticated ? 'authenticated' : 'not-authenticated'}</span>
+            <span data-testid="user-name">{user?.name || 'no-name'}</span>
+          </div>
+        );
+      };
+
+      render(<TestComponent />, { wrapper: createIntegrationWrapper() });
+
+      expect(screen.getByTestId('user-status')).toHaveTextContent('not-authenticated');
+
+      fireEvent.click(screen.getByTestId('login-btn'));
+
+      await waitFor(() => {
+        expect(screen.getByTestId('user-status')).toHaveTextContent('authenticated');
+        expect(screen.getByTestId('user-name')).toHaveTextContent('John Doe');
+      });
+
+      // Verify localStorage was updated
+      expect(localStorage.getItem('accessToken')).toBeTruthy();
+    });
+
+    test('clears user state on logout', async () => {
+      const initialUser = createMockUser();
+
+      const TestComponent = () => {
+        const { logout, user, isAuthenticated } = useAuth();
+
+        return (
+          <div>
+            <button onClick={logout} data-testid="logout-btn">Logout</button>
+            <span data-testid="user-status">{isAuthenticated ? 'authenticated' : 'not-authenticated'}</span>
+          </div>
+        );
+      };
+
+      const Wrapper = createIntegrationWrapper({ initialAuth: initialUser });
+      render(<TestComponent />, { wrapper: Wrapper });
+
+      expect(screen.getByTestId('user-status')).toHaveTextContent('authenticated');
+
+      fireEvent.click(screen.getByTestId('logout-btn'));
+
+      await waitFor(() => {
+        expect(screen.getByTestId('user-status')).toHaveTextContent('not-authenticated');
+      });
+
+      // Verify localStorage was cleared
+      expect(localStorage.getItem('accessToken')).toBeNull();
+    });
+
+    test('handles token refresh on 401 response', async () => {
+      // Test implementation for automatic token refresh
+    });
+
+    test('redirects to login when refresh fails', async () => {
+      // Test implementation for failed refresh scenario
+    });
+
+    test('persists user across page refresh', () => {
+      // Test implementation for persistence
+    });
+
+    test('shows verification modal for unverified users', async () => {
+      // Test implementation for email verification flow
+    });
+  });
+
+  describe('Error Handling', () => {
+    test('handles network errors gracefully', async () => {
+      server.use(
+        http.post('/auth/login', () => {
+          return HttpResponse.error();
+        })
+      );
+
+      // Test implementation
+    });
+
+    test('handles invalid credentials error', async () => {
+      // Test implementation
+    });
+  });
 });
 ```
 
 #### ToastContext Integration Tests
 
 ```typescript
-// __tests__/integration/contexts/ToastContext.test.tsx
+// __tests__/integration/contexts/ToastContext.integration.test.tsx
 
 describe('ToastContext Integration', () => {
-  ✓ Shows success toast
-  ✓ Shows error toast
-  ✓ Shows warning toast
-  ✓ Auto-dismisses after timeout
-  ✓ Supports manual dismiss
-  ✓ Queues multiple toasts
-  ✓ Respects max toast count
+  describe('Toast Display Management', () => {
+    test('shows success toast with correct styling', () => {
+      const TestComponent = () => {
+        const { showToast } = useToast();
+
+        return (
+          <div>
+            <button
+              onClick={() => showToast('Success message!', 'success')}
+              data-testid="success-btn"
+            >
+              Show Success
+            </button>
+            <ToastContainer />
+          </div>
+        );
+      };
+
+      render(<TestComponent />, { wrapper: createIntegrationWrapper() });
+
+      fireEvent.click(screen.getByTestId('success-btn'));
+
+      expect(screen.getByText('Success message!')).toBeInTheDocument();
+      expect(screen.getByRole('alert')).toHaveClass('toast-success');
+    });
+
+    test('shows error toast with correct styling', () => {
+      // Similar test for error toasts
+    });
+
+    test('auto-dismisses after configured timeout', async () => {
+      const TestComponent = () => {
+        const { showToast } = useToast();
+
+        return (
+          <div>
+            <button
+              onClick={() => showToast('Auto dismiss message', 'info', 1000)}
+              data-testid="auto-dismiss-btn"
+            >
+              Show Auto Dismiss
+            </button>
+            <ToastContainer />
+          </div>
+        );
+      };
+
+      render(<TestComponent />, { wrapper: createIntegrationWrapper() });
+
+      fireEvent.click(screen.getByTestId('auto-dismiss-btn'));
+
+      expect(screen.getByText('Auto dismiss message')).toBeInTheDocument();
+
+      await waitFor(() => {
+        expect(screen.queryByText('Auto dismiss message')).not.toBeInTheDocument();
+      }, { timeout: 1500 });
+    });
+
+    test('supports manual dismiss', () => {
+      // Test manual dismiss functionality
+    });
+
+    test('queues multiple toasts correctly', () => {
+      // Test multiple toast management
+    });
+
+    test('respects maximum toast count', () => {
+      // Test toast count limits
+    });
+  });
 });
 ```
 
-### 2.2 Component Integration Tests
+### 2.2 Component Flow Integration Tests
 
 #### Authentication Flow Tests
 
 ```typescript
-// __tests__/integration/components/auth/LoginFlow.test.tsx
+// __tests__/integration/flows/AuthenticationFlow.test.tsx
 
-describe('Login Flow Integration', () => {
-  ✓ User can login with valid credentials
-  ✓ Shows error for invalid credentials
-  ✓ Redirects to dashboard after successful login
-  ✓ Shows verification modal for unverified email
-  ✓ Handles "Remember Me" functionality
-  ✓ Shows forgot password link
-  ✓ Validates email format
-  ✓ Validates password requirements
-});
+describe('Authentication Flow Integration', () => {
+  let server: SetupServer;
 
-// __tests__/integration/components/auth/RegisterFlow.test.tsx
-describe('Registration Flow Integration', () => {
-  ✓ User can register with valid data
-  ✓ Shows password strength indicator
-  ✓ Validates password confirmation match
-  ✓ Handles duplicate email error
-  ✓ Shows terms and privacy policy modals
-  ✓ Requires terms acceptance
-  ✓ Sends verification email
-  ✓ Redirects to verification page
+  beforeAll(() => {
+    server = setupServer(...authHandlers, ...aiHandlers);
+    server.listen();
+  });
+
+  describe('Login Flow', () => {
+    test('complete login journey - success path', async () => {
+      const mockNavigate = vi.fn();
+
+      // Mock React Router navigate
+      vi.mock('react-router-dom', async () => ({
+        ...(await vi.importActual('react-router-dom')),
+        useNavigate: () => mockNavigate,
+      }));
+
+      render(<LoginPage />, {
+        wrapper: createIntegrationWrapper(),
+        route: '/login'
+      });
+
+      // User enters credentials
+      await user.type(screen.getByLabelText(/email/i), 'test@example.com');
+      await user.type(screen.getByLabelText(/password/i), 'Test123!');
+
+      // User submits form
+      await user.click(screen.getByRole('button', { name: /sign in/i }));
+
+      // Verify loading state
+      expect(screen.getByTestId('loading-spinner')).toBeInTheDocument();
+
+      // Wait for success
+      await waitForLoadingToFinish();
+
+      // Verify redirect to dashboard
+      expect(mockNavigate).toHaveBeenCalledWith('/dashboard');
+
+      // Verify user is authenticated
+      expect(screen.queryByText(/welcome back/i)).toBeInTheDocument();
+    });
+
+    test('login flow - invalid credentials', async () => {
+      server.use(
+        http.post('/auth/login', () => {
+          return HttpResponse.json(
+            { success: false, message: 'Invalid email or password' },
+            { status: 401 }
+          );
+        })
+      );
+
+      render(<LoginPage />, { wrapper: createIntegrationWrapper() });
+
+      await user.type(screen.getByLabelText(/email/i), 'invalid@example.com');
+      await user.type(screen.getByLabelText(/password/i), 'wrongpassword');
+      await user.click(screen.getByRole('button', { name: /sign in/i }));
+
+      await waitFor(() => {
+        expect(screen.getByText(/invalid email or password/i)).toBeInTheDocument();
+      });
+
+      // Verify user remains on login page
+      expect(screen.getByRole('button', { name: /sign in/i })).toBeInTheDocument();
+    });
+
+    test('login flow - shows verification modal for unverified users', async () => {
+      server.use(
+        http.post('/auth/login', () => {
+          return HttpResponse.json(
+            {
+              success: false,
+              message: 'Please verify your email before logging in',
+              code: 'EMAIL_NOT_VERIFIED'
+            },
+            { status: 403 }
+          );
+        })
+      );
+
+      render(<LoginPage />, { wrapper: createIntegrationWrapper() });
+
+      await user.type(screen.getByLabelText(/email/i), 'unverified@example.com');
+      await user.type(screen.getByLabelText(/password/i), 'Test123!');
+      await user.click(screen.getByRole('button', { name: /sign in/i }));
+
+      await waitFor(() => {
+        expect(screen.getByText(/verify your email/i)).toBeInTheDocument();
+      });
+
+      // Verify verification modal is shown
+      expect(screen.getByRole('dialog')).toBeInTheDocument();
+      expect(screen.getByText(/resend verification/i)).toBeInTheDocument();
+    });
+  });
+
+  describe('Registration Flow', () => {
+    test('complete registration journey', async () => {
+      render(<RegisterPage />, { wrapper: createIntegrationWrapper() });
+
+      // Fill registration form
+      await user.type(screen.getByLabelText(/full name/i), 'John Doe');
+      await user.type(screen.getByLabelText(/email/i), 'john@example.com');
+      await user.type(screen.getByLabelText(/company name/i), 'Test Corp');
+      await user.type(screen.getByLabelText(/^password/i), 'Test123!');
+      await user.type(screen.getByLabelText(/confirm password/i), 'Test123!');
+
+      // Accept terms
+      await user.click(screen.getByLabelText(/agree to terms/i));
+
+      // Submit form
+      await user.click(screen.getByRole('button', { name: /create account/i }));
+
+      await waitForLoadingToFinish();
+
+      // Verify success message and redirect
+      expect(screen.getByText(/check your email/i)).toBeInTheDocument();
+    });
+
+    test('shows password strength indicator', async () => {
+      render(<RegisterPage />, { wrapper: createIntegrationWrapper() });
+
+      const passwordInput = screen.getByLabelText(/^password/i);
+
+      // Weak password
+      await user.type(passwordInput, '123');
+      expect(screen.getByText(/weak/i)).toBeInTheDocument();
+
+      // Strong password
+      await user.clear(passwordInput);
+      await user.type(passwordInput, 'StrongPassword123!');
+      expect(screen.getByText(/strong/i)).toBeInTheDocument();
+    });
+  });
 });
 ```
 
 #### Resume Analysis Flow Tests
 
 ```typescript
-// __tests__/integration/components/resume/ResumeAnalysisFlow.test.tsx
+// __tests__/integration/flows/ResumeAnalysisFlow.test.tsx
 
 describe('Resume Analysis Flow Integration', () => {
-  ✓ User can upload resume file
-  ✓ Validates file format (PDF, DOCX)
-  ✓ Validates file size (< 10MB)
-  ✓ Shows file preview after selection
-  ✓ User can enter job title
-  ✓ User can enter job description
-  ✓ Submits form with valid data
-  ✓ Shows loading state during analysis
-  ✓ Displays analysis results
-  ✓ Persists results across page refresh
-  ✓ Handles rate limit error (429)
-  ✓ Handles file format error (422)
-  ✓ Shows rate limit modal
-});
-```
+  let server: SetupServer;
 
-#### Batch Analysis Flow Tests
+  beforeAll(() => {
+    server = setupServer(...aiHandlers);
+    server.listen();
+  });
 
-```typescript
-// __tests__/integration/components/batch/BatchAnalysisFlow.test.tsx
+  test('complete resume analysis journey', async () => {
+    const initialUser = createMockUser();
 
-describe('Batch Analysis Flow Integration', () => {
-  ✓ User can upload 2-5 files
-  ✓ Shows file count validation
-  ✓ Displays all selected files
-  ✓ User can remove files
-  ✓ Validates total file count
-  ✓ Submits batch for analysis
-  ✓ Shows progress indicator
-  ✓ Displays results for each candidate
-  ✓ Shows summary statistics
-  ✓ Handles rate limiting
-  ✓ Persists batch results
+    render(<HireDeskAnalyzePage />, {
+      wrapper: createIntegrationWrapper({ initialAuth: initialUser })
+    });
+
+    // Step 1: File Upload
+    const fileInput = screen.getByLabelText(/upload resume/i);
+    const testFile = mockFileUpload('john-doe-resume.pdf');
+
+    await user.upload(fileInput, testFile);
+
+    // Verify file is displayed
+    expect(screen.getByText('john-doe-resume.pdf')).toBeInTheDocument();
+    expect(screen.getByText(/pdf/i)).toBeInTheDocument();
+
+    // Step 2: Job Details
+    await user.type(screen.getByLabelText(/job title/i), 'Senior Developer');
+    await user.type(
+      screen.getByLabelText(/job description/i),
+      'Looking for experienced React developer with TypeScript skills'
+    );
+
+    // Step 3: Submit for Analysis
+    await user.click(screen.getByRole('button', { name: /analyze resume/i }));
+
+    // Verify loading state
+    expect(screen.getByText(/analyzing resume/i)).toBeInTheDocument();
+    expect(screen.getByTestId('analysis-progress')).toBeInTheDocument();
+
+    // Wait for results
+    await waitFor(() => {
+      expect(screen.getByText(/analysis complete/i)).toBeInTheDocument();
+    }, { timeout: 5000 });
+
+    // Verify results are displayed
+    expect(screen.getByTestId('personal-info-card')).toBeInTheDocument();
+    expect(screen.getByTestId('skills-card')).toBeInTheDocument();
+    expect(screen.getByTestId('experience-card')).toBeInTheDocument();
+    expect(screen.getByTestId('resume-score')).toBeInTheDocument();
+
+    // Verify specific content
+    expect(screen.getByText(/fit status/i)).toBeInTheDocument();
+    expect(screen.getByText(/interview questions/i)).toBeInTheDocument();
+  });
+
+  test('handles file validation errors', async () => {
+    const initialUser = createMockUser();
+
+    render(<HireDeskAnalyzePage />, {
+      wrapper: createIntegrationWrapper({ initialAuth: initialUser })
+    });
+
+    // Test invalid file format
+    const fileInput = screen.getByLabelText(/upload resume/i);
+    const invalidFile = new File(['content'], 'resume.txt', { type: 'text/plain' });
+
+    await user.upload(fileInput, invalidFile);
+
+    await waitFor(() => {
+      expect(screen.getByText(/invalid file format/i)).toBeInTheDocument();
+    });
+  });
+
+  test('handles rate limit gracefully', async () => {
+    server.use(
+      http.post('/hiredesk-analyze', () => {
+        return HttpResponse.json(
+          {
+            detail: 'Daily analysis limit reached',
+            current_count: 10,
+            limit: 10
+          },
+          { status: 429 }
+        );
+      })
+    );
+
+    const initialUser = createMockUser();
+
+    render(<HireDeskAnalyzePage />, {
+      wrapper: createIntegrationWrapper({ initialAuth: initialUser })
+    });
+
+    const fileInput = screen.getByLabelText(/upload resume/i);
+    const testFile = mockFileUpload('resume.pdf');
+
+    await user.upload(fileInput, testFile);
+    await user.type(screen.getByLabelText(/job title/i), 'Developer');
+    await user.type(screen.getByLabelText(/job description/i), 'Job desc');
+    await user.click(screen.getByRole('button', { name: /analyze resume/i }));
+
+    await waitFor(() => {
+      expect(screen.getByText(/daily analysis limit reached/i)).toBeInTheDocument();
+    });
+
+    // Verify rate limit modal is shown
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+    expect(screen.getByText(/upgrade plan/i)).toBeInTheDocument();
+  });
 });
 ```
 
 #### Candidate Selection Flow Tests
 
 ```typescript
-// __tests__/integration/routes/SelectionCandidates.test.tsx
+// __tests__/integration/flows/CandidateSelectionFlow.test.tsx
 
 describe('Candidate Selection Flow Integration', () => {
-  ✓ User can upload 1-5 resumes
-  ✓ User enters job title
-  ✓ User enters required keywords
-  ✓ Validates all required fields
-  ✓ Submits for evaluation
-  ✓ Displays FIT/REJECT results
-  ✓ Shows decision reasoning
-  ✓ Displays summary stats (fit count, reject count)
-  ✓ Handles rate limiting (10/day quota)
-  ✓ Persists evaluation results
-  ✓ Shows rate limit modal
+  test('complete candidate evaluation journey', async () => {
+    const initialUser = createMockUser();
+
+    render(<SelectionCandidatesPage />, {
+      wrapper: createIntegrationWrapper({ initialAuth: initialUser })
+    });
+
+    // Step 1: Upload multiple resumes
+    const fileInput = screen.getByLabelText(/select resumes/i);
+    const testFiles = [
+      mockFileUpload('candidate1.pdf'),
+      mockFileUpload('candidate2.pdf'),
+      mockFileUpload('candidate3.pdf'),
+    ];
+
+    await user.upload(fileInput, testFiles);
+
+    // Verify files are listed
+    expect(screen.getByText('candidate1.pdf')).toBeInTheDocument();
+    expect(screen.getByText('candidate2.pdf')).toBeInTheDocument();
+    expect(screen.getByText('candidate3.pdf')).toBeInTheDocument();
+    expect(screen.getByText(/3\/5 files selected/i)).toBeInTheDocument();
+
+    // Step 2: Job details
+    await user.type(screen.getByLabelText(/job title/i), 'Senior Backend Developer');
+    await user.type(
+      screen.getByLabelText(/keywords/i),
+      'Python, AWS, Docker, PostgreSQL, Leadership'
+    );
+
+    // Step 3: Submit for evaluation
+    await user.click(screen.getByRole('button', { name: /evaluate candidates/i }));
+
+    // Verify loading state
+    expect(screen.getByText(/evaluating candidates/i)).toBeInTheDocument();
+
+    // Wait for results
+    await waitFor(() => {
+      expect(screen.getByText(/evaluation results/i)).toBeInTheDocument();
+    }, { timeout: 10000 });
+
+    // Verify results display
+    expect(screen.getByTestId('summary-stats')).toBeInTheDocument();
+    expect(screen.getByText(/2 fit/i)).toBeInTheDocument();
+    expect(screen.getByText(/1 reject/i)).toBeInTheDocument();
+
+    // Verify individual results
+    expect(screen.getAllByText(/fit|reject/i)).toHaveLength(6); // 3 candidates + 3 badges
+    expect(screen.getByText(/next steps/i)).toBeInTheDocument();
+  });
 });
 ```
 
-### 2.3 Protected Route Testing
+### 2.3 Protected Route Integration Tests
 
 ```typescript
 // __tests__/integration/components/auth/ProtectedRoute.test.tsx
 
 describe('ProtectedRoute Integration', () => {
-  ✓ Redirects unauthenticated users to login
-  ✓ Allows authenticated users to access route
-  ✓ Preserves intended destination in redirect
-  ✓ Checks token validity before rendering
-  ✓ Handles expired token scenario
+  test('redirects unauthenticated users to login', () => {
+    const mockNavigate = vi.fn();
+    vi.mock('react-router-dom', async () => ({
+      ...(await vi.importActual('react-router-dom')),
+      useNavigate: () => mockNavigate,
+    }));
+
+    render(
+      <ProtectedRoute>
+        <div data-testid="protected-content">Protected Content</div>
+      </ProtectedRoute>,
+      { wrapper: createIntegrationWrapper() }
+    );
+
+    expect(mockNavigate).toHaveBeenCalledWith('/login', {
+      state: { from: window.location }
+    });
+    expect(screen.queryByTestId('protected-content')).not.toBeInTheDocument();
+  });
+
+  test('allows authenticated users to access content', () => {
+    const initialUser = createMockUser();
+
+    render(
+      <ProtectedRoute>
+        <div data-testid="protected-content">Protected Content</div>
+      </ProtectedRoute>,
+      { wrapper: createIntegrationWrapper({ initialAuth: initialUser }) }
+    );
+
+    expect(screen.getByTestId('protected-content')).toBeInTheDocument();
+  });
 });
 ```
 
-### 2.4 MSW API Mocking
+### 2.4 MSW API Mocking Infrastructure
 
-#### Setup Mock Handlers
+#### Complete Mock Handlers Setup
 
 ```typescript
-// __tests__/mocks/handlers.ts
+// __tests__/mocks/handlers/auth.handlers.ts
 
-export const handlers = [
-  // Auth API handlers
+export const authHandlers = [
   http.post(`${API_AUTH_URL}/auth/login`, async ({ request }) => {
     const body = await request.json();
+
     if (body.email === "test@example.com" && body.password === "Test123!") {
       return HttpResponse.json({
         success: true,
         data: {
-          accessToken: "mock-token",
+          accessToken: "mock-access-token",
           user: createMockUser(),
         },
       });
     }
+
+    if (body.email === "unverified@example.com") {
+      return HttpResponse.json(
+        {
+          success: false,
+          message: "Please verify your email before logging in",
+          code: "EMAIL_NOT_VERIFIED",
+        },
+        { status: 403 }
+      );
+    }
+
     return HttpResponse.json(
-      { success: false, message: "Invalid credentials" },
+      { success: false, message: "Invalid email or password" },
       { status: 401 }
     );
   }),
 
-  // AI API handlers
+  http.post(`${API_AUTH_URL}/auth/register`, async ({ request }) => {
+    const body = await request.json();
+
+    if (body.email === "existing@example.com") {
+      return HttpResponse.json(
+        { success: false, message: "Email already exists" },
+        { status: 409 }
+      );
+    }
+
+    return HttpResponse.json({
+      success: true,
+      message:
+        "Registration successful. Please check your email to verify your account.",
+    });
+  }),
+
+  http.post(`${API_AUTH_URL}/auth/logout`, () => {
+    return HttpResponse.json({
+      success: true,
+      message: "Logged out successfully",
+    });
+  }),
+
+  http.get(`${API_AUTH_URL}/auth/profile`, ({ request }) => {
+    const token = request.headers.get("Authorization");
+
+    if (!token || token !== "Bearer mock-access-token") {
+      return HttpResponse.json(
+        { success: false, message: "Unauthorized" },
+        { status: 401 }
+      );
+    }
+
+    return HttpResponse.json({
+      success: true,
+      data: createMockUser(),
+    });
+  }),
+];
+
+// __tests__/mocks/handlers/ai.handlers.ts
+
+export const aiHandlers = [
   http.post(`${AI_API}/hiredesk-analyze`, async ({ request }) => {
     const formData = await request.formData();
     const file = formData.get("file");
+    const jobTitle = formData.get("target_role");
+
+    await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate processing time
 
     if (!file) {
       return HttpResponse.json(
@@ -513,40 +1133,204 @@ export const handlers = [
       );
     }
 
-    return HttpResponse.json({
-      success: true,
-      data: createMockAnalysisResult(),
-    });
-  }),
-
-  // Rate limiting mock
-  http.post(`${AI_API}/selection-candidate`, async ({ request }) => {
-    const userCount = request.headers.get("X-User-Count");
-    if (parseInt(userCount || "0") >= 10) {
+    // Check file type
+    if (
+      !(file as File).type.includes("pdf") &&
+      !(file as File).type.includes("word")
+    ) {
       return HttpResponse.json(
         {
-          detail: "User exceeded selected_candidate limit",
-          status_code: 429,
+          success: false,
+          message: "Invalid file format. Only PDF and DOCX are supported.",
         },
-        { status: 429 }
+        { status: 422 }
       );
     }
 
     return HttpResponse.json({
       success: true,
-      data: createMockSelectionResult(),
+      fit_status: "fit",
+      reasoning: `Strong match for ${jobTitle} position`,
+      best_fit_role: jobTitle,
+      resumeData: createMockResumeData(),
+      roleRecommendations: createMockRoleRecommendations(),
+      questions: createMockInterviewQuestions(),
+      resumeScore: createMockResumeScore(),
+      personalityInsights: createMockPersonalityInsights(),
+      careerPath: createMockCareerPath(),
     });
+  }),
+
+  http.post(`${AI_API}/selection-candidate`, async ({ request }) => {
+    const formData = await request.formData();
+    const files = formData.getAll("files");
+    const jobTitle = formData.get("job_title");
+    const keywords = formData.get("keywords");
+
+    await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulate processing time
+
+    if (files.length === 0) {
+      return HttpResponse.json(
+        { success: false, message: "At least 1 resume is required" },
+        { status: 422 }
+      );
+    }
+
+    if (files.length > 5) {
+      return HttpResponse.json(
+        { success: false, message: "Maximum 5 resumes allowed" },
+        { status: 422 }
+      );
+    }
+
+    return HttpResponse.json({
+      job_title: jobTitle,
+      keywords: keywords?.split(",").map((k) => k.trim()),
+      total_candidates: files.length,
+      fit_count: Math.ceil(files.length * 0.6),
+      reject_count: Math.floor(files.length * 0.4),
+      results: files.map((file, index) => ({
+        candidate: (file as File).name,
+        status: index < Math.ceil(files.length * 0.6) ? "FIT" : "REJECT",
+        message:
+          index < Math.ceil(files.length * 0.6)
+            ? "Strong match - has required skills and experience"
+            : "Missing key skills or insufficient experience",
+      })),
+    });
+  }),
+
+  // Rate limiting handler
+  http.post(`${AI_API}/*`, ({ request }) => {
+    const rateLimitHeader = request.headers.get("X-Rate-Limit-Remaining");
+
+    if (rateLimitHeader === "0") {
+      return HttpResponse.json(
+        {
+          detail: "Daily analysis limit reached. Current: 10, Limit: 10",
+          current_count: 10,
+          limit: 10,
+        },
+        { status: 429 }
+      );
+    }
+
+    // Default pass-through
+    return;
   }),
 ];
 ```
 
-### Phase 2 Success Metrics
+#### Mock Data Generators
 
-- ✅ 70%+ integration test coverage
-- ✅ All critical user flows tested
-- ✅ All context providers have integration tests
-- ✅ MSW handlers for all API endpoints
-- ✅ Integration tests pass reliably
+```typescript
+// __tests__/mocks/data/mockUsers.ts
+
+export const createMockUser = (overrides = {}) => ({
+  id: "user-123",
+  name: "John Doe",
+  email: "john@example.com",
+  company_name: "Test Corp",
+  filesUploaded: 5,
+  emailVerified: true,
+  createdAt: "2024-01-01T00:00:00.000Z",
+  ...overrides,
+});
+
+// __tests__/mocks/data/mockAnalysis.ts
+
+export const createMockResumeData = () => ({
+  personalInfo: {
+    name: "John Doe",
+    email: "john.doe@example.com",
+    phone: "+1 (555) 123-4567",
+    location: "San Francisco, CA",
+  },
+  workExperience: [
+    {
+      title: "Senior Software Engineer",
+      company: "Tech Corp",
+      duration: "2020 - Present",
+      description: ["Led development of core platform features"],
+    },
+  ],
+  education: [
+    {
+      degree: "Bachelor of Computer Science",
+      institution: "University of Technology",
+      year: "2018",
+    },
+  ],
+  skills: ["JavaScript", "React", "Node.js", "Python", "AWS"],
+  highlights: [
+    "Full-stack development",
+    "Team leadership",
+    "Cloud architecture",
+  ],
+});
+
+export const createMockResumeScore = () => ({
+  overall_score: 85,
+  technical_score: 90,
+  experience_score: 88,
+  education_score: 80,
+  communication_score: 85,
+  reasoning: "Strong technical background with relevant experience",
+  strengths: ["Strong technical skills", "Leadership experience"],
+  weaknesses: ["Could improve cloud architecture knowledge"],
+  improvement_suggestions: [
+    "Consider AWS certification",
+    "Gain more system design experience",
+  ],
+});
+```
+
+---
+
+## 📊 Phase 2 Success Metrics & KPIs
+
+### Coverage Targets
+
+- **Integration Test Coverage**: 70%+ of critical user flows
+- **Component Integration**: 80%+ of React components with context interaction
+- **API Integration**: 100% of service methods with MSW mocking
+
+### Quality Metrics
+
+- **Test Reliability**: 0% flaky tests
+- **Execution Time**: < 45 seconds for full integration suite
+- **Mock Accuracy**: MSW responses match production API 95%+
+
+### Functional Coverage
+
+- ✅ **Authentication Flows**: Login, Register, Logout, Password Reset (8 scenarios)
+- ✅ **Resume Analysis Flows**: Upload, Analysis, Results Display (6 scenarios)
+- ✅ **Batch Processing**: Multi-file upload and processing (4 scenarios)
+- ✅ **Candidate Selection**: Evaluation and results (5 scenarios)
+- ✅ **Error Handling**: Network errors, validation, rate limits (10 scenarios)
+- ✅ **Context Integration**: Auth and Toast contexts (15 scenarios)
+
+### Test Performance
+
+- **Average Test Time**: < 2 seconds per test
+- **Setup/Teardown**: < 100ms per test
+- **Memory Usage**: < 50MB for full suite
+- **Parallel Execution**: Support for 4+ parallel workers
+
+---
+
+## 🔄 Phase 2 → Phase 3 Transition
+
+### Deliverables for Phase 3
+
+1. **Complete MSW Handler Library** - Ready for E2E testing
+2. **Integration Test Suite** - 35+ integration tests covering all flows
+3. **Test Data Generators** - Reusable mock data for E2E tests
+4. **Error Scenario Coverage** - Comprehensive error handling validation
+
+### Next Phase Preview
+
+**Phase 3: End-to-End Testing** will leverage the MSW infrastructure and test patterns established in Phase 2 to create comprehensive user journey tests with Playwright.
 
 ---
 
