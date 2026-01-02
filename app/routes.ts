@@ -12,6 +12,7 @@ export default [
   route("/reset-password", "routes/reset-password.tsx"),
   route("/dashboard", "routes/dashboard.tsx"),
   route("/hiredesk-analyze", "routes/hiredesk-analyze.tsx"),
+  route("/hiredesk-chat", "routes/hiredesk-chat.tsx"),
   route("/batch-analyze", "routes/batch-analyze.tsx"),
   route("/compare-resumes", "routes/compare-resumes.tsx"),
   route("/selection-candidates", "routes/selection-candidates.tsx"),

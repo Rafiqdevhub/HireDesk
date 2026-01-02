@@ -161,6 +161,43 @@ export interface CompareResumesResponse {
   upgrade_prompt?: UpgradePrompt;
 }
 
+// HireDesk Chat Types
+export type HireDeskQueryType =
+  | "screening"
+  | "interview_questions"
+  | "job_posting"
+  | "candidate_match";
+
+export interface HireDeskQueryPayload {
+  query: string;
+  jobRole?: string;
+  candidateInfo?: string;
+  queryType: HireDeskQueryType;
+  context?: string;
+}
+
+export interface HireDeskQueryResponse {
+  success: boolean;
+  data: {
+    answer: string;
+    queryType: HireDeskQueryType;
+    timestamp: string;
+  };
+  message?: string;
+}
+
+export interface HireDeskStatusResponse {
+  success: boolean;
+  data: {
+    service: string;
+    status: "operational" | "degraded" | "down";
+    supportedQueryTypes: HireDeskQueryType[];
+    version: string;
+    timestamp: string;
+  };
+  message?: string;
+}
+
 // File Service Types
 export interface FileUploadResponse {
   success: boolean;
@@ -255,7 +292,9 @@ export interface UseFormReturn<T> {
   errors: Partial<Record<keyof T, string>>;
   isLoading: boolean;
   handleChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) => void;
   handleSubmit: (
     onSubmit: (values: T) => Promise<void>
@@ -263,6 +302,7 @@ export interface UseFormReturn<T> {
   setError: (field: keyof T, message: string) => void;
   clearErrors: () => void;
   reset: () => void;
+  setValues: (values: T) => void;
 }
 
 // Toast Context Types

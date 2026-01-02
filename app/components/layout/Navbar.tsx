@@ -103,19 +103,28 @@ const Navbar = ({ onOpenTips }: NavbarProps) => {
           </div>
 
           <div className="hidden md:flex items-center space-x-8">
+            {isAuthenticated && (
+              <Link
+                to="/hiredesk-chat"
+                className="text-gray-300 hover:text-indigo-400 transition-colors duration-200 font-medium flex items-center gap-2 relative group"
+              >
+                <span>HireDesk Chat</span>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-linear-to-r from-indigo-400 to-blue-400 group-hover:w-full transition-all duration-300"></span>
+              </Link>
+            )}
             <Link
               to="/about"
               className="text-gray-300 hover:text-blue-400 transition-colors duration-200 font-medium flex items-center gap-2 relative group"
             >
               <span>About</span>
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-400 to-purple-400 group-hover:w-full transition-all duration-300"></span>
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-linear-to-r from-blue-400 to-purple-400 group-hover:w-full transition-all duration-300"></span>
             </Link>
             <Link
               to="/contact"
               className="text-gray-300 hover:text-emerald-400 transition-colors duration-200 font-medium flex items-center gap-2 relative group"
             >
               <span>Contact</span>
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-emerald-400 to-teal-400 group-hover:w-full transition-all duration-300"></span>
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-linear-to-r from-emerald-400 to-teal-400 group-hover:w-full transition-all duration-300"></span>
             </Link>
           </div>
 
@@ -126,7 +135,7 @@ const Navbar = ({ onOpenTips }: NavbarProps) => {
                   onClick={toggleUserMenu}
                   className="flex items-center space-x-2 text-gray-300 hover:text-blue-400 transition-colors duration-200 bg-gray-800/50 px-3 py-2 rounded-lg cursor-pointer"
                 >
-                  <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center">
+                  <div className="w-8 h-8 bg-linear-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center">
                     <span className="text-white text-sm font-medium">
                       {user?.name.charAt(0).toUpperCase()}
                     </span>
@@ -191,7 +200,7 @@ const Navbar = ({ onOpenTips }: NavbarProps) => {
                 </Link>
                 <Link
                   to="/signup"
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 font-medium shadow-md hover:shadow-lg"
+                  className="bg-linear-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 font-medium shadow-md hover:shadow-lg"
                 >
                   Sign Up
                 </Link>
@@ -234,6 +243,16 @@ const Navbar = ({ onOpenTips }: NavbarProps) => {
         {isMenuOpen && (
           <div className="md:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 bg-gray-800/90 backdrop-blur-md rounded-lg mt-2 shadow-lg">
+              {isAuthenticated && (
+                <Link
+                  to="/hiredesk-chat"
+                  className="flex items-center gap-2 px-3 py-2 text-gray-300 hover:text-indigo-400 hover:bg-gray-700 rounded-md transition-colors duration-200 font-medium"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <span className="text-base">💬</span>
+                  HireDesk Chat
+                </Link>
+              )}
               <Link
                 to="/about"
                 className="flex items-center gap-2 px-3 py-2 text-gray-300 hover:text-blue-400 hover:bg-gray-700 rounded-md transition-colors duration-200 font-medium"
@@ -255,7 +274,7 @@ const Navbar = ({ onOpenTips }: NavbarProps) => {
                   <>
                     <div className="px-3 py-3 border-b border-gray-700">
                       <div className="flex items-center space-x-3 mb-3">
-                        <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
+                        <div className="w-8 h-8 bg-linear-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center shrink-0">
                           <span className="text-white text-sm font-medium">
                             {user?.name.charAt(0).toUpperCase()}
                           </span>
@@ -352,7 +371,7 @@ const Navbar = ({ onOpenTips }: NavbarProps) => {
                     </Link>
                     <Link
                       to="/signup"
-                      className="block mx-3 mt-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-3 py-2 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 font-medium text-center"
+                      className="block mx-3 mt-2 bg-linear-to-r from-blue-600 to-purple-600 text-white px-3 py-2 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 font-medium text-center"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       Sign Up

@@ -11,6 +11,7 @@ import type { Route } from "./+types/root";
 import { AuthProvider } from "@contexts/AuthContext";
 import { ToastProvider } from "@contexts/ToastContext";
 import ToastContainer from "@ui/ToastContainer";
+import AssistantDock from "./components/assistant/AssistantDock";
 import "./app.css";
 
 export const links: Route.LinksFunction = () => [
@@ -50,6 +51,7 @@ export default function App() {
       <AuthProvider>
         <Outlet />
         <ToastContainer />
+        <AssistantDock />
       </AuthProvider>
     </ToastProvider>
   );
