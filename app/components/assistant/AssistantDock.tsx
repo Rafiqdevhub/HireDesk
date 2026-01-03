@@ -151,36 +151,6 @@ const AssistantDock = () => {
           <div className="absolute -inset-16 bg-linear-to-br from-indigo-500/10 via-purple-500/10 to-blue-500/10 blur-3xl"></div>
         </div>
 
-        <div className="relative flex items-center justify-between px-4 py-3 border-b border-slate-800/70">
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
-              <p className="text-[11px] uppercase tracking-[0.18em] text-indigo-100 font-semibold">
-                AI Assistant
-              </p>
-            </div>
-            <p className="text-sm text-white font-semibold">HireDesk Copilot</p>
-            <p className="text-[11px] text-slate-400">
-              Always-on recruiting help
-            </p>
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={clearHistory}
-              className="text-[11px] text-slate-300 hover:text-white underline decoration-dotted underline-offset-4 cursor-pointer"
-            >
-              Clear
-            </button>
-            <button
-              onClick={() => setOpen((prev) => !prev)}
-              className="h-9 w-9 rounded-full bg-slate-800/90 border border-slate-700/70 text-slate-200 hover:text-white hover:border-slate-500 transition-colors cursor-pointer"
-              aria-label={open ? "Collapse assistant" : "Expand assistant"}
-            >
-              {open ? "–" : "+"}
-            </button>
-          </div>
-        </div>
-
         {open && (
           <div className="relative p-4 space-y-3">
             <form className="space-y-3" onSubmit={onSubmit}>
