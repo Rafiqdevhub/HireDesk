@@ -60,12 +60,15 @@ const statusStyles: Record<
   "loading" | "operational" | "degraded" | "down" | "unavailable",
   string
 > = {
-  loading: "bg-amber-500/15 text-amber-200 border border-amber-400/40",
+  loading:
+    "bg-amber-400 text-white font-bold border-2 border-amber-500 shadow-lg shadow-amber-400/80",
   operational:
-    "bg-emerald-500/15 text-emerald-200 border border-emerald-400/40",
-  degraded: "bg-amber-500/15 text-amber-200 border border-amber-400/40",
-  down: "bg-red-500/15 text-red-200 border border-red-400/40",
-  unavailable: "bg-red-500/15 text-red-200 border border-red-400/40",
+    "bg-emerald-400 text-white font-bold border-2 border-emerald-500 shadow-lg shadow-emerald-400/80",
+  degraded:
+    "bg-yellow-400 text-white font-bold border-2 border-yellow-500 shadow-lg shadow-yellow-400/80",
+  down: "bg-red-400 text-white font-bold border-2 border-red-500 shadow-lg shadow-red-400/80",
+  unavailable:
+    "bg-red-400 text-white font-bold border-2 border-red-500 shadow-lg shadow-red-400/80",
 };
 
 const mockResponse = (
@@ -346,53 +349,68 @@ const HireDeskChat = () => {
           </div>
         </div>
 
-        <header className="relative z-10 border-b border-slate-800/60 bg-slate-900/70 backdrop-blur-lg">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-            <div className="flex items-start gap-4">
-              <Link
-                to="/"
-                className="mt-1 inline-flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-white bg-slate-800/50 hover:bg-slate-800 border border-slate-700/50 hover:border-slate-600 transition-all"
-              >
-                <svg
-                  className="h-4 w-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                  />
-                </svg>
-                <span>Home</span>
-              </Link>
-              <div>
-                <p className="text-xs uppercase tracking-[0.2em] text-indigo-200/80 font-semibold">
-                  HireDesk Chat
-                </p>
-                <h1 className="text-2xl sm:text-3xl font-bold text-white">
-                  Recruiter Co-pilot
-                </h1>
-                <p className="text-sm text-slate-400">
-                  Screening, interview questions, job postings, and candidate
-                  matching in one place.
-                </p>
+        <header className="relative z-10 border-b border-slate-700/40 bg-linear-to-br from-slate-900/95 via-slate-800/90 to-slate-900/95 backdrop-blur-xl">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
+              <div className="flex items-start gap-5 flex-1">
+                <div className="flex-1">
+                  <div className="flex items-center gap-3 mb-2">
+                    <h1 className="text-3xl sm:text-4xl font-bold bg-linear-to-r from-white via-indigo-100 to-purple-200 bg-clip-text text-transparent">
+                      HireDesk
+                    </h1>
+                    <span className="px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/20 text-indigo-200 border border-indigo-400/40">
+                      Chat
+                    </span>
+                  </div>
+                  <p className="text-lg font-semibold text-indigo-200 mb-1">
+                    Recruiter Co-pilot
+                  </p>
+                  <p className="text-sm text-slate-400 max-w-md leading-relaxed">
+                    AI-powered screening, interviews, job postings & candidate
+                    matching
+                  </p>
+                </div>
               </div>
-            </div>
-            <div className="flex items-center gap-2">
-              {mockMode && (
-                <span className="px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/20 text-blue-100 border border-blue-400/30">
-                  Mock mode
-                </span>
-              )}
-              <span
-                className={`px-3 py-1 rounded-full text-xs font-semibold inline-flex items-center gap-2 ${statusStyles[serviceStatus]}`}
-              >
-                <span className="w-2 h-2 rounded-full bg-current animate-pulse"></span>
-                {serviceStatus === "loading" ? "Checking" : statusMessage}
-              </span>
+
+              <div className="flex flex-col sm:items-end gap-3">
+                <div className="flex items-center gap-2 flex-wrap justify-start sm:justify-end">
+                  {mockMode && (
+                    <span className="px-4 py-2 rounded-lg text-sm font-bold bg-blue-500/25 text-white border-2 border-blue-400/50 shadow-lg shadow-blue-500/20 flex items-center gap-2">
+                      Mock mode
+                    </span>
+                  )}
+                  <span
+                    className={`px-5 py-2.5 rounded-lg text-sm font-bold inline-flex items-center gap-3 ${statusStyles[serviceStatus]}`}
+                  >
+                    <span className="flex items-center gap-2"></span>
+                    <span className="tracking-wide text-white">
+                      {serviceStatus === "loading"
+                        ? "Checking..."
+                        : statusMessage}
+                    </span>
+                  </span>
+                </div>
+
+                <Link
+                  to="/"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold text-slate-300 hover:text-white bg-slate-800/50 hover:bg-slate-700 border border-slate-700/50 hover:border-slate-600 transition-all duration-200 hover:shadow-lg hover:shadow-indigo-500/10"
+                >
+                  <svg
+                    className="h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                    />
+                  </svg>
+                  <span>Back to Home</span>
+                </Link>
+              </div>
             </div>
           </div>
         </header>
