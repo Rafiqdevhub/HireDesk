@@ -1,8 +1,7 @@
-import { useState } from "react";
 import Navbar from "@layout/Navbar";
 import Footer from "@layout/Footer";
 import type { Route } from "./+types/contact";
-import emailjs from "@emailjs/browser";
+import { useForm, ValidationError } from "@formspree/react";
 import { useToast } from "@contexts/ToastContext";
 
 export function meta({}: Route.MetaArgs) {
@@ -18,64 +17,37 @@ export function meta({}: Route.MetaArgs) {
 
 const Contact = () => {
   const { showToast } = useToast();
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const formId = (import.meta.env.VITE_FORMSPREE_FORM_ID || "your-form-id")
+    .split("/")
+    .pop();
+  const [state, handleSubmit, reset] = useForm(formId);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    try {
-      emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
-      const result = await emailjs.send(
-        import.meta.env.VITE_EMAILJS_SERVICE_ID,
-        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-        {
-          from_name: formData.name,
-          from_email: formData.email,
-          message: formData.message,
-          to_email: "rafkhan9323@gmail.com",
-        }
-      );
-
-      if (result.status === 200) {
-        showToast(
-          "Thank you for reaching out! We'll get back to you within 24 hours.",
-          "success",
-          {
-            title: "Message Sent!",
-            duration: 5000,
-          }
-        );
-        setFormData({ name: "", email: "", message: "" });
+  if (state.succeeded && !state.submitting) {
+    showToast(
+      "Thank you for reaching out! We'll get back to you within 24 hours.",
+      "success",
+      {
+        title: "Message Sent!",
+        duration: 5000,
       }
-    } catch (error) {
-      console.error("EmailJS Error:", error);
-      showToast(
-        "Failed to send message. Please try again or contact us directly at rafkhan9323@gmail.com",
-        "error",
-        {
-          title: "Error Sending Message",
-          duration: 7000,
-        }
-      );
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+    );
+    setTimeout(() => reset(), 2000);
+  }
+
+  if (state.errors && state.errors.getFormErrors().length > 0) {
+    const errorMessages = state.errors
+      .getFormErrors()
+      .map((error) => error.message)
+      .join(", ");
+    showToast(
+      `Failed to send message: ${errorMessages}. Please try again or contact us directly at rafkhan9323@gmail.com`,
+      "error",
+      {
+        title: "Error Sending Message",
+        duration: 7000,
+      }
+    );
+  }
 
   return (
     <div className="min-h-screen bg-linear-to-br from-slate-900 via-slate-800 to-slate-900">
@@ -312,11 +284,16 @@ const Contact = () => {
                           type="text"
                           id="name"
                           name="name"
-                          value={formData.name}
-                          onChange={handleChange}
                           required
-                          className="w-full px-4 py-3 bg-slate-900/50 border border-slate-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-white placeholder-slate-500"
+                          disabled={state.submitting}
+                          className="w-full px-4 py-3 bg-slate-900/50 border border-slate-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-white placeholder-slate-500 disabled:opacity-50 disabled:cursor-not-allowed"
                           placeholder="John Doe"
+                        />
+                        <ValidationError
+                          prefix="Name"
+                          field="name"
+                          errors={state.errors}
+                          className="text-red-400 text-sm mt-1"
                         />
                       </div>
                       <div>
@@ -330,11 +307,16 @@ const Contact = () => {
                           type="email"
                           id="email"
                           name="email"
-                          value={formData.email}
-                          onChange={handleChange}
                           required
-                          className="w-full px-4 py-3 bg-slate-900/50 border border-slate-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-white placeholder-slate-500"
+                          disabled={state.submitting}
+                          className="w-full px-4 py-3 bg-slate-900/50 border border-slate-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-white placeholder-slate-500 disabled:opacity-50 disabled:cursor-not-allowed"
                           placeholder="john@example.com"
+                        />
+                        <ValidationError
+                          prefix="Email"
+                          field="email"
+                          errors={state.errors}
+                          className="text-red-400 text-sm mt-1"
                         />
                       </div>
                     </div>
@@ -349,24 +331,46 @@ const Contact = () => {
                       <textarea
                         id="message"
                         name="message"
-                        value={formData.message}
-                        onChange={handleChange}
                         required
+                        disabled={state.submitting}
                         rows={6}
-                        className="w-full px-4 py-3 bg-slate-900/50 border border-slate-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-white placeholder-slate-500 resize-none"
+                        className="w-full px-4 py-3 bg-slate-900/50 border border-slate-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-white placeholder-slate-500 resize-none disabled:opacity-50 disabled:cursor-not-allowed"
                         placeholder="Tell us more about your inquiry..."
+                      />
+                      <ValidationError
+                        prefix="Message"
+                        field="message"
+                        errors={state.errors}
+                        className="text-red-400 text-sm mt-1"
                       />
                     </div>
 
                     <button
                       type="submit"
-                      disabled={isSubmitting}
+                      disabled={state.submitting || state.succeeded}
                       className="w-full bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-4 px-8 rounded-xl transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none shadow-lg hover:shadow-xl cursor-pointer"
                     >
-                      {isSubmitting ? (
+                      {state.submitting ? (
                         <div className="flex items-center justify-center gap-3">
                           <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
                           <span>Sending...</span>
+                        </div>
+                      ) : state.succeeded ? (
+                        <div className="flex items-center justify-center gap-2">
+                          <svg
+                            className="w-5 h-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M5 13l4 4L19 7"
+                            />
+                          </svg>
+                          <span>Message Sent!</span>
                         </div>
                       ) : (
                         <div className="flex items-center justify-center gap-2">
@@ -541,7 +545,7 @@ const Contact = () => {
                           fill="none"
                           fillRule="evenodd"
                           stroke="none"
-                          stroke-width="1"
+                          strokeWidth="1"
                           transform="translate(112 112)"
                         >
                           <path
@@ -732,4 +736,3 @@ const Contact = () => {
 };
 
 export default Contact;
-

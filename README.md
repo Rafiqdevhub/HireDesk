@@ -339,7 +339,7 @@ docker run -d \
   --name hiredesk \
   -p 3000:3000 \
   -e NODE_ENV=production \
-  -e VITE_API_URL=https://jobpsych-payment.vercel.app/api \
+  -e VITE_API_URL=http://localhost:5000/api \
   rafiq9323/hiredesk:latest
 
 # Access at http://localhost:3000
@@ -415,7 +415,7 @@ Create a `.env` file or set environment variables:
 ```env
 # Application Configuration
 NODE_ENV=production
-VITE_API_URL=https://jobpsych-payment.vercel.app/api
+VITE_API_URL=http://localhost:5000/api
 VITE_APP_NAME=HireDesk
 VITE_APP_VERSION=1.0.0
 

@@ -28,9 +28,8 @@ const Footer = () => {
               </div>
             </Link>
             <p className="text-sm leading-relaxed text-gray-400 mb-6">
-              Part of JobPsych Career Intelligence Suite. AI-powered hiring
-              assistant that transforms recruitment with intelligent resume
-              analysis and candidate insights.
+              AI-powered hiring assistant that transforms recruitment with
+              intelligent resume analysis and candidate insights.
             </p>
             <div className="flex gap-3">
               <a
@@ -91,19 +90,7 @@ const Footer = () => {
                   <span>Contact</span>
                 </Link>
               </li>
-              <li>
-                <a
-                  href="https://jobpsych.vercel.app/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-gray-400 hover:text-purple-400 transition-colors duration-300 flex items-center gap-2 group cursor-pointer"
-                >
-                  <span className="group-hover:translate-x-1 transition-transform duration-200">
-                    →
-                  </span>
-                  <span>JobPsych</span>
-                </a>
-              </li>
+
               <li>
                 <a
                   href="mailto:support@hiredesk.com"
@@ -188,4 +175,3 @@ const Footer = () => {
 };
 
 export default Footer;
-

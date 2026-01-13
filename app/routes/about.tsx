@@ -28,7 +28,7 @@ const About = () => {
           <div className="max-w-7xl mx-auto text-center">
             <div className="inline-flex items-center px-4 py-2 bg-blue-600/20 rounded-full border border-blue-500/30 mb-8">
               <span className="text-blue-400 text-sm font-medium">
-                Part of JobPsych Career Intelligence Suite
+                AI Hiring Platform
               </span>
             </div>
 
@@ -38,11 +38,11 @@ const About = () => {
             </h1>
 
             <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed">
-              HireDesk is the specialized hiring tool within the JobPsych
-              ecosystem. Explore our four AI-powered tools designed exclusively
-              for recruiters and HR teams. Each is purpose-built to solve a
-              specific hiring challenge, and together they create an
-              intelligent, streamlined recruiting workflow for modern companies.
+              HireDesk is a standalone AI hiring platform. Explore our four
+              AI-powered tools designed exclusively for recruiters and HR teams.
+              Each is purpose-built to solve a specific hiring challenge, and
+              together they create an intelligent, streamlined recruiting
+              workflow for modern companies.
             </p>
           </div>
         </section>
@@ -66,7 +66,6 @@ const About = () => {
                 </h2>
 
                 <p className="text-lg text-gray-300 leading-relaxed">
-                  As part of the JobPsych Career Intelligence ecosystem,
                   HireDesk focuses exclusively on the hiring side. Whether you
                   need deep individual analysis, batch processing of multiple
                   resumes, side-by-side candidate comparisons, or quick binary
@@ -447,11 +446,11 @@ const About = () => {
                   Four Analysis Methods, One Specialized Platform
                 </h3>
                 <p className="text-gray-300 leading-relaxed text-lg">
-                  HireDesk is the hiring-focused tool within the JobPsych Career
-                  Intelligence Suite. Whether you need deep individual analysis,
-                  batch processing of multiple resumes, side-by-side candidate
-                  comparisons, or quick binary screening, HireDesk adapts to
-                  your workflow. Choose the right tool for each hiring scenario.
+                  HireDesk is a standalone AI hiring platform. Whether you need
+                  deep individual analysis, batch processing of multiple
+                  resumes, side-by-side candidate comparisons, or quick binary
+                  screening, HireDesk adapts to your workflow. Choose the right
+                  tool for each hiring scenario.
                 </p>
               </div>
 
