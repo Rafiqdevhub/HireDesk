@@ -1,15 +1,31 @@
-# Development Dockerfile for HireDesk
-FROM node:20-alpine AS development
+# HireDesk Frontend - Development Dockerfile
+# Optimized for development with hot reload capability
 
-# Install dependencies
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Install development tools
+RUN apk add --no-cache \
+    git \
+    curl \
+    bash
+
+# Copy package files
 COPY package*.json ./
+
+# Install dependencies (all dependencies for development)
 RUN npm ci
 
 # Copy source code
 COPY . .
 
-# Expose port
-EXPOSE 3000
+# Expose port for dev server
+EXPOSE 3000 24678
 
-# Default command
+# Health check for dev server
+HEALTHCHECK --interval=30s --timeout=10s --start-period=15s --retries=3 \
+    CMD curl -f http://localhost:3000 || exit 1
+
+# Default command for development
 CMD ["npm", "run", "dev"]
