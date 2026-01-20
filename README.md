@@ -16,18 +16,18 @@ Transform your hiring process with AI-powered candidate analysis
 
 HireDesk is a modern, AI-powered recruitment platform that revolutionizes the hiring process. Upload resumes, analyze candidates with advanced AI, generate tailored interview questions, and make data-driven hiring decisions with confidence.
 
-### ✨ Key Features
+### Key Features
 
-- **🤖 AI-Powered Resume Analysis**: Intelligent parsing and candidate profiling
-- **🎯 Smart Skills Matching**: Automated matching of candidate skills to job requirements
-- **❓ Interview Question Generation**: AI-generated, role-specific interview questions
-- **📊 Candidate Scoring**: Comprehensive fit analysis with detailed reasoning
-- **💾 Data Persistence**: All analysis results persist across browser sessions
-- **🔐 Secure Authentication**: User registration and login system
-- **📱 Responsive Design**: Modern, mobile-first UI with glassmorphism effects
-- **⚡ Real-time Processing**: Fast, efficient analysis with loading states
+- AI-Powered Resume Analysis\*\*: Intelligent parsing and candidate profiling
+- Smart Skills Matching\*\*: Automated matching of candidate skills to job requirements
+- Interview Question Generation\*\*: AI-generated, role-specific interview questions
+- Candidate Scoring\*\*: Comprehensive fit analysis with detailed reasoning
+- Data Persistence\*\*: All analysis results persist across browser sessions
+- Secure Authentication\*\*: User registration and login system
+- Responsive Design\*\*: Modern, mobile-first UI with glassmorphism effects
+- Real-time Processing\*\*: Fast, efficient analysis with loading states
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -72,7 +72,7 @@ HireDesk is a modern, AI-powered recruitment platform that revolutionizes the hi
 
    The application will be available at `http://localhost:3000`
 
-## 📁 Project Structure
+## Project Structure
 
 ```bash
 hiredesk/
@@ -100,7 +100,7 @@ hiredesk/
 └── vite.config.ts                # Vite build configuration
 ```
 
-## 🛠️ Development Workflow
+## Development Workflow
 
 ### Available Scripts
 
@@ -155,7 +155,7 @@ npm run format       # Format code with Prettier
 - **Tailwind CSS**: Utility-first CSS framework
 - **Component Structure**: Functional components with hooks
 
-#### 🧪 Testing
+#### Testing
 
 ```bash
 # Run tests (when implemented)
@@ -165,7 +165,7 @@ npm run test
 npm run test:coverage
 ```
 
-## 🎨 UI/UX Design System
+## UI/UX Design System
 
 ### Color Palette
 
@@ -271,7 +271,7 @@ button:disabled {
 }
 ```
 
-## 🔌 API Integration
+## API Integration
 
 ### External Services
 
@@ -315,9 +315,9 @@ HireDesk integrates with AI-powered backend services for:
 }
 ```
 
-## 🚀 Deployment
+## Deployment
 
-### 🐳 Docker Hub Image
+### Docker Hub Image
 
 HireDesk is available as a pre-built Docker image on Docker Hub, making deployment incredibly simple.
 
@@ -450,7 +450,7 @@ docker compose up -d --scale hiredesk=3
 docker compose down --volumes --remove-orphans
 ```
 
-### 🔄 CI/CD Pipeline
+### CI/CD Pipeline
 
 HireDesk uses GitHub Actions for automated building and deployment.
 
@@ -504,7 +504,7 @@ Set these secrets in your repository settings:
 - **Performance**: Layer caching for faster builds
 - **Multi-Platform**: Ready for ARM64/x86_64 builds
 
-### 🏭 Build Your Own Docker Image
+### Build Your Own Docker Image
 
 If you want to build the image locally:
 
@@ -542,7 +542,7 @@ kubectl apply -f k8s/
 - **Fly.io**: Deploy from Docker Hub image
 - **AWS ECS**: Use Docker Hub image in task definitions
 
-### 🔍 Monitoring & Troubleshooting
+### Monitoring & Troubleshooting
 
 #### Health Checks
 
@@ -583,14 +583,14 @@ docker run --user node rafiq9323/hiredesk:latest
 docker run -m 512m rafiq9323/hiredesk:latest
 ```
 
-### 📊 Resource Requirements
+### Resource Requirements
 
 - **CPU**: 0.5 vCPU minimum, 1 vCPU recommended
 - **Memory**: 512MB minimum, 1GB recommended
 - **Storage**: 200MB for application, plus logs
 - **Network**: Standard HTTP/HTTPS ports (80/443)
 
-### 🔒 Security Best Practices
+### Security Best Practices
 
 - Use Docker Hub images from trusted sources
 - Regularly update base images
@@ -599,7 +599,7 @@ docker run -m 512m rafiq9323/hiredesk:latest
 - Implement proper network segmentation
 - Enable HTTPS in production
 
-## 🔐 Authentication
+## Authentication
 
 HireDesk includes a complete authentication system:
 
@@ -609,7 +609,7 @@ HireDesk includes a complete authentication system:
 - **Profile Management**: User profile updates and management
 - **Session Persistence**: Automatic login state management
 
-## 💾 Data Persistence
+## Data Persistence
 
 All analysis results are automatically persisted using localStorage:
 
@@ -618,7 +618,7 @@ All analysis results are automatically persisted using localStorage:
 - **Generated Questions**: Interview questions with categories
 - **UI State**: Expanded/collapsed states for question categories
 
-## 🤝 Contributing
+## Contributing
 
 We welcome contributions! Please follow these guidelines:
 
@@ -656,7 +656,7 @@ npm run prepare
 npm run dev
 ```
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - **React Router** for the excellent routing framework
 - **Tailwind CSS** for the utility-first CSS framework
@@ -664,7 +664,7 @@ npm run dev
 - **Vite** for the fast build tool
 - **AI Backend Services** for powering the intelligent analysis
 
-## 📞 Support
+## Support
 
 - **Issues**: [GitHub Issues](https://github.com/Rafiqdevhub/HireDesk/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/Rafiqdevhub/HireDesk/discussions)

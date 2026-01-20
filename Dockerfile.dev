@@ -9,23 +9,36 @@ WORKDIR /app
 RUN apk add --no-cache \
     git \
     curl \
-    bash
+    bash \
+    python3 \
+    make \
+    g++
 
 # Copy package files
 COPY package*.json ./
 
 # Install dependencies (all dependencies for development)
-RUN npm ci
+RUN npm ci --legacy-peer-deps
 
-# Copy source code
-COPY . .
+# Copy configuration files
+COPY tsconfig.json ./
+COPY vite.config.ts ./
+COPY react-router.config.ts ./
 
-# Expose port for dev server
+# Expose ports
+# 3000: Main dev server
+# 24678: Vite HMR (Hot Module Replacement)
 EXPOSE 3000 24678
+
+# Environment variables
+ENV NODE_ENV=development \
+    HOST=0.0.0.0 \
+    PORT=3000 \
+    CHOKIDAR_USEPOLLING=true
 
 # Health check for dev server
 HEALTHCHECK --interval=30s --timeout=10s --start-period=15s --retries=3 \
     CMD curl -f http://localhost:3000 || exit 1
 
 # Default command for development
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]

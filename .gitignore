@@ -15,3 +15,16 @@ coverage/
 copilot-instructions.md
 .github/copilot-instructions.md
 Instructions.prompt.md
+# Docker
+docker-compose.override.yml
+*.log
+
+# Volumes (Docker data)
+postgres_data/
+redis_data/
+nginx_logs/
+
+# Backup files
+*.tar.gz
+*.backup
+*.bak
