@@ -203,14 +203,12 @@ jobs:
         run: |
           echo "Validating Dockerfile..."
           docker run --rm -i hadolint/hadolint < Dockerfile || true
-          echo "Validating Dockerfile.dev..."
-          docker run --rm -i hadolint/hadolint < Dockerfile.dev || true
 
       - name: Build Docker Image
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./Dockerfile.dev
+          file: ./Dockerfile
           push: false
           cache-from: type=gha
           cache-to: type=gha,mode=max
