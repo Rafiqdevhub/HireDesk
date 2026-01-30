@@ -345,7 +345,7 @@ docker run -d \
 # Access at http://localhost:3000
 ```
 
-### 🐙 Docker Compose Setup
+### Docker Compose Setup
 
 For a complete development or production environment, use Docker Compose with multiple services.
 
