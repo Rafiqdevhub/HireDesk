@@ -8,7 +8,7 @@ on:
     paths:
       - "Dockerfile"
       - ".dockerignore"
-      - ".github/workflows/docker-push-image.yml"
+      - ".github/workflows/docker-build.yml"
   pull_request:
     branches:
       - master
@@ -16,7 +16,7 @@ on:
     paths:
       - "Dockerfile"
       - ".dockerignore"
-      - ".github/workflows/docker-push-image.yml"
+      - ".github/workflows/docker-build.yml"
 
 env:
   REGISTRY: docker.io
